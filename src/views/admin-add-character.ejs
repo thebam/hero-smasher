@@ -1,48 +1,151 @@
 <html>
-	<head>
-		<!-- bower:js -->
-		<!-- endbower -->
-		<!-- bower:css -->
-		<!-- endbower -->
-		<!-- inject:css-->
-		<!-- endinject -->
+                <head>
+                                <!-- bower:js -->
+                                <!-- endbower -->
+                                <!-- bower:css -->
+                                <!-- endbower -->
+                                <!-- inject:css-->
+                                <!-- endinject -->
+ 
+                                <meta charset="utf-8">
+                                <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                                <meta name="viewport" content="width=device-width, initial-scale=1">
+ 
+                                <title>Hero Smasher</title>
+                                <meta name="description" content="Explore possible offspring of combining your favorite comic book superheroes and villains">
+                                <meta name="keywords" content="comic, book, superhero, combine, villain">
+                                <meta name="author" content="Hero Smasher">
+ 
+                                <!-- Facebook -->
+                                <!-- <meta property="fb:app_id" content="356883447812826"> -->
+                                <!-- Facebook, LinkedIn, Pinterest Open Graph data -->
+                                <!-- <meta property="og:site_name" content="Hero Smash!">
+                                <meta property="og:title" content="Hero Smasher">
+                                <meta property="og:description" content="Explore possible offspring of combining your favorite comic book superheroes and villains">
+                                <meta property="og:type" content="website">
+                                <meta property="og:url" content="http://www.savannahstate.edu">
+                                <meta property="og:image" content="http://www.savannahstate.edu/places/images/hill-hall.jpg"> -->
+ 
+                                <!-- Twitter data -->
+                                <!-- <meta name="twitter:card" content="summary_large_image">
+                                <meta name="twitter:site" content="@savannahstate">
+                                <meta name="twitter:title" content="Hero Smasher">
+                                <meta name="twitter:description" content="Explore possible offspring of combining your favorite comic book superheroes and villains">
+                                <meta name="twitter:image" content="http://www.savannahstate.edu/places/images/hill-hall.jpg"> -->
+ 
+                </head>
+                <body>
+                                <h1>Hero Smasher</h1>
+        <form method="post" id="frmAddCharacter" action="admin/add">
+        Name:
+        <input type="text" id="characterName" name="characterName" /><br/>
+        Powers:
+		<div id="powers">
+		<div id="power">
+        <input type="text" id="power" name="power" class="power" />
+        Origin:
+        <select id="origin" name="origin" class="origin">
+        <option>Birth<option>
+        <option>Science<option>
+        <option>Alien<option>
+        <option>Magic<option>
+        </select>
+        Level:
+        <select id="level" name="level"  class="level">
+        <option>1<option>
+        <option>2<option>
+        <option>3<option>
+        <option>4<option>
+        <option>5<option>
+        <option>6<option>
+        <option>7<option>
+        <option>8<option>
+        <option>9<option>
+        <option>10<option>
+        </select>
+        Passable:
+        <select id="passable" name="passable" class="passable">
+        <option>true<option>
+        <option>false<option>
+        </select>
+		</div></div>
+		<input type="button" id="btnAddPower" value="+ power" /><br/>
+        
+        Traits:
+		<div id="traits">
+		<div id="trait">
+        <input type="text" id="trait" name="trait" class="trait" />
+		</div>
+		</div>
+		<input type="button" id="btnAddTrait" value="+ trait" /><br/>
+        
+        Bio:
+        <textarea id="biography" name="biography"></textarea><br/>
+        <input type="button" id="btnAddCharacter" value="ADD CHARACTER"/>
 
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<input type="text" id="allTraits" name="allTraits" />
+		<input type="text" id="allPowers" name="allPowers" />
 
-		<title>Hero Smasher</title>
-		<meta name="description" content="Explore possible offspring of combining your favorite comic book superheroes and villains">
-		<meta name="keywords" content="comic, book, superhero, combine, villain">
-		<meta name="author" content="Hero Smasher">
-
-		<!-- Facebook -->
-		<!-- <meta property="fb:app_id" content="356883447812826"> -->
-		<!-- Facebook, LinkedIn, Pinterest Open Graph data -->
-		<!-- <meta property="og:site_name" content="Hero Smash!">
-		<meta property="og:title" content="Hero Smasher">
-		<meta property="og:description" content="Explore possible offspring of combining your favorite comic book superheroes and villains">
-		<meta property="og:type" content="website">
-		<meta property="og:url" content="http://www.savannahstate.edu">
-		<meta property="og:image" content="http://www.savannahstate.edu/places/images/hill-hall.jpg"> -->
-
-		<!-- Twitter data -->
-		<!-- <meta name="twitter:card" content="summary_large_image">
-		<meta name="twitter:site" content="@savannahstate">
-		<meta name="twitter:title" content="Hero Smasher">
-		<meta name="twitter:description" content="Explore possible offspring of combining your favorite comic book superheroes and villains">
-		<meta name="twitter:image" content="http://www.savannahstate.edu/places/images/hill-hall.jpg"> -->
-
-	</head>
-	<body>
-		<h1>Hero Smasher</h1>
-        <form method="post" action="admin/add">
-        <input type="text" id="charname" name="charname" />
-        <input type="text" id="power" name="power" />
-        <input type="text" id="trait" name="trait" />
-        <input type="submit" value="add"/>
         </form>
-		<!-- inject:js -->  
-		<!-- endinject -->  
-	</body> 
+                                <!-- inject:js --> 
+                                <!-- endinject --> 
+
+								<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+								<script>
+								$('#btnAddPower').click(function(){
+									$("#power").clone().appendTo("#powers");
+								});
+								$('#btnAddTrait').click(function(){
+									$("#trait").clone().appendTo("#traits");
+								});
+
+								$('#btnAddCharacter').click(function(){
+
+									var powers = '{"powers":[]}';
+									var traits = '{"traits":[]}';
+
+									var tempPowers = [];
+									var tempOrigins = [];
+									var tempLevels = [];
+									var tempPassables = [];
+									var tempTraits = [];
+
+									$(".power").each(function(index,value){
+										tempPowers.push($(value).val());
+									});
+									$(".origin").each(function(index,value){
+										tempOrigins.push($(value).val());
+									});
+									$(".level").each(function(index,value){
+										tempLevels.push($(value).val());
+									});
+									$(".passable").each(function(index,value){
+										tempPassables.push($(value).val());
+									});
+									$(".trait").each(function(index,value){
+										tempTraits.push($(value).val());
+									});
+
+									for(var x=0; x<tempPowers.length;x++){
+										var powersObj = JSON.parse(powers);
+										powersObj['powers'].push({ "power": "" + tempPowers[x] + "", "rank": ""+ (x+1) + "", "origin": "" + tempOrigins[x] + "", "level": "" + tempLevels[x] + "", "passable": ""+ tempPassables[x] +"" });
+										powers = JSON.stringify(powersObj);
+									}
+
+									for(var y=0; y<tempTraits.length;y++){
+										var traitsObj = JSON.parse(traits);
+										traitsObj['traits'].push({ "trait": "" + tempTraits[y] + ""});
+										traits = JSON.stringify(traitsObj);
+									}
+
+									
+									$("#allTraits").val(traits);
+									$("#allPowers").val(powers);
+									document.getElementById("frmAddCharacter").submit();
+								});
+								
+
+								</script>
+
+                </body>
 </html>

@@ -19,7 +19,7 @@
 		<!-- Facebook -->
 		<!-- <meta property="fb:app_id" content="356883447812826"> -->
 		<!-- Facebook, LinkedIn, Pinterest Open Graph data -->
-		<!-- <meta property="og:site_name" content="Hero Smash!">
+		<!-- <meta property="og:site_name" content="Hero Smasher">
 		<meta property="og:title" content="Hero Smasher">
 		<meta property="og:description" content="Explore possible offspring of combining your favorite comic book superheroes and villains">
 		<meta property="og:type" content="website">
@@ -35,8 +35,18 @@
 
 	</head>
 	<body>
-		<h1>Hero Smasher</h1>
-		<%=character%>
+		<h1><%=character.name%></h1>
+		<ul>
+		<%for(var x=0;x<character.powers.length;x++){%>
+		<li><%=character.powers[x].power%></li>
+		<%}%>
+		</ul>
+
+		<ul>
+		<%for(var x=0;x<character.traits.length;x++){%>
+		<li><%=character.traits[x].trait%></li>
+		<%}%>
+		</ul>
 		<!-- inject:js -->  
 		<!-- endinject -->  
 	</body> 
