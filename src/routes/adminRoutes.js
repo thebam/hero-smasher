@@ -7,7 +7,11 @@ var mongoURL = 'mongodb://localhost:27017/heroSmasher';
 
 adminRouter.route('/')
     .get(function (req, res) {
-        res.render('admin-add-character', list);
+        res.render('admin-add-character');
+    });
+adminRouter.route('/edit')
+    .get(function (req, res) {
+        res.render('admin-edit-character');
     });
 adminRouter.route('/add')
     .post(function (req, res) {
