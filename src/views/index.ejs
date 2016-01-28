@@ -1,4 +1,5 @@
-<html>
+<!doctype html>
+<html ng-app="SmasherApp">
 	<head>
 		<!-- bower:js -->
 		<!-- endbower -->
@@ -6,7 +7,9 @@
 		<!-- endbower -->
 		<!-- inject:css-->
 		<!-- endinject -->
-
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular-resource.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular-route.min.js"></script>
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -35,8 +38,11 @@
 
 	</head>
 	<body>
-		<h1>Hero Smasher</h1>
+		<div ng-view>
+        </div>
 		<!-- inject:js -->  
+        
+        <script src="../src/public/javascript/herosmasher.js">
 		<!-- endinject -->  
 	</body> 
 </html>

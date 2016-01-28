@@ -6,7 +6,7 @@ var port = process.env.PORT || 5001;
 app.set('views', './src/views');
 app.set('view engine', 'ejs');
 
-
+app.use(express.static(__dirname + '/src/public'));
 var characterRouter = require('./src/routes/characterRoutes')
 var adminRouter = require('./src/routes/adminRoutes');
 
