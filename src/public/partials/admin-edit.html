@@ -1,0 +1,55 @@
+<h1>Edit</h1>
+<form method="post" id="frmEditCharacter" action="admin/add">
+        Name:
+        <input type="text" ng-model="character.name" /><br />
+    Powers:
+		
+		<div ng-repeat="power in character.powers">
+            <div id="{{power.id}}" style="display: inline">
+                <input type="text" ng-model="power.powerName" />
+                Origin:
+        <select ng-model="power.origin">
+            <option value="birth">Birth<option>
+            <option value="science">Science<option>
+            <option value="alien">Alien<option>
+            <option value="magic">Magic<option>
+            <option value="unknown">Unknown<option>
+        </select>
+                Level:
+        <select ng-model="power.level">
+            <option value="1">1<option>
+            <option value="2">2<option>
+            <option value="3">3<option>
+            <option value="4">4<option>
+            <option value="5">5<option>
+            <option value="6">6<option>
+            <option value="7">7<option>
+            <option value="8">8<option>
+            <option value="9">9<option>
+            <option value="10">10<option>
+        </select>
+                Passable:
+        <select ng-model="power.passable">
+            <option value="true">true<option>
+            <option value="false">false<option>
+        </select>
+                <a href ng-click="character.powers.splice($index, 1)">remove</a>
+            </div>
+        </div>
+    <input type="button" ng-click="newPower($event)" id="btnAddPower" value="+ power" /><br />
+
+    Traits:
+		<div ng-repeat="trait in character.traits">
+            <div {{trait.id}}>
+                <input ng-model="trait.trait"/>
+                <a href ng-click="character.traits.splice($index, 1)">remove</a>
+            </div>
+        </div>
+    <input type="button" ng-click="newTrait($event)" value="+ trait" /><br />
+
+    Bio:
+        <textarea ng-model="character.biography"></textarea><br />
+        <input type="button" ng-click="save()" value="Update"/>
+
+{{character}}
+        </form>

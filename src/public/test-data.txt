@@ -1,0 +1,139 @@
+{
+    "_id" : ObjectId("56a92103f503296c19abfd45"),
+    "name" : "Superman",
+    "powers" : [ 
+        {
+            "powerName" : "Strength",
+            "rank" : "1",
+            "origin" : "alien",
+            "level" : "10",
+            "passable" : "true"
+        }, 
+        {
+            "powerName" : "Speed",
+            "rank" : "2",
+            "origin" : "alien",
+            "level" : "9",
+            "passable" : "true"
+        }, 
+        {
+            "powerName" : "Flight",
+            "rank" : "3",
+            "origin" : "alien",
+            "level" : "8",
+            "passable" : "true"
+        }, 
+        {
+            "powerName" : "Durablity",
+            "rank" : "4",
+            "origin" : "alien",
+            "level" : "8",
+            "passable" : "true"
+        }, 
+        {
+            "powerName" : "Heat Vision",
+            "rank" : "5",
+            "origin" : "alien",
+            "level" : "5",
+            "passable" : "true"
+        }
+    ],
+    "traits" : [ 
+        {
+            "trait" : "Leadership"
+        }, 
+        {
+            "trait" : "Morality"
+        }
+    ],
+    "biography" : "Born on planet Krypton"
+},{
+    "_id" : ObjectId("56a92190f503296c19abfd46"),
+    "name" : "Wonder Woman",
+    "powers" : [ 
+        {
+            "powerName" : "Strength",
+            "rank" : "1",
+            "origin" : "magic",
+            "level" : "8",
+            "passable" : "true"
+        }, 
+        {
+            "powerName" : "Durability",
+            "rank" : "2",
+            "origin" : "magic",
+            "level" : "7",
+            "passable" : "true"
+        }
+    ],
+    "traits" : [ 
+        {
+            "trait" : "Leadership"
+        }, 
+        {
+            "trait" : "Morality"
+        }
+    ],
+    "biography" : "Amazon"
+},{
+    "_id" : ObjectId("56a921d6f503296c19abfd47"),
+    "name" : "Hulk",
+    "powers" : [ 
+        {
+            "powerName" : "Strength",
+            "rank" : "1",
+            "origin" : "science",
+            "level" : "10",
+            "passable" : "true"
+        }, 
+        {
+            "powerName" : "Durability",
+            "rank" : "2",
+            "origin" : "science",
+            "level" : "10",
+            "passable" : "true"
+        }
+    ],
+    "traits" : [ 
+        {
+            "trait" : "Genius"
+        }, 
+        {
+            "trait" : "Rage"
+        }
+    ],
+    "biography" : "Gamma radiation accident"
+},{
+    "_id" : ObjectId("56aa648db09cd6581af23106"),
+    "name" : "Wolverine",
+    "powers" : [ 
+        {
+            "id" : 0,
+            "powerName" : "Fast Healing",
+            "origin" : "birth",
+            "level" : "8",
+            "passable" : "true"
+        }, 
+        {
+            "id" : 1,
+            "powerName" : "Heightened Senses",
+            "origin" : "birth",
+            "level" : "4",
+            "passable" : "true"
+        }, 
+        {
+            "id" : 2,
+            "powerName" : "Unbreakable Skeleton",
+            "origin" : "science",
+            "level" : "8",
+            "passable" : "false"
+        }
+    ],
+    "traits" : [ 
+        {
+            "id" : 0,
+            "trait" : "Rage"
+        }
+    ],
+    "biography" : "Weapon X"
+}
