@@ -46,8 +46,14 @@
             "trait" : "Morality"
         }
     ],
-    "biography" : "Born on planet Krypton"
-},{
+    "biography" : "Born on planet Krypton",
+    "images" : [ 
+        {
+            "image" : "//upload.wikimedia.org/wikipedia/en/thumb/e/eb/SupermanRoss.png/250px-SupermanRoss.png"
+        }
+    ]
+},
+{
     "_id" : ObjectId("56a92190f503296c19abfd46"),
     "name" : "Wonder Woman",
     "powers" : [ 
@@ -74,8 +80,14 @@
             "trait" : "Morality"
         }
     ],
-    "biography" : "Amazon"
-},{
+    "biography" : "Amazon",
+    "images" : [ 
+        {
+            "image" : "//upload.wikimedia.org/wikipedia/commons/c/c5/Wonder_Woman_New_52.jpg"
+        }
+    ]
+},
+{
     "_id" : ObjectId("56a921d6f503296c19abfd47"),
     "name" : "Hulk",
     "powers" : [ 
@@ -102,8 +114,14 @@
             "trait" : "Rage"
         }
     ],
-    "biography" : "Gamma radiation accident"
-},{
+    "biography" : "Gamma radiation accident",
+    "images" : [ 
+        {
+            "image" : "//c2.staticflickr.com/8/7205/6976087980_db3ec57015_b.jpg"
+        }
+    ]
+},
+{
     "_id" : ObjectId("56aa648db09cd6581af23106"),
     "name" : "Wolverine",
     "powers" : [ 
@@ -135,5 +153,10 @@
             "trait" : "Rage"
         }
     ],
-    "biography" : "Weapon X"
+    "biography" : "Weapon X",
+    "images" : [ 
+        {
+            "image" : "//upload.wikimedia.org/wikipedia/commons/5/58/Wolverine_%287343567212%29_%28retouched%29.jpg"
+        }
+    ]
 }

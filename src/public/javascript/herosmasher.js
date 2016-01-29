@@ -46,6 +46,28 @@ heroApp.controller('editController', function ($scope, $resource, $location, $ro
         $scope.character = character;
     });
 
+    var powerCounter = 0;
+    var traitCounter = 0;
+    var imageCounter = 0;
+    $scope.character = { name: '', powers: [{ id: powerCounter, powerName: '', origin: 'birth', level: '1', passable: 'true' }], traits: [{ id: traitCounter, trait: '' }], biography: '', images: [{ image: '' }] };
+
+
+    $scope.newPower = function ($event) {
+        powerCounter++;
+        $scope.character.powers.push({ id: powerCounter, powerName: '', origin: 'birth', level: '1', passable: 'true' });
+    };
+
+    $scope.newTrait = function ($event) {
+        traitCounter++;
+        $scope.character.traits.push({ id: traitCounter, trait: '' });
+    };
+
+    $scope.newImage = function ($event) {
+        imageCounter++;
+        $scope.character.images.push({ id: imageCounter, image: '' });
+    };
+
+
     $scope.save = function () {
         Characters.update($scope.character, function () {
             $location.path('/');
@@ -69,7 +91,8 @@ heroApp.controller('deleteController', function ($scope, $resource, $location, $
 heroApp.controller('addController', function ($scope, $resource, $location) {
     var powerCounter = 0;
     var traitCounter = 0;
-    $scope.character = { name: '', powers: [{ id: powerCounter, powerName: '', origin: 'birth', level: '1', passable: 'true' }], traits: [{ id: traitCounter,trait: '' }], biography: '' };
+    var imageCounter = 0;
+    $scope.character = { name: '', powers: [{ id: powerCounter, powerName: '', origin: 'birth', level: '1', passable: 'true' }], traits: [{ id: traitCounter, trait: '' }], biography: '', images: [{image:''}] };
     
 
     $scope.newPower = function ($event) {
@@ -80,6 +103,11 @@ heroApp.controller('addController', function ($scope, $resource, $location) {
     $scope.newTrait = function ($event) {
         traitCounter++;
         $scope.character.traits.push({ id: traitCounter, trait: '' });
+    };
+
+    $scope.newImage = function ($event) {
+        imageCounter++;
+        $scope.character.images.push({ id: imageCounter, image: '' });
     };
 
 

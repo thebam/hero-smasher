@@ -1,24 +1,32 @@
-
-
 <div id="fh5co-main">
     <div class="container">
         <div class="row">
-                <h1>Hero Smasher</h1>
-<a href="/#/add/">add</a>
-            <div id="fh5co-board" data-columns="4">
-                <div class="column size-1of4">
-                <div class="item" ng-repeat="character in characters">
-                    <div class="animate-box">
-                        <a href="images/img_2.jpg" class="image-popup fh5co-board-img" title="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, eos?">
-                            <img src="//upload.wikimedia.org/wikipedia/en/thumb/e/eb/SupermanRoss.png/250px-SupermanRoss.png" alt="Free HTML5 Bootstrap template"></a>
+            <h1>Combine Characters</h1>
+            <a href="/#/add/">add</a>
+            <div id="fh5co-board" data-columns="2">
+                <div class="column size-1of2">
+                    <div class="item" ng-repeat="character in characters" ng-if="$even">
+                        <div class="animate-box bounceIn animated">
+                            <img src="{{character.images[0].image}}" alt="{{character.name}}">
+                        </div>
+                        <div class="fh5co-desc">
+                            <p>{{character.name}}</p>
+                            <a href="/#/character/{{character._id}}">edit</a> | <a href="/#/delete/{{character._id}}">delete</a>
+                        </div>
                     </div>
-                    <div class="fh5co-desc">
-                        {{character.name}} <a href="/#/character/{{character._id}}">edit</a> | 
-        <a href="/#/delete/{{character._id}}">delete</a>
+                </div>
+                <div class="column size-1of2">
+                    <div class="item" ng-repeat="character in characters" ng-if="$odd">
+                        <div class="animate-box bounceIn animated">
+                            <img src="{{character.images[0].image}}" alt="{{character.name}}">
+                        </div>
+                        <div class="fh5co-desc">
+                            <p>{{character.name}}</p>
+                            <a href="/#/character/{{character._id}}">edit</a> | <a href="/#/delete/{{character._id}}">delete</a>
+                        </div>
                     </div>
                 </div>
             </div>
-                </div>
         </div>
     </div>
 </div>

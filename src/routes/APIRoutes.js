@@ -1,6 +1,6 @@
 var express = require('express');
 var mongodb = require('mongodb').MongoClient;
-var objectId = require('mongodb').ObjectID;
+var ObjectId = require('mongodb').ObjectID;
 var APIRouter = express.Router();
 
 var mongoURL = 'mongodb://localhost:27017/heroSmasher';
@@ -13,11 +13,13 @@ APIRouter.route('/')
         var biography = req.body.biography;
         var powers = req.body.powers;
         var traits = req.body.traits;
+        var images = req.body.images;
         var character = {
             name: name,
             powers: powers,
             traits: traits,
-            biography: biography
+            biography: biography,
+            images: images
         };
         
         mongodb.connect(mongoURL, function (err, db) {
@@ -30,7 +32,7 @@ APIRouter.route('/')
     });
 APIRouter.route('/edit/:id')
     .get(function(req,res){
-        var id = new objectId(req.params.id);
+        var id = new ObjectId(req.params.id);
         mongodb.connect(mongoURL, function (err, db) {
             var collection = db.collection('characters');
             collection.findOne({ _id: id }, function (err, results) {
@@ -41,18 +43,20 @@ APIRouter.route('/edit/:id')
     });
 APIRouter.route('/edit/:id')
     .put(function (req, res) {
-        var id = new objectId(req.params.id);
+        var id = new ObjectId(req.params.id);
         var name = req.body.name;
         var biography = req.body.biography;
         var powers = req.body.powers;
         var traits = req.body.traits;
+        var images = req.body.images;
         mongodb.connect(mongoURL, function (err, db) {
             var collection = db.collection('characters');
             collection.update({ _id: id },{
                 name: name,
                 powers: powers,
                 traits: traits,
-                biography: biography
+                biography: biography,
+                images: images
             }, function (err, results) {
                 res.json(results);
                 db.close();
@@ -61,7 +65,7 @@ APIRouter.route('/edit/:id')
     });
 APIRouter.route('/delete/:id')
     .get(function (req, res) {
-        var id = new objectId(req.params.id);
+        var id = new ObjectId(req.params.id);
         mongodb.connect(mongoURL, function (err, db) {
             var collection = db.collection('characters');
             collection.findOne({ _id: id }, function (err, results) {
@@ -72,7 +76,7 @@ APIRouter.route('/delete/:id')
     });
 APIRouter.route('/delete/:id')
     .delete(function (req, res) {
-        var id = new objectId(req.params.id);
+        var id = new ObjectId(req.params.id);
         mongodb.connect(mongoURL, function (err, db) {
             var collection = db.collection('characters');
             collection.remove({ _id: id }, function (err, results) {
