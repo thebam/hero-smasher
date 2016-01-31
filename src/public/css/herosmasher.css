@@ -1,0 +1,12 @@
+.btn-add{
+    cursor: pointer;
+}
+.btn-add:before{
+    content:"\e081";
+    font-family: 'Glyphicons Halflings';
+    font-weight: 300;
+    font-size: 1em;
+    line-height: 1em;
+    color: #818892;
+    display: inline-block;
+}

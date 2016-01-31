@@ -1,7 +1,7 @@
 {
-  "name": "library",
+  "name": "herosmasher",
   "description": "",
-  "main": "app.js",
+  "main": "index.js",
   "license": "ISC",
   "moduleType": [],
   "homepage": "",

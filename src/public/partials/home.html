@@ -1,32 +1,68 @@
-<div id="fh5co-main">
-    <div class="container">
+
         <div class="row">
             <h1>Combine Characters</h1>
-            <a href="/#/add/">add</a>
-            <div id="fh5co-board" data-columns="2">
-                <div class="column size-1of2">
-                    <div class="item" ng-repeat="character in characters" ng-if="$even">
+            <a class="btn btn-block btn-sm btn-outline" href="/#/add/">Add Character</a>
+            <div id="fh5co-board" data-columns="3">
+                <div class="column size-1of3">
+                    <div class="item" ng-repeat="character in characters | orderBy : 'name' | limitTo : columnLimit1" >
                         <div class="animate-box bounceIn animated">
-                            <img src="{{character.images[0].image}}" alt="{{character.name}}">
+                            <img src="{{character.images[0].image}}" alt="{{character.name}}" ng-click="combine(character._id)" />
                         </div>
                         <div class="fh5co-desc">
-                            <p>{{character.name}}</p>
-                            <a href="/#/character/{{character._id}}">edit</a> | <a href="/#/delete/{{character._id}}">delete</a>
+                            <h2>{{character.name}}</h2>
+                            <p>{{character.affinity}}</p>
+                            <h3>Grid</h3>
+                            <ul>
+                            <li ng-repeat="ranking in character.rankings">{{ranking.category}} : {{ranking.level}}</li>
+                            </ul>
+                            <h3>Powers</h3>
+                            <ul>
+                            <li ng-repeat="power in character.powers">{{power.powerName}} : {{power.level}}</li>
+                            </ul>
+                            <a class="btn btn-block btn-sm btn-outline" href="/#/character/{{character._id}}">edit</a>  <a class="btn btn-block btn-sm btn-primary" href="/#/delete/{{character._id}}">delete</a>
                         </div>
                     </div>
                 </div>
-                <div class="column size-1of2">
-                    <div class="item" ng-repeat="character in characters" ng-if="$odd">
+                <div class="column size-1of3">
+                    <div class="item" ng-repeat="character in characters | orderBy : 'name'| limitTo : columnLimit1:columnLimit1" >
                         <div class="animate-box bounceIn animated">
-                            <img src="{{character.images[0].image}}" alt="{{character.name}}">
+                            <img src="{{character.images[0].image}}" alt="{{character.name}}" ng-click="combine(character._id)" />
                         </div>
                         <div class="fh5co-desc">
-                            <p>{{character.name}}</p>
-                            <a href="/#/character/{{character._id}}">edit</a> | <a href="/#/delete/{{character._id}}">delete</a>
+                            <h2>{{character.name}}</h2>
+                            <p>{{character.affinity}}</p>
+                            <h3>Grid</h3>
+                            <ul>
+                            <li ng-repeat="ranking in character.rankings">{{ranking.category}} : {{ranking.level}}</li>
+                            </ul>
+                            <h3>Powers</h3>
+                            <ul>
+                            <li ng-repeat="power in character.powers">{{power.powerName}} : {{power.level}}</li>
+                            </ul>
+                            <a class="btn btn-block btn-sm btn-outline" href="/#/character/{{character._id}}">edit</a>  <a class="btn btn-block btn-sm btn-primary" href="/#/delete/{{character._id}}">delete</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="column size-1of3">
+                    <div class="item" ng-repeat="character in characters | orderBy : 'name'| limitTo : columnLimit1:columnLimit2" >
+                        <div class="animate-box bounceIn animated">
+                            <img src="{{character.images[0].image}}" alt="{{character.name}}" ng-click="combine(character._id)" />
+                        </div>
+                        <div class="fh5co-desc">
+                            <h2>{{character.name}}</h2>
+                            <p>{{character.affinity}}</p>
+                            <h3>Grid</h3>
+                            <ul>
+                            <li ng-repeat="ranking in character.rankings">{{ranking.category}} : {{ranking.level}}</li>
+                            </ul>
+                            <h3>Powers</h3>
+                            <ul>
+                            <li ng-repeat="power in character.powers">{{power.powerName}} : {{power.level}}</li>
+                            </ul>
+                            <a class="btn btn-block btn-sm btn-outline" href="/#/character/{{character._id}}">edit</a>  <a class="btn btn-block btn-sm btn-primary" href="/#/delete/{{character._id}}">delete</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
+

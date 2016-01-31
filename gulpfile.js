@@ -19,8 +19,8 @@ gulp.task('inject', function () {
     var injectOptions = {ignorePath:'/src/public'};
     var options = {
         bowerJson: require('./bower.json'),
-        directory: './src/public',
-        ignorePath: '../../src/public'
+        directory: './src/public/lib',
+        ignorePath: '../public'
     };
     return gulp.src('./src/views/*ejs')
     .pipe(wiredep(options))

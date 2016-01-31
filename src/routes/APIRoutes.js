@@ -12,10 +12,14 @@ APIRouter.route('/')
         var name = req.body.name;
         var biography = req.body.biography;
         var powers = req.body.powers;
+        var rankings = req.body.rankings;
         var traits = req.body.traits;
         var images = req.body.images;
+        var affinity = req.body.affinity;
         var character = {
             name: name,
+            affinity: affinity,
+            rankings:rankings,
             powers: powers,
             traits: traits,
             biography: biography,
@@ -47,12 +51,16 @@ APIRouter.route('/edit/:id')
         var name = req.body.name;
         var biography = req.body.biography;
         var powers = req.body.powers;
+        var rankings = req.body.rankings;
         var traits = req.body.traits;
         var images = req.body.images;
+        var affinity = req.body.affinity;
         mongodb.connect(mongoURL, function (err, db) {
             var collection = db.collection('characters');
             collection.update({ _id: id },{
                 name: name,
+                affinity: affinity,
+                rankings:rankings,
                 powers: powers,
                 traits: traits,
                 biography: biography,
