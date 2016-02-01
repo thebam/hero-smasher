@@ -95,16 +95,18 @@ heroApp.controller('mainController', function ($scope, $resource,characterModel)
         
         
           
-        $scope.character3 = characterModel.character;
-        $scope.character3.name = "turbo";
+        $scope.childCharacter = characterModel.character;
+        $scope.childCharacter.name = "turbo";
         
-        $scope.character3.rankings[0].level = $scope.randomBetween(intelligenceRange[0],intelligenceRange[1]);
-        $scope.character3.rankings[1].level = $scope.randomBetween(strengthRange[0],strengthRange[1]);
-        $scope.character3.rankings[2].level = $scope.randomBetween(speedRange[0],speedRange[1]);
-        $scope.character3.rankings[3].level = $scope.randomBetween(durabilityRange[0],durabilityRange[1]);
-        $scope.character3.rankings[4].level = $scope.randomBetween(energyRange[0],energyRange[1]);
-        $scope.character3.rankings[5].level = $scope.randomBetween(fightingRange[0],fightingRange[1]);
-        alert(JSON.stringify($scope.character3));
+        $scope.childCharacter.rankings[0].level = $scope.randomBetween(intelligenceRange[0],intelligenceRange[1]);
+        $scope.childCharacter.rankings[1].level = $scope.randomBetween(strengthRange[0],strengthRange[1]);
+        $scope.childCharacter.rankings[2].level = $scope.randomBetween(speedRange[0],speedRange[1]);
+        $scope.childCharacter.rankings[3].level = $scope.randomBetween(durabilityRange[0],durabilityRange[1]);
+        $scope.childCharacter.rankings[4].level = $scope.randomBetween(energyRange[0],energyRange[1]);
+        $scope.childCharacter.rankings[5].level = $scope.randomBetween(fightingRange[0],fightingRange[1]);
+        alert(JSON.stringify($scope.childCharacter));
+        $('#myModal').modal('show');
+        
     }
     
     $scope.combine = function(id){

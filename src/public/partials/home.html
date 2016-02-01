@@ -6,7 +6,7 @@
                 <div class="column size-1of3">
                     <div class="item" ng-repeat="character in characters | orderBy : 'name' | limitTo : columnLimit1" >
                         <div class="animate-box bounceIn animated">
-                            <img src="{{character.images[0].image}}" alt="{{character.name}}" ng-click="combine(character._id)" />
+                            <img ng-src="{{character.images[0].image}}" alt="{{character.name}}" ng-click="combine(character._id)" />
                         </div>
                         <div class="fh5co-desc">
                             <h2>{{character.name}}</h2>
@@ -26,7 +26,7 @@
                 <div class="column size-1of3">
                     <div class="item" ng-repeat="character in characters | orderBy : 'name'| limitTo : columnLimit1:columnLimit1" >
                         <div class="animate-box bounceIn animated">
-                            <img src="{{character.images[0].image}}" alt="{{character.name}}" ng-click="combine(character._id)" />
+                            <img ng-src="{{character.images[0].image}}" alt="{{character.name}}" ng-click="combine(character._id)" />
                         </div>
                         <div class="fh5co-desc">
                             <h2>{{character.name}}</h2>
@@ -46,7 +46,7 @@
                 <div class="column size-1of3">
                     <div class="item" ng-repeat="character in characters | orderBy : 'name'| limitTo : columnLimit1:columnLimit2" >
                         <div class="animate-box bounceIn animated">
-                            <img src="{{character.images[0].image}}" alt="{{character.name}}" ng-click="combine(character._id)" />
+                            <img ng-src="{{character.images[0].image}}" alt="{{character.name}}" ng-click="combine(character._id)" />
                         </div>
                         <div class="fh5co-desc">
                             <h2>{{character.name}}</h2>
@@ -65,4 +65,33 @@
                 </div>
             </div>
         </div>
+        <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Modal Header</h4>
+        </div>
+        <div class="modal-body">
+          <h2>{{childCharacter.name}}</h2>
+                            <p>{{childCharacter.affinity}}</p>
+                            <h3>Grid</h3>
+                            <ul>
+                            <li ng-repeat="ranking in childCharacter.rankings">{{ranking.category}} : {{ranking.level}}</li>
+                            </ul>
+                            <h3>Powers</h3>
+                            <ul>
+                            <li ng-repeat="power in childCharacter.powers">{{power.powerName}} : {{power.level}}</li>
+                            </ul>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
 
