@@ -7,7 +7,6 @@ var mongoURL = 'mongodb://localhost:27017/heroSmasher';
 
 APIRouter.route('/')
     .post(function (req, res) {
-        console.log('here');
         console.log(req.body.name);
         var name = req.body.name;
         var biography = req.body.biography;
@@ -16,6 +15,7 @@ APIRouter.route('/')
         var traits = req.body.traits;
         var images = req.body.images;
         var affinity = req.body.affinity;
+        var parents = req.body.parents;
         var character = {
             name: name,
             affinity: affinity,
@@ -23,7 +23,8 @@ APIRouter.route('/')
             powers: powers,
             traits: traits,
             biography: biography,
-            images: images
+            images: images,
+            parents: parents
         };
         
         mongodb.connect(mongoURL, function (err, db) {
@@ -55,6 +56,7 @@ APIRouter.route('/edit/:id')
         var traits = req.body.traits;
         var images = req.body.images;
         var affinity = req.body.affinity;
+        var parents = req.body.parents;
         mongodb.connect(mongoURL, function (err, db) {
             var collection = db.collection('characters');
             collection.update({ _id: id },{
@@ -64,7 +66,8 @@ APIRouter.route('/edit/:id')
                 powers: powers,
                 traits: traits,
                 biography: biography,
-                images: images
+                images: images,
+                parents: parents
             }, function (err, results) {
                 res.json(results);
                 db.close();
@@ -103,4 +106,18 @@ APIRouter.route('/')
             });
         });
     });
+APIRouter.route('/signUp')
+    .post(function (req, res) {
+    mongodb.connect(mongoURL, function (err, db) {
+        var collection = db.collection('users');
+        
+        //do a select to make sure the user doesn't already exist 
+        //collection.insert(user, function (err, results) {
+        //    //req.login(results.ops[0], function () {
+        //    //    res.redirect('/');
+        //    //});
+        //    db.close();
+        //});
+    });
+});
 module.exports = APIRouter;

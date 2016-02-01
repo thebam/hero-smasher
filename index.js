@@ -1,18 +1,26 @@
 var express = require('express');
 var path = require('path');
 var bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser');
+var passport = require('passport');
+var session = require('express-session');
 var app = express();
 var port = process.env.PORT || 5001;
 app.set('views', path.join(__dirname, '/src/views'));
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/src/public'));
-var APIRouter = require('./src/routes/APIRoutes');
+
+
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
+app.use(cookieParser());
+app.use(session({secret:'super'}));
+require('./src/config/passport');
+var APIRouter = require('./src/routes/APIRoutes');
+
 //for express API endpoints
 app.use('/api', APIRouter);
-
 //for angular routing
 app.get('/', function (req, res) {
     res.render('index');

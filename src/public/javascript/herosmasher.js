@@ -1,4 +1,4 @@
-var heroApp = angular.module('SmasherApp', ['ngResource', 'ngRoute']);
+var heroApp = angular.module('SmasherApp', ['ngResource', 'ngRoute', 'ngCookies']);
 heroApp.config(function ($routeProvider) {
     $routeProvider
         .when('/',{
@@ -21,11 +21,62 @@ heroApp.config(function ($routeProvider) {
             templateUrl: 'partials/admin-delete.html',
             controller: 'deleteController'
         })
+        .when('/login', {
+            templateUrl: 'partials/login.html',
+            controller: 'loginController'
+        })
+        .when('/register', {
+            templateUrl: 'partials/register.html',
+            controller: 'registerController'
+        })
         .otherwise({
             redirectTo: '/'
         });
 });
 
+heroApp.controller('registerController', function ($cookieStore, $scope, $rootScope, $location, $http, $resource) {
+    $scope.register = function () {
+        // send a post request to the server
+        $http.post('/api/signUp', { username: $scope.username, password: $scope.password })
+          // handle success
+          .success(function (data, status) {
+              if (status === 200 && data.status) {
+                  deferred.resolve();
+              } else {
+                  deferred.reject();
+              }
+          })
+          // handle error
+          .error(function (data) {
+              deferred.reject();
+          });
+    };
+});
+
+
+heroApp.controller('loginController', function ($cookieStore, $scope, $rootScope, $location, $http) {
+    $rootScope.globals = {};
+    $cookieStore.remove('globals');
+    $http.defaults.headers.common.Authorization = 'Basic ';
+    $scope.login = function () {
+        if (1 == 1) {
+            var authdata = Base64.encode(username + ':' + password);
+
+            $rootScope.globals = {
+                currentUser: {
+                    username: username,
+                    authdata: authdata
+                }
+            };
+
+            $http.defaults.headers.common['Authorization'] = 'Basic ' + authdata; // jshint ignore:line
+            $cookieStore.put('globals', $rootScope.globals);
+            $location.path('/');
+        } else {
+            //error
+        }
+    };
+});
 
 heroApp.controller('adminController', function ($scope,$resource) {
     var Characters = $resource('/api');
@@ -34,9 +85,13 @@ heroApp.controller('adminController', function ($scope,$resource) {
     });    
 });
 
-
-heroApp.controller('mainController', function ($scope, $resource,characterModel) {
-   
+heroApp.controller('mainController', function ($scope, $resource, $rootScope,characterModel) {
+    $scope.loggedIn = false;
+    if (!$rootScope.globals.currentUser) {
+        $scope.loggedIn = false;
+    } else {
+        $scope.loggedIn = true;
+    }
     var Characters = $resource('/api');
     Characters.query(function (characters) {
         $scope.characters = characters;
@@ -103,7 +158,10 @@ heroApp.controller('mainController', function ($scope, $resource,characterModel)
         $scope.childCharacter.rankings[2].level = $scope.randomBetween(speedRange[0],speedRange[1]);
         $scope.childCharacter.rankings[3].level = $scope.randomBetween(durabilityRange[0],durabilityRange[1]);
         $scope.childCharacter.rankings[4].level = $scope.randomBetween(energyRange[0],energyRange[1]);
-        $scope.childCharacter.rankings[5].level = $scope.randomBetween(fightingRange[0],fightingRange[1]);
+        $scope.childCharacter.rankings[5].level = $scope.randomBetween(fightingRange[0], fightingRange[1]);
+
+        //add powers
+
         //alert(JSON.stringify($scope.childCharacter));
         $('#myModal').modal('show');
         
@@ -121,46 +179,12 @@ heroApp.controller('mainController', function ($scope, $resource,characterModel)
             Parent1.get({ id: $scope.character1 }, function (character) {
                 $scope.parent1 = character;
                 
-                
                 var Parent2 = $resource('/api/edit/:id', { id: '@_id' }, { get: {method:'GET'}});
                 Parent2.get({ id: $scope.character2 }, function (character) {
                     $scope.parent2 = character;
-                    
-                     $scope.createCharacter();
+                    $scope.createCharacter();
                 });
-                
             });
-            
-            
-            
-            
-            
-            //get char1
-            //get char2
-            
-            /*
-            create char3
-            anomoly - yes or no : random
-            if not anomoly 
-                strength - random between char1 & char2
-                speed - random between char1 & char2
-                intelligence - random between char1 & char2
-                durability - random between char1 & char2
-                energy projection - random between char1 & char2
-                fighting skill - random between char1 & char2
-                trait - random from char1 and char2
-            else
-                strength - random bewteen min and max
-                speed - random between min and max
-                intelligence - random between min and max
-                durability - random between min and max
-                energy projection - random between min and max
-                fighting skill - random between min and max
-                trait - random
-            */
-            
-            
-            
         }
     };
 });
@@ -178,11 +202,37 @@ heroApp.controller('deleteController', function ($scope, $resource, $location, $
     };
 });
 
-heroApp.controller('addController', function ($scope, $resource, $location, $routeParams,characterModel) {
+heroApp.controller('addController', function ($scope, $resource, $location, $routeParams, characterModel) {
+    $scope.getCharacter = function (id, parentNumber) {
+        var tempCharacter = $resource('/api/edit/:id', { id: '@_id' }, { get: { method: 'GET' } });
+        tempCharacter.get({ id: id }, function (character) {
+            if (parentNumber === 1) {
+                $scope.parent1 = character;
+                $scope.character.parents[0].parent = $scope.parent1._id;
+            } else {
+                $scope.parent2 = character;
+                $scope.character.parents[1].parent = $scope.parent2._id;
+            }
+        });
+    };
+    var Characters = $resource('/api');
+    Characters.query(function (characters) {
+        $scope.characters = characters;
+    });
+    $scope.character = {};
+    $scope.parent1 = {};
+    $scope.parent2 = {};
+    $scope.showParentChange = false;
     if($routeParams.id){
         var Characters = $resource('/api/edit/:id', { id: '@_id' }, { update: {method:'PUT'}});
         Characters.get({ id: $routeParams.id }, function (character) {
             $scope.character = character;
+            if ($scope.character.parents) {
+                $scope.getCharacter($scope.character.parents[0].parent, 1);
+            }
+            if ($scope.character.parents) {
+                $scope.getCharacter($scope.character.parents[1].parent, 2);
+            }
         });
         
         $scope.save = function () {
@@ -192,6 +242,12 @@ heroApp.controller('addController', function ($scope, $resource, $location, $rou
         };
     }else{
         $scope.character = characterModel.character;
+        if ($scope.character.parents) {
+                $scope.getCharacter($scope.character.parents[0].parent, 1);
+            }
+            if ($scope.character.parents) {
+                $scope.getCharacter($scope.character.parents[1].parent, 2);
+            }
         $scope.save = function () {
             var Characters = $resource('/api');
             Characters.save($scope.character, function () {
@@ -199,18 +255,6 @@ heroApp.controller('addController', function ($scope, $resource, $location, $rou
             });
         };
     }
-   $scope.getCharacter = function(id){
-            var tempCharacter = $resource('/api/edit/:id', { id: '@_id' }, { get: {method:'GET'}});
-            tempCharacter.get({ id: id }, function (character) {
-                alert(JSON.stringify(character));
-                return character;
-            });
-    };
-    
-    $scope.parent1 = characterModel.character;
-    $scope.parent2 = characterModel.character;
-    $scope.parent1 = $scope.getCharacter($scope.character.parents[0].parent);
-    
     
     
     var powerCounter = 0;
@@ -233,28 +277,64 @@ heroApp.controller('addController', function ($scope, $resource, $location, $rou
         $scope.character.images.push({ id: imageCounter, image: '' });
     };
     
-    
-    
-    
-    
+    $scope.parentChangeNumber = 1;
+    $scope.changeParent = function (parentNumber) {
+        $scope.showParentChange = true;
+        if (parentNumber === 1) {
+            $scope.parentChangeNumber = 1;
+        } else {
+            $scope.parentChangeNumber = 2;
+        }
+    };
+
+    $scope.updateParent = function () {
+        if ($scope.parentChangeNumber === 1) {
+            $scope.getCharacter($scope.parentSelection, 1);
+        } else {
+            $scope.getCharacter($scope.parentSelection, 2);
+        }
+        $scope.showParentChange = false;
+    };
+
 });
+
+
+heroApp.run(['$rootScope', '$location', '$cookieStore', '$http',
+    function ($rootScope, $location, $cookieStore, $http) {
+        // keep user logged in after page refresh
+        $rootScope.globals = $cookieStore.get('globals') || {};
+        if ($rootScope.globals.currentUser) {
+            $http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.authdata; // jshint ignore:line
+        }
+  
+        $rootScope.$on('$locationChangeStart', function (event, next, current) {
+            // redirect to login page if not logged in
+            //alert($location.path());
+            if (!$rootScope.globals.currentUser) {
+                if ($location.path().indexOf('/add') > -1 || $location.path().indexOf('/delete') > -1) {
+                    $location.path('/login');
+                } else {
+                   
+                }
+            }
+        });
+    }]);
+
 
 angular.module('SmasherApp').service("characterModel", function() {
     this.character = { 
         name: '', 
         affinity: '',
-        rankings: [{ id: 0, category: 'Intelligence', origin: '', level: '2', passable: 'true' },
-        { id: 1, category: 'Strength', origin: '', level: '2', passable: 'true' },
-        { id: 2, category: 'Speed', origin: '', level: '2', passable: 'true' },
-        { id: 3, category: 'Durability', origin: '', level: '2', passable: 'true' },
-        { id: 4, category: 'EnergyProjection', origin: '', level: '1', passable: 'true' },
-        { id: 5, category: 'FightingSkills', origin: '', level: '2', passable: 'true' },],
-        
-        
+        rankings: [{ id: 0, category: 'Intelligence', origin: 'birth', level: '2', passable: 'true' },
+        { id: 1, category: 'Strength', origin: 'birth', level: '2', passable: 'true' },
+        { id: 2, category: 'Speed', origin: 'birth', level: '2', passable: 'true' },
+        { id: 3, category: 'Durability', origin: 'birth', level: '2', passable: 'true' },
+        { id: 4, category: 'EnergyProjection', origin: 'birth', level: '1', passable: 'true' },
+        { id: 5, category: 'FightingSkills', origin: 'birth', level: '2', passable: 'true' }, ],        
         powers: [{ id: 0, powerDesc: '' }], 
-        
         traits: [{ id: 0, trait: '' }], 
         biography: '', 
         images: [{ image: '' }],
-        parents:[{parent:'56af3cdffc0f0fb41beb6bee'},{parent:'56af3cdffc0f0fb41beb6bee'}] };
+        parents: [{ parent: '56af64501d0a98d4102f46bc' }, { parent: '56af64501d0a98d4102f46bc' }]
+    };
 })

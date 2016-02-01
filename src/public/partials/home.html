@@ -1,7 +1,7 @@
 
         <div class="row">
-            <h1>Combine Characters</h1>
-            <a class="btn btn-block btn-sm btn-outline" href="/#/add/">Add Character</a>
+            <h1>COMBINE CHARACTERS</h1>
+            <a class="btn btn-block btn-sm btn-outline" ng-show="loggedIn" href="/#/add/">Add Character</a>
             <div id="fh5co-board" data-columns="3">
                 <div class="column size-1of3">
                     <div class="item" ng-repeat="character in characters | orderBy : 'name' | limitTo : columnLimit1" >
@@ -19,7 +19,7 @@
                             <ul>
                             <li ng-repeat="power in character.powers">{{power.powerName}} : {{power.level}}</li>
                             </ul>
-                            <a class="btn btn-block btn-sm btn-outline" href="/#/character/{{character._id}}">edit</a>  <a class="btn btn-block btn-sm btn-primary" href="/#/delete/{{character._id}}">delete</a>
+                            <a class="btn btn-block btn-sm btn-outline" href="/#/character/{{character._id}}">details</a>  <a ng-show="loggedIn" class="btn btn-block btn-sm btn-primary" href="/#/delete/{{character._id}}">delete</a>
                         </div>
                     </div>
                 </div>
