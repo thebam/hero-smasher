@@ -41,8 +41,8 @@ heroApp.controller('mainController', function ($scope, $resource,characterModel)
     Characters.query(function (characters) {
         $scope.characters = characters;
         $scope.characterCnt = characters.length;
-        $scope.columnLimit1 = Math.ceil($scope.characterCnt/3);
-        $scope.columnLimit2 = Math.ceil($scope.characterCnt/3) + Math.ceil($scope.characterCnt/3);
+        $scope.columnLimit1 = Math.floor($scope.characterCnt/3);
+        $scope.columnLimit2 = Math.floor($scope.characterCnt/3) + Math.floor($scope.characterCnt/3);
     });
     $scope.character1 = "";
     $scope.character2 = "";
@@ -52,7 +52,7 @@ heroApp.controller('mainController', function ($scope, $resource,characterModel)
         return(Math.floor(Math.random() * ((highNumber-lowNumber)+1) + lowNumber));
     };
     
-    $scope.powerRange = function(powerType){
+    $scope.rankingRange = function(powerType){
         var powerRange = [1,7]
         angular.forEach($scope.parent1.rankings, function(value, key) {
         if (value.category ===powerType) {
@@ -84,19 +84,19 @@ heroApp.controller('mainController', function ($scope, $resource,characterModel)
         var fightingRange = [1,7];
         
         
-        intelligenceRange = $scope.powerRange("Intelligence");
-        strengthRange = $scope.powerRange("Strength");
-        speedRange = $scope.powerRange("Speed");
-        durabilityRange = $scope.powerRange("Durability");
-        energyRange = $scope.powerRange("EnergyProjection");
-        fightingRange = $scope.powerRange("FightingSkills");
+        intelligenceRange = $scope.rankingRange("Intelligence");
+        strengthRange = $scope.rankingRange("Strength");
+        speedRange = $scope.rankingRange("Speed");
+        durabilityRange = $scope.rankingRange("Durability");
+        energyRange = $scope.rankingRange("EnergyProjection");
+        fightingRange = $scope.rankingRange("FightingSkills");
         
-        alert(strengthRange);
+        //alert(strengthRange);
         
         
           
         $scope.childCharacter = characterModel.character;
-        $scope.childCharacter.name = "turbo";
+        $scope.childCharacter.name = "New Character";
         
         $scope.childCharacter.rankings[0].level = $scope.randomBetween(intelligenceRange[0],intelligenceRange[1]);
         $scope.childCharacter.rankings[1].level = $scope.randomBetween(strengthRange[0],strengthRange[1]);
@@ -104,7 +104,7 @@ heroApp.controller('mainController', function ($scope, $resource,characterModel)
         $scope.childCharacter.rankings[3].level = $scope.randomBetween(durabilityRange[0],durabilityRange[1]);
         $scope.childCharacter.rankings[4].level = $scope.randomBetween(energyRange[0],energyRange[1]);
         $scope.childCharacter.rankings[5].level = $scope.randomBetween(fightingRange[0],fightingRange[1]);
-        alert(JSON.stringify($scope.childCharacter));
+        //alert(JSON.stringify($scope.childCharacter));
         $('#myModal').modal('show');
         
     }
@@ -199,7 +199,18 @@ heroApp.controller('addController', function ($scope, $resource, $location, $rou
             });
         };
     }
-   
+   $scope.getCharacter = function(id){
+            var tempCharacter = $resource('/api/edit/:id', { id: '@_id' }, { get: {method:'GET'}});
+            tempCharacter.get({ id: id }, function (character) {
+                alert(JSON.stringify(character));
+                return character;
+            });
+    };
+    
+    $scope.parent1 = characterModel.character;
+    $scope.parent2 = characterModel.character;
+    $scope.parent1 = $scope.getCharacter($scope.character.parents[0].parent);
+    
     
     
     var powerCounter = 0;
@@ -221,6 +232,11 @@ heroApp.controller('addController', function ($scope, $resource, $location, $rou
         imageCounter++;
         $scope.character.images.push({ id: imageCounter, image: '' });
     };
+    
+    
+    
+    
+    
 });
 
 angular.module('SmasherApp').service("characterModel", function() {
@@ -239,5 +255,6 @@ angular.module('SmasherApp').service("characterModel", function() {
         
         traits: [{ id: 0, trait: '' }], 
         biography: '', 
-        images: [{ image: '' }] };
+        images: [{ image: '' }],
+        parents:[{parent:'56af3cdffc0f0fb41beb6bee'},{parent:'56af3cdffc0f0fb41beb6bee'}] };
 })

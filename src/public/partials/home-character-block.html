@@ -1,0 +1,16 @@
+<div class="animate-box bounceIn animated">
+                            <img ng-src="{{character.images[0].image}}" alt="{{character.name}}" ng-click="combine(character._id)" />
+                        </div>
+                        <div class="fh5co-desc">
+                            <h2>{{character.name}}</h2>
+                            <p>{{character.affinity}}</p>
+                            <h3>Grid</h3>
+                            <ul>
+                            <li ng-repeat="ranking in character.rankings">{{ranking.category}} : {{ranking.level}}</li>
+                            </ul>
+                            <h3>Powers</h3>
+                            <ul>
+                            <li ng-repeat="power in character.powers">{{power.powerName}} : {{power.level}}</li>
+                            </ul>
+                            <a class="btn btn-block btn-sm btn-outline" href="/#/character/{{character._id}}">edit</a>  <a class="btn btn-block btn-sm btn-primary" href="/#/delete/{{character._id}}">delete</a>
+                        </div>
