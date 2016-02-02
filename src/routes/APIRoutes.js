@@ -1,41 +1,52 @@
 var express = require('express');
+var config = require('../../config');
 var mongodb = require('mongodb').MongoClient;
 var ObjectId = require('mongodb').ObjectID;
 var passport = require('passport');
 var bcrypt = require('bcrypt-nodejs');
 var APIRouter = express.Router();
 
-var mongoURL = 'mongodb://localhost:27017/heroSmasher';
-
+var mongoURL = config.db;
 APIRouter.route('/')
-    .post(function (req, res) {
-        console.log(req.body.name);
-        var name = req.body.name;
-        var biography = req.body.biography;
-        var powers = req.body.powers;
-        var rankings = req.body.rankings;
-        var traits = req.body.traits;
-        var images = req.body.images;
-        var affinity = req.body.affinity;
-        var parents = req.body.parents;
-        var character = {
-            name: name,
-            affinity: affinity,
-            rankings: rankings,
-            powers: powers,
-            traits: traits,
-            biography: biography,
-            images: images,
-            parents: parents
-        };
-
+    .get(function (req, res) {
         mongodb.connect(mongoURL, function (err, db) {
             var collection = db.collection('characters');
-            collection.insert(character, function (err, results) {
-                res.send(results);
-                db.close();
+            collection.find().toArray(function (err, results) {
+                res.json(results);
+                db.close(); 
             });
         });
+    });
+APIRouter.route('/')
+    .post(function (req, res) {
+        if (req.user) {
+            var name = req.body.name;
+            var biography = req.body.biography;
+            var powers = req.body.powers;
+            var rankings = req.body.rankings;
+            var traits = req.body.traits;
+            var images = req.body.images;
+            var affinity = req.body.affinity;
+            var parents = req.body.parents;
+            var character = {
+                name: name,
+                affinity: affinity,
+                rankings: rankings,
+                powers: powers,
+                traits: traits,
+                biography: biography,
+                images: images,
+                parents: parents
+            };
+
+            mongodb.connect(mongoURL, function (err, db) {
+                var collection = db.collection('characters');
+                collection.insert(character, function (err, results) {
+                    res.send(results);
+                    db.close();
+                });
+            });
+        }
     });
 APIRouter.route('/edit/:id')
     .get(function (req, res) {
@@ -50,31 +61,33 @@ APIRouter.route('/edit/:id')
     });
 APIRouter.route('/edit/:id')
     .put(function (req, res) {
-        var id = new ObjectId(req.params.id);
-        var name = req.body.name;
-        var biography = req.body.biography;
-        var powers = req.body.powers;
-        var rankings = req.body.rankings;
-        var traits = req.body.traits;
-        var images = req.body.images;
-        var affinity = req.body.affinity;
-        var parents = req.body.parents;
-        mongodb.connect(mongoURL, function (err, db) {
-            var collection = db.collection('characters');
-            collection.update({ _id: id }, {
-                name: name,
-                affinity: affinity,
-                rankings: rankings,
-                powers: powers,
-                traits: traits,
-                biography: biography,
-                images: images,
-                parents: parents
-            }, function (err, results) {
-                res.json(results);
-                db.close();
+        if (req.user) {
+            var id = new ObjectId(req.params.id);
+            var name = req.body.name;
+            var biography = req.body.biography;
+            var powers = req.body.powers;
+            var rankings = req.body.rankings;
+            var traits = req.body.traits;
+            var images = req.body.images;
+            var affinity = req.body.affinity;
+            var parents = req.body.parents;
+            mongodb.connect(mongoURL, function (err, db) {
+                var collection = db.collection('characters');
+                collection.update({ _id: id }, {
+                    name: name,
+                    affinity: affinity,
+                    rankings: rankings,
+                    powers: powers,
+                    traits: traits,
+                    biography: biography,
+                    images: images,
+                    parents: parents
+                }, function (err, results) {
+                    res.json(results);
+                    db.close();
+                });
             });
-        });
+        }
     });
 APIRouter.route('/delete/:id')
     .get(function (req, res) {
@@ -89,25 +102,18 @@ APIRouter.route('/delete/:id')
     });
 APIRouter.route('/delete/:id')
     .delete(function (req, res) {
-        var id = new ObjectId(req.params.id);
-        mongodb.connect(mongoURL, function (err, db) {
-            var collection = db.collection('characters');
-            collection.remove({ _id: id }, function (err, results) {
-                res.json(results);
-                db.close();
+        if (req.user) {
+            var id = new ObjectId(req.params.id);
+            mongodb.connect(mongoURL, function (err, db) {
+                var collection = db.collection('characters');
+                collection.remove({ _id: id }, function (err, results) {
+                    res.json(results);
+                    db.close();
+                });
             });
-        });
+        }
     });
-APIRouter.route('/')
-    .get(function (req, res) {
-        mongodb.connect(mongoURL, function (err, db) {
-            var collection = db.collection('characters');
-            collection.find().toArray(function (err, results) {
-                res.json(results);
-                db.close();
-            });
-        });
-    });
+
 APIRouter.route('/signUp')
     .post(function (req, res) {
         bcrypt.hash(req.body.password, null, null, function (err, hash) {
@@ -154,5 +160,10 @@ APIRouter.route('/signIn')
             }
             
         })(req, res, next);
+    });
+APIRouter.route('/signOut')
+    .get(function (req, res) {
+        req.logout();
+        return res.send(true);
     });
 module.exports = APIRouter;

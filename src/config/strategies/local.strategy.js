@@ -1,4 +1,5 @@
 var passport = require('passport');
+var config = require('../../../config');
 var LocalStrategy = require('passport-local').Strategy;
 var mongodb = require('mongodb').MongoClient;
 var bcrypt = require('bcrypt-nodejs');
@@ -8,7 +9,7 @@ module.exports = function () {
         passwordField: 'password'
     },
     function (username, password, done) {
-        var mongoURL = 'mongodb://localhost:27017/heroSmasher';
+        var mongoURL = config.db;
         mongodb.connect(mongoURL, function (err, db) {
             var collection = db.collection('users');
             collection.findOne({ username: username }, function (err, user) {

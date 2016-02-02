@@ -5,10 +5,6 @@ heroApp.config(function ($routeProvider) {
             templateUrl: 'partials/home.html',
             controller: 'mainController'
         })
-        .when('/admin', {
-            templateUrl: 'partials/admin-home.html',
-            controller: 'adminController'
-        })
         .when('/add', {
             templateUrl: 'partials/admin-add.html',
             controller: 'addController'
@@ -79,20 +75,18 @@ heroApp.controller('loginController', function ($cookies, $scope, $rootScope, $l
     };
     $scope.logout = function () {
         $cookies.put('autho', 'false');
+        $http.get('/api/signOut', {})
+          .success(function (data, status) {
+              if (status === 200 && data === true) {
+                  $location.path('/');
+              }
+          });
         $location.path('/');
     };
 });
 
-heroApp.controller('adminController', function ($scope, $resource) {
-    var Characters = $resource('/api');
-    Characters.query(function (characters) {
-        $scope.characters = characters;
-    });
-});
-
 heroApp.controller('mainController', function ($cookies, $scope, $resource, $rootScope, characterModel) {
     $scope.loggedIn = false;
-    // Retrieving a cookie
     var autho = $cookies.get('autho');
 
     if (autho === 'true') {

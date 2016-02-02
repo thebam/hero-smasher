@@ -1,3 +1,4 @@
+var config = require('./config');
 var express = require('express');
 var path = require('path');
 var bodyParser = require('body-parser');
@@ -9,7 +10,6 @@ var port = process.env.PORT || 5001;
 app.set('views', path.join(__dirname, '/src/views'));
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/src/public'));
-
 
 app.use(cookieParser());
 app.use(bodyParser.json());
