@@ -1,52 +1,51 @@
-
-        <div class="row">
-            <h1>COMBINE CHARACTERS</h1>
-            <a class="btn btn-block btn-sm btn-outline" ng-show="loggedIn" href="/#/add/">Add Character</a>
-            <div id="fh5co-board" data-columns="3">
-                <div class="column size-1of3">
-                    <div class="item" ng-repeat="character in characters | orderBy : 'name' | limitTo : columnLimit1" >
-                        <div ng-include="'partials/home-character-block.html'"></div>
-                    </div>
-                </div>
-                <div class="column size-1of3">
-                    <div class="item" ng-repeat="character in characters | orderBy : 'name'| limitTo : columnLimit1:columnLimit1" >
-                        <div ng-include="'partials/home-character-block.html'"></div>
-                    </div>
-                </div>
-                <div class="column size-1of3">
-                    <div class="item" ng-repeat="character in characters | orderBy : 'name'| limitTo : characterCnt:columnLimit2" >
-                        <div ng-include="'partials/home-character-block.html'"></div>
-                    </div>
-                </div>
+<div class="row">
+    <h1>COMBINE CHARACTERS</h1>
+    <p>Select any two characters to create a new super hero or villian. The new characters ranking, powers, and traits will be an unpredictable combination of the two parent character. </p>
+    <div id="fh5co-board" data-columns="3">
+        <div class="column size-1of3">
+            <div class="item" ng-repeat="character in characters | orderBy : 'name' | limitTo : columnLimit1">
+                <div ng-include="'partials/home-character-block.html'"></div>
             </div>
         </div>
-        <!-- Modal -->
-  <div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog">
-    
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">New Character</h4>
+        <div class="column size-1of3">
+            <div class="item" ng-repeat="character in characters | orderBy : 'name'| limitTo : columnLimit1:columnLimit1">
+                <div ng-include="'partials/home-character-block.html'"></div>
+            </div>
         </div>
-        <div class="modal-body">
-          <h2>{{childCharacter.name}}</h2>
-                            <p>{{childCharacter.affinity}}</p>
-                            <h3>Grid</h3>
-                            <ul>
-                            <li ng-repeat="ranking in childCharacter.rankings">{{ranking.category}} : {{ranking.level}}</li>
-                            </ul>
-                            <h3>Powers</h3>
-                            <ul>
-                            <li ng-repeat="power in childCharacter.powers">{{power.powerName}} : {{power.level}}</li>
-                            </ul>
+        <div class="column size-1of3">
+            <div class="item" ng-repeat="character in characters | orderBy : 'name'| limitTo : characterCnt:columnLimit2">
+                <div ng-include="'partials/home-character-block.html'"></div>
+            </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-      
     </div>
-  </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">New Character</h4>
+            </div>
+            <div class="modal-body">
+                <h2>{{childCharacter.name}}</h2>
+                <p>{{childCharacter.affinity}}</p>
+                <h3>Grid</h3>
+                <ul>
+                    <li ng-repeat="ranking in childCharacter.rankings">{{ranking.category}} : {{ranking.level}}</li>
+                </ul>
+                <h3>Powers</h3>
+                <ul>
+                    <li ng-repeat="power in childCharacter.powers">{{power.powerName}} : {{power.level}}</li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
 

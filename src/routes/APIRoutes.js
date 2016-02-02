@@ -1,7 +1,8 @@
 var express = require('express');
 var mongodb = require('mongodb').MongoClient;
 var ObjectId = require('mongodb').ObjectID;
-var passport =require('passport');
+var passport = require('passport');
+var bcrypt = require('bcrypt-nodejs');
 var APIRouter = express.Router();
 
 var mongoURL = 'mongodb://localhost:27017/heroSmasher';
@@ -20,14 +21,14 @@ APIRouter.route('/')
         var character = {
             name: name,
             affinity: affinity,
-            rankings:rankings,
+            rankings: rankings,
             powers: powers,
             traits: traits,
             biography: biography,
             images: images,
             parents: parents
         };
-        
+
         mongodb.connect(mongoURL, function (err, db) {
             var collection = db.collection('characters');
             collection.insert(character, function (err, results) {
@@ -37,7 +38,7 @@ APIRouter.route('/')
         });
     });
 APIRouter.route('/edit/:id')
-    .get(function(req,res){
+    .get(function (req, res) {
         var id = new ObjectId(req.params.id);
         mongodb.connect(mongoURL, function (err, db) {
             var collection = db.collection('characters');
@@ -60,10 +61,10 @@ APIRouter.route('/edit/:id')
         var parents = req.body.parents;
         mongodb.connect(mongoURL, function (err, db) {
             var collection = db.collection('characters');
-            collection.update({ _id: id },{
+            collection.update({ _id: id }, {
                 name: name,
                 affinity: affinity,
-                rankings:rankings,
+                rankings: rankings,
                 powers: powers,
                 traits: traits,
                 biography: biography,
@@ -109,23 +110,49 @@ APIRouter.route('/')
     });
 APIRouter.route('/signUp')
     .post(function (req, res) {
-        var user = {username:req.body.username,password:req.body.password};
-        mongodb.connect(mongoURL, function (err, db) {
-        var collection = db.collection('users');
-        
-        //do a select to make sure the user doesn't already exist 
-        collection.insert(user, function (err, results) {
-            req.login(results.ops[0], function () {
-                res.send(true);
+        bcrypt.hash(req.body.password, null, null, function (err, hash) {
+            var user = { username: req.body.email, password: hash, level: 'user' };
+            mongodb.connect(mongoURL, function (err, db) {
+                var collection = db.collection('users');
+                collection.findOne({ username: user.username }, function (err, results) {
+                    if (err === null) {
+                        if (results === null) {
+                            collection.insert(user, function (err, results) {
+                                req.login(results.ops[0], function () {
+                                    res.send(true);
+                                    db.close();
+                                });
+                            });
+                        } else {
+                            res.send('Email already in use.');
+                        }
+                    } else {
+                        res.send('The account wasn\'t created due to a server error.');
+                    }
+                });
             });
-            db.close();
         });
     });
-});
 
-	APIRouter.route('/signIn')
-	        .post(passport.authenticate('local',{failureRedirect:'/'}),function(req,res){
-                console.log(true);
-	            res.send(true);
-        });
+APIRouter.route('/signIn')
+    .post(function (req, res, next) {
+        passport.authenticate('local', function (err, user, info) {
+            if (err) {
+                return res.send('Login failed. Please check your email address and password.');
+            } else {
+                if (!user) {
+                    return res.send('Login failed. Please check your email address and password.');
+                } else {
+                    req.logIn(user, function (err) {
+                        if (err) {
+                            res.send('Login failed. Please check your email address and password.');
+                        } else {
+                            return res.send(true);
+                        }
+                    });
+                }
+            }
+            
+        })(req, res, next);
+    });
 module.exports = APIRouter;

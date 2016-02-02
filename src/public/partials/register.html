@@ -1,19 +1,17 @@
 <h1>Register</h1>
-<form method="post" id="frmLogin" name="frmLogin" role="form" novalidate>
-
-<div class="form-group">
-        <input type="text" ng-model="username" name="username"  class="form-control" placeholder="Username" required />
-         
-</div>
+<form method="post" id="frmRegister" name="frmRegister" role="form" novalidate>
+    <span style="color:red">{{errorMessage}}</span>
     <div class="form-group">
-        <input type="password" ng-model="password" name="password"  class="form-control" placeholder="Password" required />
-         
-</div>
-
-    
-        
-    
-    
-    <input class="btn btn-default" type="button" ng-click="register()" value="Register" />
-
+        <input type="email" ng-model="email" name="email" class="form-control" placeholder="Email Address" required />
+        <span style="color: red" ng-show="frmRegister.email.$dirty && frmRegister.email.$invalid">
+            <span ng-show="frmRegister.email.$error.required">A valid email is required.</span>
+        </span>
+    </div>
+    <div class="form-group">
+        <input type="password" ng-model="password" name="password" class="form-control" placeholder="Password" required />
+        <span style="color:red" ng-show="frmRegister.password.$dirty && frmRegister.password.$invalid">
+            <span ng-show="frmRegister.password.$error.required">Password is required.</span>
+        </span>
+    </div>
+    <input ng-disabled="frmRegister.password.$error.required || frmRegister.email.$error.required || frmRegister.email.$invalid || frmRegister.password.$invalid" class="btn btn-default" type="button" ng-click="register()" value="Register" />
 </form>

@@ -22,7 +22,6 @@ var APIRouter = require('./src/routes/APIRoutes');
 app.use('/api', APIRouter);
 //for angular routing
 app.get('/', function (req, res) {
-    console.log(req.user);
     res.render('index');
 });
 
