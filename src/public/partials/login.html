@@ -1,6 +1,6 @@
-<h1>LOGIN</h1>
+<h1>{{pageHeader}}</h1>
 <form method="post" id="frmLogin" name="frmLogin" role="form" novalidate>
-
+<div ng-hide="loggedIn">
 <div class="form-group">
         <input type="text" ng-model="username" name="username"  class="form-control" placeholder="Username" required />
          <span style="color:red" ng-show="frmAddCharacter.character_name.$dirty && frmAddCharacter.character_name.$invalid">
@@ -19,5 +19,9 @@
     
     
     <input class="btn btn-default" type="button" ng-click="login()" value="Login" /><a class="btn btn-danger" href="/#/register">Register</a>
-
+</div>
+<div ng-show="loggedIn">
+<p>Are you sure you want to log out?</p>
+<input class="btn btn-danger" type="button" ng-click="logout()" value="Yes" /><a class="btn btn-default" href="/#/">No</a>
+</div>
 </form>

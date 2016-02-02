@@ -55,12 +55,25 @@ heroApp.controller('registerController', function ($cookieStore, $scope, $rootSc
 
 
 heroApp.controller('loginController', function ($cookies, $scope, $rootScope, $location, $http) {
+    $scope.pageHeader = "LOGIN";
+    $scope.loggedIn = false;
+    // Retrieving a cookie
+    var autho = $cookies.get('autho');
+    
+    if (autho==="true") {
+        $scope.loggedIn = true;
+        $scope.pageHeader = "LOGOUT";
+    } else {
+        $scope.loggedIn = false;
+    }
+    
+    
     // send a post request to the server
     $scope.login = function () {
         $http.post('/api/signIn', { username: $scope.username, password: $scope.password })
           // handle success
           .success(function (data, status) {
-              alert(data);
+             
               if (status === 200 && data === true) {
                   
                    
@@ -79,6 +92,10 @@ heroApp.controller('loginController', function ($cookies, $scope, $rootScope, $l
               //deferred.reject();
                                 alert('login failed');
           });};
+          $scope.logout = function(){
+              $cookies.put('autho', 'false');
+              $location.path('/');
+          }
 });
 
 heroApp.controller('adminController', function ($scope,$resource) {
@@ -208,7 +225,16 @@ heroApp.controller('deleteController', function ($scope, $resource, $location, $
     };
 });
 
-heroApp.controller('addController', function ($scope, $resource, $location, $routeParams, characterModel) {
+heroApp.controller('addController', function ($cookies,$scope, $resource, $location, $routeParams, characterModel) {
+    $scope.loggedIn = false;
+    // Retrieving a cookie
+    var autho = $cookies.get('autho');
+    
+    if (autho==="true") {
+        $scope.loggedIn = true;
+    } else {
+        $scope.loggedIn = false;
+    }
     $scope.getCharacter = function (id, parentNumber) {
         var tempCharacter = $resource('/api/edit/:id', { id: '@_id' }, { get: { method: 'GET' } });
         tempCharacter.get({ id: id }, function (character) {
