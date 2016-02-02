@@ -40,42 +40,45 @@ heroApp.controller('registerController', function ($cookieStore, $scope, $rootSc
         $http.post('/api/signUp', { username: $scope.username, password: $scope.password })
           // handle success
           .success(function (data, status) {
-              if (status === 200 && data.status) {
-                  deferred.resolve();
+              if (status === 200 && data === true) {
+                  $location.path('/');
               } else {
-                  deferred.reject();
+                  //deferred.reject();
               }
           })
           // handle error
           .error(function (data) {
-              deferred.reject();
+              //deferred.reject();
           });
     };
 });
 
 
-heroApp.controller('loginController', function ($cookieStore, $scope, $rootScope, $location, $http) {
-    $rootScope.globals = {};
-    $cookieStore.remove('globals');
-    $http.defaults.headers.common.Authorization = 'Basic ';
+heroApp.controller('loginController', function ($cookies, $scope, $rootScope, $location, $http) {
+    // send a post request to the server
     $scope.login = function () {
-        if (1 == 1) {
-            var authdata = Base64.encode(username + ':' + password);
-
-            $rootScope.globals = {
-                currentUser: {
-                    username: username,
-                    authdata: authdata
-                }
-            };
-
-            $http.defaults.headers.common['Authorization'] = 'Basic ' + authdata; // jshint ignore:line
-            $cookieStore.put('globals', $rootScope.globals);
-            $location.path('/');
-        } else {
-            //error
-        }
-    };
+        $http.post('/api/signIn', { username: $scope.username, password: $scope.password })
+          // handle success
+          .success(function (data, status) {
+              alert(data);
+              if (status === 200 && data === true) {
+                  
+                   
+  // Setting a cookie
+  $cookies.put('autho', 'true');
+                  
+                  
+                  $location.path('/');
+              } else {
+                  alert('login failed');
+                  //deferred.reject();
+              }
+          })
+          // handle error
+          .error(function (data) {
+              //deferred.reject();
+                                alert('login failed');
+          });};
 });
 
 heroApp.controller('adminController', function ($scope,$resource) {
@@ -85,12 +88,15 @@ heroApp.controller('adminController', function ($scope,$resource) {
     });    
 });
 
-heroApp.controller('mainController', function ($scope, $resource, $rootScope,characterModel) {
+heroApp.controller('mainController', function ($cookies,$scope, $resource, $rootScope,characterModel) {
     $scope.loggedIn = false;
-    if (!$rootScope.globals.currentUser) {
-        $scope.loggedIn = false;
-    } else {
+    // Retrieving a cookie
+    var autho = $cookies.get('autho');
+    
+    if (autho==="true") {
         $scope.loggedIn = true;
+    } else {
+        $scope.loggedIn = false;
     }
     var Characters = $resource('/api');
     Characters.query(function (characters) {
@@ -299,26 +305,25 @@ heroApp.controller('addController', function ($scope, $resource, $location, $rou
 });
 
 
-heroApp.run(['$rootScope', '$location', '$cookieStore', '$http',
-    function ($rootScope, $location, $cookieStore, $http) {
-        // keep user logged in after page refresh
-        $rootScope.globals = $cookieStore.get('globals') || {};
-        if ($rootScope.globals.currentUser) {
-            $http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.authdata; // jshint ignore:line
-        }
-  
-        $rootScope.$on('$locationChangeStart', function (event, next, current) {
-            // redirect to login page if not logged in
-            //alert($location.path());
-            if (!$rootScope.globals.currentUser) {
-                if ($location.path().indexOf('/add') > -1 || $location.path().indexOf('/delete') > -1) {
+heroApp.run(['$rootScope', '$location', '$cookies', '$http',
+    function ($rootScope, $location, $cookies, $http) {
+       
+    
+    // Retrieving a cookie
+    var autho = $cookies.get('autho');
+    
+    if (autho!=="true") {
+        if ($location.path().indexOf('/add') > -1 || $location.path().indexOf('/delete') > -1) {
                     $location.path('/login');
                 } else {
                    
                 }
-            }
-        });
-    }]);
+    } 
+        
+                
+            
+        }
+]);
 
 
 angular.module('SmasherApp').service("characterModel", function() {

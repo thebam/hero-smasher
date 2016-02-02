@@ -1,6 +1,7 @@
 var express = require('express');
 var mongodb = require('mongodb').MongoClient;
 var ObjectId = require('mongodb').ObjectID;
+var passport =require('passport');
 var APIRouter = express.Router();
 
 var mongoURL = 'mongodb://localhost:27017/heroSmasher';
@@ -108,16 +109,23 @@ APIRouter.route('/')
     });
 APIRouter.route('/signUp')
     .post(function (req, res) {
-    mongodb.connect(mongoURL, function (err, db) {
+        var user = {username:req.body.username,password:req.body.password};
+        mongodb.connect(mongoURL, function (err, db) {
         var collection = db.collection('users');
         
         //do a select to make sure the user doesn't already exist 
-        //collection.insert(user, function (err, results) {
-        //    //req.login(results.ops[0], function () {
-        //    //    res.redirect('/');
-        //    //});
-        //    db.close();
-        //});
+        collection.insert(user, function (err, results) {
+            req.login(results.ops[0], function () {
+                res.send(true);
+            });
+            db.close();
+        });
     });
 });
+
+	APIRouter.route('/signIn')
+	        .post(passport.authenticate('local',{failureRedirect:'/'}),function(req,res){
+                console.log(true);
+	            res.send(true);
+        });
 module.exports = APIRouter;

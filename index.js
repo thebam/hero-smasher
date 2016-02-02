@@ -11,18 +11,18 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/src/public'));
 
 
-
+app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
-app.use(cookieParser());
 app.use(session({secret:'super'}));
-require('./src/config/passport');
+require('./src/config/passport')(app);
 var APIRouter = require('./src/routes/APIRoutes');
 
 //for express API endpoints
 app.use('/api', APIRouter);
 //for angular routing
 app.get('/', function (req, res) {
+    console.log(req.user);
     res.render('index');
 });
 
