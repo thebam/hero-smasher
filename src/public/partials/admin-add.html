@@ -176,7 +176,7 @@
             <h3>{{parent2.name}}</h3>
             <input type="hidden" ng-model="parent2._id" />
             <a class="btn btn-block btn-sm btn-outline" href="/#/character/{{parent2._id}}">details</a>
-            <a ng-show="loggedIn" class="btn btn-danger" ng-click="changeParent(1)">change</a>
+            <a ng-show="loggedIn" class="btn btn-danger" ng-click="changeParent(2)">change</a>
         </div>
         <div class="col-md-12" ng-show="showParentChange">
             <select ng-change="updateParent()" ng-model="parentSelection">
