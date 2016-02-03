@@ -1,12 +1,12 @@
 var express = require('express');
-//var config = require('../../config');
+var config = require('../../config');
 var mongodb = require('mongodb').MongoClient;
 var ObjectId = require('mongodb').ObjectID;
 var passport = require('passport');
 var bcrypt = require('bcrypt-nodejs');
 var APIRouter = express.Router();
 
-var mongoURL = process.env.DB_URL || 'mongodb://localhost:27017/heroSmasher';
+var mongoURL = config.db;
 APIRouter.route('/')
     .get(function (req, res) {
         mongodb.connect(mongoURL, function (err, db) {
