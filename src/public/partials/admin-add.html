@@ -30,15 +30,13 @@
             <h3>ranking:</h3>
 
 
-            <div class="row rankings" ng-hide="loggedIn" >
-                <div ng-repeat="ranking in character.rankings" class="ranking">
-                        <div class="col-md-6">
-                            {{ranking.category}}
-                        </div>
-                        <div class="col-md-6">
-                            {{ranking.level}}
-                        </div>
+
+            <div ng-hide="loggedIn" >
+            <div ng-repeat="ranking in character.rankings" class="progress">
+                <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="4" aria-valuemin="0" aria-valuemax="7" style='width: {{(ranking.level/7)*100}}%;'>
+                    {{ranking.category}} : {{ranking.level}}
                 </div>
+            </div>
             </div>
 
 
