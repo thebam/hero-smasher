@@ -10,3 +10,18 @@
     color: #818892;
     display: inline-block;
 }
+
+.details-image {
+    width:100%;
+}
+
+.rankings {
+    border-right:solid 1px;
+    border-bottom:solid 1px;
+    border-left:solid 1px;
+}
+
+.rankings .ranking {
+    border-bottom:solid 1px;
+    clear:both;
+}

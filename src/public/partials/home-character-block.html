@@ -10,7 +10,7 @@
                             </ul>
                             <h3>Powers</h3>
                             <ul>
-                            <li ng-repeat="power in character.powers">{{power.powerName}} : {{power.level}}</li>
+                            <li ng-repeat="power in character.powers">{{power.powerName}}</li>
                             </ul>
                             <a class="btn btn-block btn-sm btn-outline" href="/#/character/{{character._id}}">details</a>  <a ng-show="loggedIn" class="btn btn-block btn-sm btn-primary" href="/#/delete/{{character._id}}">delete</a>
                         </div>
