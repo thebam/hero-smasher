@@ -58,12 +58,12 @@ heroApp.controller('loginController', function ($cookies, $scope, $rootScope, $l
     } else {
         $scope.loggedIn = false;
     }
-    $scope.loading=false;
+    $scope.loading = false;
     $scope.login = function () {
-        $scope.loading=true;
+        $scope.loading = true;
         $http.post('/api/signIn', { username: $scope.username, password: $scope.password })
           .success(function (data, status) {
-              $scope.loading=false;
+              $scope.loading = false;
               if (status === 200 && data === true) {
                   $cookies.put('autho', 'true');
                   $location.path('/');
@@ -72,7 +72,7 @@ heroApp.controller('loginController', function ($cookies, $scope, $rootScope, $l
               }
           })
           .error(function (data) {
-              $scope.loading=false;
+              $scope.loading = false;
               $scope.errorMessage = 'The account wasn\'t created due to a server error.';
           });
     };
@@ -88,33 +88,46 @@ heroApp.controller('loginController', function ($cookies, $scope, $rootScope, $l
     };
 });
 
-heroApp.controller('mainController', function ($cookies, $scope, $resource, $rootScope, characterModel) {
+heroApp.controller('mainController', function ($http, $cookies, $scope, $resource, $rootScope, characterModel) {
     $scope.loggedIn = false;
     $scope.loading = true;
-    var autho = $cookies.get('autho');
 
-    if (autho === 'true') {
-        $scope.loggedIn = true;
-    } else {
-        $scope.loggedIn = false;
-    }
+    $http({
+        method: 'GET',
+        url: '/api/checkAuth'
+    }).then(function successCallback(response) {
+
+        if (response.data === true) {
+
+            $cookies.put('autho', 'true');
+            $scope.loggedIn = true;
+        } else {
+            $cookies.put('autho', 'false');
+            $scope.loggedIn = false;
+        }
+
+    }, function errorCallback(response) {
+        // called asynchronously if an error occurs
+        // or server returns response with an error status.
+    });
+
     var Characters = $resource('/api');
     Characters.query(function (characters) {
         $scope.characters = characters;
         $scope.characterCnt = characters.length;
-        
-        
+
+
         $scope.columnLimit1 = Math.floor($scope.characterCnt / 3);
-        if($scope.characterCnt%3){
-            $scope.columnLimit1++;   
+        if ($scope.characterCnt % 3) {
+            $scope.columnLimit1++;
         }
-        $scope.columnLimit2 = Math.floor(($scope.characterCnt - $scope.columnLimit1)/2);
-        if(($scope.characterCnt - $scope.columnLimit1)%2){
-            $scope.columnLimit2++;   
+        $scope.columnLimit2 = Math.floor(($scope.characterCnt - $scope.columnLimit1) / 2);
+        if (($scope.characterCnt - $scope.columnLimit1) % 2) {
+            $scope.columnLimit2++;
         }
-        $scope.loading=false;
+        $scope.loading = false;
     });
-    
+
     $scope.character1 = '';
     $scope.character2 = '';
     $scope.parent1 = '';
@@ -154,14 +167,14 @@ heroApp.controller('mainController', function ($cookies, $scope, $resource, $roo
         var energyRange = [1, 7];
         var fightingRange = [1, 7];
 
-if(anomoly !== 369){
-        intelligenceRange = $scope.rankingRange('Intelligence');
-        strengthRange = $scope.rankingRange('Strength');
-        speedRange = $scope.rankingRange('Speed');
-        durabilityRange = $scope.rankingRange('Durability');
-        energyRange = $scope.rankingRange('Energy Projection');
-        fightingRange = $scope.rankingRange('Fighting Skills');
-    }
+        if (anomoly !== 369) {
+            intelligenceRange = $scope.rankingRange('Intelligence');
+            strengthRange = $scope.rankingRange('Strength');
+            speedRange = $scope.rankingRange('Speed');
+            durabilityRange = $scope.rankingRange('Durability');
+            energyRange = $scope.rankingRange('Energy Projection');
+            fightingRange = $scope.rankingRange('Fighting Skills');
+        }
         //alert(strengthRange);
 
 
@@ -205,40 +218,60 @@ if(anomoly !== 369){
     };
 });
 
-heroApp.controller('deleteController', function ($scope, $resource, $location, $routeParams) {
-    var Characters = $resource('/api/delete/:id');
-    Characters.get({ id: $routeParams.id }, function (character) {
-        $scope.character = character;
-    });
-
-    $scope.delete = function () {
-        Characters.delete({ id: $routeParams.id }, function (character) {
-            $location.path('/');
+heroApp.controller('deleteController', function ($http, $cookies, $scope, $resource, $location, $routeParams) {
+    var displayContent = function () {
+        var Characters = $resource('/api/delete/:id');
+        Characters.get({ id: $routeParams.id }, function (character) {
+            $scope.character = character;
         });
+
+        $scope.delete = function () {
+            Characters.delete({ id: $routeParams.id }, function (character) {
+                $location.path('/');
+            });
+        };
     };
+
+    $http({
+        method: 'GET',
+        url: '/api/checkAuth'
+    }).then(function successCallback(response) {
+        if (response.data === true) {
+            $cookies.put('autho', 'true');
+            $scope.loggedIn = true;
+            displayContent();
+        } else {
+            $cookies.put('autho', 'false');
+            $scope.loggedIn = false;
+            $location.path('/');
+        }
+    }, function errorCallback(response) {
+        // called asynchronously if an error occurs
+        // or server returns response with an error status.
+    });
 });
 
-heroApp.controller('addController', function ($cookies, $scope, $resource, $location, $routeParams, characterModel) {
+heroApp.controller('addController', function ($http, $cookies, $scope, $resource, $location, $routeParams, characterModel) {
     $scope.loggedIn = false;
     $scope.loading = false;
-    var autho = $cookies.get('autho');
-    if (autho === 'true') {
-        $scope.loggedIn = true;
-    } else {
-        $scope.loggedIn = false;
-    }
+
     $scope.getCharacter = function (id, parentNumber) {
-        var tempCharacter = $resource('/api/edit/:id', { id: '@_id' }, { get: { method: 'GET' } });
-        tempCharacter.get({ id: id }, function (character) {
-            if (parentNumber === 1) {
-                $scope.parent1 = character;
-                $scope.character.parents[0].parent = $scope.parent1._id;
-            } else {
-                $scope.parent2 = character;
-                $scope.character.parents[1].parent = $scope.parent2._id;
+        if (id) {
+            if (id.length > 0) {
+                var tempCharacter = $resource('/api/edit/:id', { id: '@_id' }, { get: { method: 'GET' } });
+                tempCharacter.get({ id: id }, function (character) {
+                    if (parentNumber === 1) {
+                        $scope.parent1 = character;
+                        $scope.character.parents[0].parent = $scope.parent1._id;
+                    } else {
+                        $scope.parent2 = character;
+                        $scope.character.parents[1].parent = $scope.parent2._id;
+                    }
+                });
             }
-        });
+        }
     };
+
     var Characters = $resource('/api');
     Characters.query(function (characters) {
         $scope.characters = characters;
@@ -247,58 +280,87 @@ heroApp.controller('addController', function ($cookies, $scope, $resource, $loca
     $scope.parent1 = {};
     $scope.parent2 = {};
     $scope.showParentChange = false;
-    if ($routeParams.id) {
-        var Characters = $resource('/api/edit/:id', { id: '@_id' }, { update: { method: 'PUT' } });
-        Characters.get({ id: $routeParams.id }, function (character) {
-            $scope.character = character;
-            if ($scope.character.parents) {
-                $scope.getCharacter($scope.character.parents[0].parent, 1);
-            }
-            if ($scope.character.parents) {
-                $scope.getCharacter($scope.character.parents[1].parent, 2);
-            }
-        });
 
-        $scope.save = function () {
-            $scope.loading = true;
-            Characters.update($scope.character, function () {
-                $scope.loading = false;
-                $location.path('/');
-            });
-        };
-    } else {
-        if ($scope.loggedIn === true) {
-            $scope.character = characterModel.character;
-            if ($scope.character.parents) {
-                //$scope.getCharacter($scope.character.parents[0].parent, 1);
-            }
-            if ($scope.character.parents) {
-                //$scope.getCharacter($scope.character.parents[1].parent, 2);
-            }
-            $scope.save = function () {
-                $scope.loading = true;
-                alert('jj');
-                var Characters = $resource('/api');
-                Characters.save($scope.character, function (result) {
-                    alert(result);
-                    if(result==true){
-                    $scope.loading = false;
-                    $location.path('/');
-                    }else{
-                        $scope.loading = false;
-                        $scope.errorMessage = result;
-                    }
-                });
-            };
+    $http({
+        method: 'GET',
+        url: '/api/checkAuth'
+    }).then(function successCallback(response) {
+        if (response.data === true) {
+            $cookies.put('autho', 'true');
+            $scope.loggedIn = true;
         } else {
-            $location.path('/login');
+            $cookies.put('autho', 'false');
+            $scope.loggedIn = false;
         }
-    }
+        displayForm();
+    }, function errorCallback(response) {
+        $cookies.put('autho', 'false');
+        $scope.loggedIn = false;
+        //SERVER ERROR
+    });
+    var LoadCharacter;
+    var displayForm = function () {
+        if ($routeParams.id) {
+            LoadCharacter = $resource('/api/edit/:id', { id: '@_id' }, { update: { method: 'PUT' } });
+            LoadCharacter.get({ id: $routeParams.id }, function (character) {
+                $scope.character = character;
+                if ($scope.character.parents) {
+                    $scope.getCharacter($scope.character.parents[0].parent, 1);
+                }
+                if ($scope.character.parents) {
+                    $scope.getCharacter($scope.character.parents[1].parent, 2);
+                }
+            });
+
+
+        } else {
+            if ($scope.loggedIn === true) {
+                $scope.character = characterModel.character;
+                if ($scope.character.parents) {
+                    $scope.getCharacter($scope.character.parents[0].parent, 1);
+                }
+                if ($scope.character.parents) {
+                    $scope.getCharacter($scope.character.parents[1].parent, 2);
+                }
+
+            } else {
+                $location.path('/login');
+            }
+        }
+    };
 
 
     var powerCounter = 0;
     var traitCounter = 0;
     var imageCounter = 0;
+
+    $scope.save = function () {
+        $scope.loading = true;
+        if ($routeParams.id) {
+            LoadCharacter.update($scope.character, function () {
+                $scope.loading = false;
+                $location.path('/');
+            });
+        } else {
+            $http({
+                method: 'POST',
+                url: '/api',
+                data: $scope.character
+            }).then(function successCallback(response) {
+                if (response.data == true && response.status == 200) {
+                    $scope.loading = false;
+                    $location.path('/');
+                } else {
+                    $scope.loading = false;
+                    $scope.errorMessage = response.data;
+                }
+            }, function errorCallback(response) {
+                $scope.errorMessage = 'Character not created due to server issue.';
+            });
+        }
+    };
+
+
 
 
     $scope.newPower = function ($event) {
@@ -337,19 +399,6 @@ heroApp.controller('addController', function ($cookies, $scope, $resource, $loca
     };
 
 });
-
-
-heroApp.run(['$rootScope', '$location', '$cookies', '$http',
-    function ($rootScope, $location, $cookies, $http) {
-        var autho = $cookies.get('autho');
-        if (autho !== 'true') {
-            if ($location.path().indexOf('/add') > -1 || $location.path().indexOf('/delete') > -1) {
-                $location.path('/login');
-            }
-        }
-    }
-]);
-
 
 angular.module('SmasherApp').service('characterModel', function () {
     this.character = {

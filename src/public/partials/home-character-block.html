@@ -5,15 +5,18 @@
     <h2>{{character.name}}</h2>
     <p>{{character.affinity}}</p>
     <h4>ranking</h4>
-    <div ng-repeat="ranking in character.rankings" class="progress">
+    <div ng-repeat="ranking in character.rankings">
+        {{ranking.category}}
+    <div class="progress">
         <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="4" aria-valuemin="0" aria-valuemax="7" style='width: {{(ranking.level/7)*100}}%;'>
-            {{ranking.category}} : {{ranking.level}}
+            {{ranking.level}}
         </div>
     </div>
-    <h4>powers</h4>
-    <ul>
-        <li ng-repeat="power in character.powers">{{power.powerName}}</li>
-    </ul>
-    <span class="btn btn-block btn-sm btn-outline" ng-click="combine(character._id)">combine</span>
-    <a class="btn btn-block btn-sm btn-outline" href="/#/character/{{character._id}}">details</a>  <a ng-show="loggedIn" class="btn btn-block btn-sm btn-primary" href="/#/delete/{{character._id}}">delete</a>
+    </div>
+<h4>powers</h4>
+<ul>
+    <li ng-repeat="power in character.powers">{{power.powerName}}</li>
+</ul>
+<span class="btn btn-block btn-sm btn-outline" ng-click="combine(character._id)">combine</span>
+<a class="btn btn-block btn-sm btn-outline" href="/#/character/{{character._id}}">details</a>  <a ng-show="loggedIn" class="btn btn-block btn-sm btn-primary" href="/#/delete/{{character._id}}">delete</a>
 </div>

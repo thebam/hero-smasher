@@ -13,7 +13,7 @@ APIRouter.route('/')
             var collection = db.collection('characters');
             collection.find().toArray(function (err, results) {
                 res.json(results);
-                db.close(); 
+                db.close();
             });
         });
     });
@@ -41,26 +41,20 @@ APIRouter.route('/')
 
             mongodb.connect(mongoURL, function (err, db) {
                 var collection = db.collection('characters');
-                console.log('asas');
-                collection.findOne({name:character.name},function(err,results){
-                    console.log(err);
-                    console.log(results);
-                    if(err===null){
-                   if(results===null){
-                       collection.insert(character, function (err, results) {
-                            res.send(true);
-                            db.close();
-                        });
-                   }else{
-                       res.send("A character named '"+character.name+"' already exists.");
-                   }
-                    }else{
-                        res.send("Character not created due to server issue.");
+                collection.findOne({ name: character.name }, function (err, results) {
+                    if (err === null) {
+                        if (results === null) {
+                            collection.insert(character, function (err, results) {
+                                return res.send(true);
+                                db.close();
+                            });
+                        } else {
+                            return res.send('A character with that name already exists.');
+                        }
+                    } else {
+                        return res.send('Character not created due to server issue.');
                     }
                 });
-                
-                
-                
             });
         }
     });
@@ -167,19 +161,30 @@ APIRouter.route('/signIn')
                 } else {
                     req.logIn(user, function (err) {
                         if (err) {
-                            res.send('Login failed. Please check your email address and password.');
+                            return res.send('Login failed. Please check your email address and password.');
                         } else {
                             return res.send(true);
                         }
                     });
                 }
             }
-            
+
         })(req, res, next);
     });
 APIRouter.route('/signOut')
     .get(function (req, res) {
         req.logout();
         return res.send(true);
+    });
+
+APIRouter.route('/checkAuth')
+    .get(function (req, res) {
+        if (req.isAuthenticated()) {
+            console.log('check auth true');
+            res.send(true);
+        } else {
+            console.log('check auth false');
+            res.send(false);
+        }
     });
 module.exports = APIRouter;
