@@ -281,23 +281,6 @@ heroApp.controller('addController', function ($http, $cookies, $scope, $resource
     $scope.parent2 = {};
     $scope.showParentChange = false;
 
-    $http({
-        method: 'GET',
-        url: '/api/checkAuth'
-    }).then(function successCallback(response) {
-        if (response.data === true) {
-            $cookies.put('autho', 'true');
-            $scope.loggedIn = true;
-        } else {
-            $cookies.put('autho', 'false');
-            $scope.loggedIn = false;
-        }
-        displayForm();
-    }, function errorCallback(response) {
-        $cookies.put('autho', 'false');
-        $scope.loggedIn = false;
-        //SERVER ERROR
-    });
     var LoadCharacter;
     var displayForm = function () {
         if ($routeParams.id) {
@@ -316,13 +299,6 @@ heroApp.controller('addController', function ($http, $cookies, $scope, $resource
         } else {
             if ($scope.loggedIn === true) {
                 $scope.character = characterModel.character;
-                if ($scope.character.parents) {
-                    $scope.getCharacter($scope.character.parents[0].parent, 1);
-                }
-                if ($scope.character.parents) {
-                    $scope.getCharacter($scope.character.parents[1].parent, 2);
-                }
-
             } else {
                 $location.path('/login');
             }
@@ -330,6 +306,26 @@ heroApp.controller('addController', function ($http, $cookies, $scope, $resource
     };
 
 
+
+    $http({
+        method: 'GET',
+        url: '/api/checkAuth'
+    }).then(function successCallback(response) {
+        if (response.data === true) {
+            $cookies.put('autho', 'true');
+            $scope.loggedIn = true;
+        } else {
+            $cookies.put('autho', 'false');
+            $scope.loggedIn = false;
+        }
+        displayForm();
+    }, function errorCallback(response) {
+        $cookies.put('autho', 'false');
+        $scope.loggedIn = false;
+        //SERVER ERROR
+    });
+    
+    
     var powerCounter = 0;
     var traitCounter = 0;
     var imageCounter = 0;
@@ -347,7 +343,7 @@ heroApp.controller('addController', function ($http, $cookies, $scope, $resource
                 url: '/api',
                 data: $scope.character
             }).then(function successCallback(response) {
-                if (response.data == true && response.status == 200) {
+                if (response.data === true && response.status === 200) {
                     $scope.loading = false;
                     $location.path('/');
                 } else {
