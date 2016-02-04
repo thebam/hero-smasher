@@ -182,9 +182,10 @@
             </select>
         </div>
     </div>
-
-
-
-    <input class="btn btn-default" type="button" ng-click="save()" value="Save" ng-show="loggedIn" />
-
+<span style="color:red">{{errorMessage}}</span>
+ <img src="images/loading.gif" ng-show="loading" />
+<span ng-show="loggedIn">
+    <input class="btn btn-danger" type="button" ng-hide="loading" ng-click="save()" value="Save" />
+</span>
+    <a class="btn btn-default" ng-show="loggedIn" href="/#/">Cancel</a>
 </form>

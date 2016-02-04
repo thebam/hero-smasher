@@ -16,7 +16,10 @@
                 </span>
             </span>
         </div>
-        <input class="btn btn-default" type="button" ng-click="login()" value="Login" /><a class="btn btn-danger" href="/#/register">Register</a>
+        
+        <img src="images/loading.gif" ng-show="loading" />
+        
+        <input class="btn btn-danger" type="button" ng-click="login()" value="Login" ng-hide="loading" /><a class="btn btn-default" href="/#/register">Register</a>
     </div>
     <div ng-show="loggedIn">
         <p>Are you sure you want to log out?</p>

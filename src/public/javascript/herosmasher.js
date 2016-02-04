@@ -58,10 +58,12 @@ heroApp.controller('loginController', function ($cookies, $scope, $rootScope, $l
     } else {
         $scope.loggedIn = false;
     }
-
+    $scope.loading=false;
     $scope.login = function () {
+        $scope.loading=true;
         $http.post('/api/signIn', { username: $scope.username, password: $scope.password })
           .success(function (data, status) {
+              $scope.loading=false;
               if (status === 200 && data === true) {
                   $cookies.put('autho', 'true');
                   $location.path('/');
@@ -70,6 +72,7 @@ heroApp.controller('loginController', function ($cookies, $scope, $rootScope, $l
               }
           })
           .error(function (data) {
+              $scope.loading=false;
               $scope.errorMessage = 'The account wasn\'t created due to a server error.';
           });
     };
@@ -87,6 +90,7 @@ heroApp.controller('loginController', function ($cookies, $scope, $rootScope, $l
 
 heroApp.controller('mainController', function ($cookies, $scope, $resource, $rootScope, characterModel) {
     $scope.loggedIn = false;
+    $scope.loading = true;
     var autho = $cookies.get('autho');
 
     if (autho === 'true') {
@@ -98,9 +102,19 @@ heroApp.controller('mainController', function ($cookies, $scope, $resource, $roo
     Characters.query(function (characters) {
         $scope.characters = characters;
         $scope.characterCnt = characters.length;
+        
+        
         $scope.columnLimit1 = Math.floor($scope.characterCnt / 3);
-        $scope.columnLimit2 = Math.floor($scope.characterCnt / 3) + Math.floor($scope.characterCnt / 3);
+        if($scope.characterCnt%3){
+            $scope.columnLimit1++;   
+        }
+        $scope.columnLimit2 = Math.floor(($scope.characterCnt - $scope.columnLimit1)/2);
+        if(($scope.characterCnt - $scope.columnLimit1)%2){
+            $scope.columnLimit2++;   
+        }
+        $scope.loading=false;
     });
+    
     $scope.character1 = '';
     $scope.character2 = '';
     $scope.parent1 = '';
@@ -140,14 +154,14 @@ heroApp.controller('mainController', function ($cookies, $scope, $resource, $roo
         var energyRange = [1, 7];
         var fightingRange = [1, 7];
 
-
+if(anomoly !== 369){
         intelligenceRange = $scope.rankingRange('Intelligence');
         strengthRange = $scope.rankingRange('Strength');
         speedRange = $scope.rankingRange('Speed');
         durabilityRange = $scope.rankingRange('Durability');
-        energyRange = $scope.rankingRange('EnergyProjection');
-        fightingRange = $scope.rankingRange('FightingSkills');
-
+        energyRange = $scope.rankingRange('Energy Projection');
+        fightingRange = $scope.rankingRange('Fighting Skills');
+    }
         //alert(strengthRange);
 
 
@@ -206,7 +220,7 @@ heroApp.controller('deleteController', function ($scope, $resource, $location, $
 
 heroApp.controller('addController', function ($cookies, $scope, $resource, $location, $routeParams, characterModel) {
     $scope.loggedIn = false;
-    // Retrieving a cookie
+    $scope.loading = false;
     var autho = $cookies.get('autho');
     if (autho === 'true') {
         $scope.loggedIn = true;
@@ -246,7 +260,9 @@ heroApp.controller('addController', function ($cookies, $scope, $resource, $loca
         });
 
         $scope.save = function () {
+            $scope.loading = true;
             Characters.update($scope.character, function () {
+                $scope.loading = false;
                 $location.path('/');
             });
         };
@@ -254,15 +270,24 @@ heroApp.controller('addController', function ($cookies, $scope, $resource, $loca
         if ($scope.loggedIn === true) {
             $scope.character = characterModel.character;
             if ($scope.character.parents) {
-                $scope.getCharacter($scope.character.parents[0].parent, 1);
+                //$scope.getCharacter($scope.character.parents[0].parent, 1);
             }
             if ($scope.character.parents) {
-                $scope.getCharacter($scope.character.parents[1].parent, 2);
+                //$scope.getCharacter($scope.character.parents[1].parent, 2);
             }
             $scope.save = function () {
+                $scope.loading = true;
+                alert('jj');
                 var Characters = $resource('/api');
-                Characters.save($scope.character, function () {
+                Characters.save($scope.character, function (result) {
+                    alert(result);
+                    if(result==true){
+                    $scope.loading = false;
                     $location.path('/');
+                    }else{
+                        $scope.loading = false;
+                        $scope.errorMessage = result;
+                    }
                 });
             };
         } else {
@@ -308,6 +333,7 @@ heroApp.controller('addController', function ($cookies, $scope, $resource, $loca
             $scope.getCharacter($scope.parentSelection, 2);
         }
         $scope.showParentChange = false;
+        $scope.parentSelection = '';
     };
 
 });
@@ -333,12 +359,12 @@ angular.module('SmasherApp').service('characterModel', function () {
         { id: 1, category: 'Strength', origin: 'birth', level: '2', passable: 'true' },
         { id: 2, category: 'Speed', origin: 'birth', level: '2', passable: 'true' },
         { id: 3, category: 'Durability', origin: 'birth', level: '2', passable: 'true' },
-        { id: 4, category: 'EnergyProjection', origin: 'birth', level: '1', passable: 'true' },
-        { id: 5, category: 'FightingSkills', origin: 'birth', level: '2', passable: 'true' }, ],
+        { id: 4, category: 'Energy Projection', origin: 'birth', level: '1', passable: 'true' },
+        { id: 5, category: 'Fighting Skills', origin: 'birth', level: '2', passable: 'true' }, ],
         powers: [{ id: 0, powerDesc: '' }],
         traits: [{ id: 0, trait: '' }],
         biography: '',
         images: [{ image: '' }],
-        parents: [{ parent: '56af64501d0a98d4102f46bc' }, { parent: '56af64501d0a98d4102f46bc' }]
+        parents: [{ parent: '' }, { parent: '' }]
     };
 });

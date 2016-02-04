@@ -41,10 +41,26 @@ APIRouter.route('/')
 
             mongodb.connect(mongoURL, function (err, db) {
                 var collection = db.collection('characters');
-                collection.insert(character, function (err, results) {
-                    res.send(results);
-                    db.close();
+                console.log('asas');
+                collection.findOne({name:character.name},function(err,results){
+                    console.log(err);
+                    console.log(results);
+                    if(err===null){
+                   if(results===null){
+                       collection.insert(character, function (err, results) {
+                            res.send(true);
+                            db.close();
+                        });
+                   }else{
+                       res.send("A character named '"+character.name+"' already exists.");
+                   }
+                    }else{
+                        res.send("Character not created due to server issue.");
+                    }
                 });
+                
+                
+                
             });
         }
     });
