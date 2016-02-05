@@ -1,3 +1,4 @@
+<div ng-class="{combineSelected : isSelected(character._id)===true}">
 <div class="animate-box bounceIn animated">
     <img ng-src="{{character.images[0].image}}" alt="{{character.name}}" />
 </div>
@@ -19,4 +20,5 @@
 </ul>
 <span class="btn btn-block btn-sm btn-outline" ng-click="combine(character._id)">combine</span>
 <a class="btn btn-block btn-sm btn-outline" href="/#/character/{{character._id}}">details</a>  <a ng-show="loggedIn" class="btn btn-block btn-sm btn-primary" href="/#/delete/{{character._id}}">delete</a>
+</div>
 </div>

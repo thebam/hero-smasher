@@ -31,3 +31,7 @@
 .progress {
     background-color: #cccccc !important;
 }
+
+.combineSelected{
+    border:solid 1px red;
+}

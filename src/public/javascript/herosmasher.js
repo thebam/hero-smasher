@@ -195,8 +195,23 @@ heroApp.controller('mainController', function ($http, $cookies, $scope, $resourc
         $('#myModal').modal('show');
 
     };
-
+    
+$scope.isSelected = function(id){
+   
+    if(id===$scope.character1 || id===$scope.character2){
+        return true;
+    }
+};
     $scope.combine = function (id) {
+        if(id===$scope.character1){
+            $scope.character1 ="";
+            return;
+        }
+        if(id===$scope.character2){
+            $scope.character2 ="";
+            return;
+        }
+        
         if ($scope.character1.length === 0) {
             $scope.character1 = id;
         } else {
