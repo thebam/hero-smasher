@@ -15,9 +15,17 @@
     width:100%;
 }
 
+
+
 #fh5co-board .item .fh5co-desc {
     float:none !important;
 }
+
+#fh5co-board .col-md-4 {
+    padding-right:0 !important;
+    padding-left:0 !important;
+}
+
 
 #fh5co-header {
     padding-top:0 !important;

@@ -140,23 +140,59 @@ heroApp.controller('mainController', function ($http, $cookies, $scope, $resourc
         var powerRange = [1, 7];
         angular.forEach($scope.parent1.rankings, function (value, key) {
             if (value.category === powerType) {
-                powerRange[0] = Number(value.level);
+                if (value.passable === 'true') {
+                    powerRange[0] = Number(value.level);
+                } else {
+                    powerRange[0] = 1;
+                }
             }
         });
 
         angular.forEach($scope.parent2.rankings, function (value, key) {
             if (value.category === powerType) {
-                if (Number(value.level) < powerRange[0]) {
-                    powerRange[1] = powerRange[0];
-                    powerRange[0] = Number(value.level);
-                } else {
-                    powerRange[1] = Number(value.level);
+                if (value.passable === 'true') {
+                    if (Number(value.level) < powerRange[0]) {
+                        powerRange[1] = powerRange[0];
+                        powerRange[0] = Number(value.level);
+                    } else {
+                        powerRange[1] = Number(value.level);
+                    }
+                }else{
+                    powerRange[1] = 1;
                 }
-
             }
         });
         return powerRange;
     };
+
+
+    $scope.randomPowers = function () {
+        var allPowers = [];
+        var powers = {powers:[]};
+        angular.forEach($scope.parent1.powers, function (value, key) {
+            if (value.powerName !== "No power") {
+                allPowers.push(value.powerName);
+            }
+        });
+        angular.forEach($scope.parent2.powers, function (value, key) {
+            if (value.powerName !== "No power") {
+                allPowers.push(value.powerName);
+            }
+        });
+        var uniqueNames = [];
+        $.each(allPowers, function (i, el) {
+            if ($.inArray(el, uniqueNames) === -1) uniqueNames.push(el);
+        });
+
+
+        for (x = 0; x < uniqueNames.length; x++) {
+            powers.powers[x] = { id: x, powerName: uniqueNames[x] };
+        }
+        return powers.powers;
+    };
+
+
+
 
     $scope.createCharacter = function () {
         var anomoly = Math.floor(Math.random() * 1000) + 1;
@@ -175,13 +211,11 @@ heroApp.controller('mainController', function ($http, $cookies, $scope, $resourc
             energyRange = $scope.rankingRange('Energy Projection');
             fightingRange = $scope.rankingRange('Fighting Skills');
         }
-        //alert(strengthRange);
-
-
-
+  
         $scope.childCharacter = characterModel.character;
-        $scope.childCharacter.name = 'New Character';
-
+        $scope.childCharacter.name = 'Unamed Character';
+        $scope.childCharacter.affinity = 'hero';
+        
         $scope.childCharacter.rankings[0].level = $scope.randomBetween(intelligenceRange[0], intelligenceRange[1]);
         $scope.childCharacter.rankings[1].level = $scope.randomBetween(strengthRange[0], strengthRange[1]);
         $scope.childCharacter.rankings[2].level = $scope.randomBetween(speedRange[0], speedRange[1]);
@@ -189,29 +223,28 @@ heroApp.controller('mainController', function ($http, $cookies, $scope, $resourc
         $scope.childCharacter.rankings[4].level = $scope.randomBetween(energyRange[0], energyRange[1]);
         $scope.childCharacter.rankings[5].level = $scope.randomBetween(fightingRange[0], fightingRange[1]);
 
-        //add powers
+        $scope.childCharacter.powers = $scope.randomPowers();
 
-        //alert(JSON.stringify($scope.childCharacter));
         $('#myModal').modal('show');
 
     };
-    
-$scope.isSelected = function(id){
-   
-    if(id===$scope.character1 || id===$scope.character2){
-        return true;
-    }
-};
+
+    $scope.isSelected = function (id) {
+
+        if (id === $scope.character1 || id === $scope.character2) {
+            return true;
+        }
+    };
     $scope.combine = function (id) {
-        if(id===$scope.character1){
-            $scope.character1 ="";
+        if (id === $scope.character1) {
+            $scope.character1 = "";
             return;
         }
-        if(id===$scope.character2){
-            $scope.character2 ="";
+        if (id === $scope.character2) {
+            $scope.character2 = "";
             return;
         }
-        
+
         if ($scope.character1.length === 0) {
             $scope.character1 = id;
         } else {
@@ -309,11 +342,9 @@ heroApp.controller('addController', function ($http, $cookies, $scope, $resource
                     $scope.getCharacter($scope.character.parents[1].parent, 2);
                 }
             });
-
-
         } else {
             if ($scope.loggedIn === true) {
-                $scope.character = characterModel.character;
+                $scope.character = JSON.parse(JSON.stringify(characterModel.character));
             } else {
                 $location.path('/login');
             }
@@ -339,8 +370,8 @@ heroApp.controller('addController', function ($http, $cookies, $scope, $resource
         $scope.loggedIn = false;
         //SERVER ERROR
     });
-    
-    
+
+
     var powerCounter = 0;
     var traitCounter = 0;
     var imageCounter = 0;
@@ -421,7 +452,7 @@ angular.module('SmasherApp').service('characterModel', function () {
         { id: 3, category: 'Durability', origin: 'birth', level: '2', passable: 'true' },
         { id: 4, category: 'Energy Projection', origin: 'birth', level: '1', passable: 'true' },
         { id: 5, category: 'Fighting Skills', origin: 'birth', level: '2', passable: 'true' }, ],
-        powers: [{ id: 0, powerDesc: '' }],
+        powers: [{ id: 0, powerName: '' }],
         traits: [{ id: 0, trait: '' }],
         biography: '',
         images: [{ image: '' }],
