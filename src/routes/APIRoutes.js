@@ -166,6 +166,7 @@ var router = function (coll, db) {
 
     APIRouter.route('/checkAuth')
         .get(function (req, res) {
+            console.log('s');
             if (req.isAuthenticated()) {
                 console.log('check auth true');
                 res.send(true);

@@ -1,5 +1,12 @@
 var heroApp = angular.module('SmasherApp', ['ngResource', 'ngRoute', 'ngCookies']);
-heroApp.config(function ($routeProvider) {
+heroApp.config(function ($routeProvider,$httpProvider) {
+    $httpProvider.defaults.cache = false;
+    if (!$httpProvider.defaults.headers.get) {
+      $httpProvider.defaults.headers.get = {};
+    }
+    // disable IE ajax request caching
+    $httpProvider.defaults.headers.get['If-Modified-Since'] = '0';
+    
     $routeProvider
         .when('/', {
             templateUrl: 'partials/home.html',
@@ -88,7 +95,7 @@ heroApp.controller('loginController', function ($cookies, $scope, $rootScope, $l
     };
 });
 
-heroApp.controller('mainController', function ($http, $cookies, $scope, $resource, $rootScope, characterModel) {
+heroApp.controller('mainController', function ($http, $cookies, $scope, $resource, $rootScope,$location, characterModel,editChildCharacter) {
     $scope.loggedIn = false;
     $scope.loading = true;
 
@@ -216,12 +223,12 @@ heroApp.controller('mainController', function ($http, $cookies, $scope, $resourc
         $scope.childCharacter.name = 'Unamed Character';
         $scope.childCharacter.affinity = 'hero';
         
-        $scope.childCharacter.rankings[0].level = $scope.randomBetween(intelligenceRange[0], intelligenceRange[1]);
-        $scope.childCharacter.rankings[1].level = $scope.randomBetween(strengthRange[0], strengthRange[1]);
-        $scope.childCharacter.rankings[2].level = $scope.randomBetween(speedRange[0], speedRange[1]);
-        $scope.childCharacter.rankings[3].level = $scope.randomBetween(durabilityRange[0], durabilityRange[1]);
-        $scope.childCharacter.rankings[4].level = $scope.randomBetween(energyRange[0], energyRange[1]);
-        $scope.childCharacter.rankings[5].level = $scope.randomBetween(fightingRange[0], fightingRange[1]);
+        $scope.childCharacter.rankings[0].level = $scope.randomBetween(intelligenceRange[0], intelligenceRange[1]).toString();
+        $scope.childCharacter.rankings[1].level = $scope.randomBetween(strengthRange[0], strengthRange[1]).toString();
+        $scope.childCharacter.rankings[2].level = $scope.randomBetween(speedRange[0], speedRange[1]).toString();
+        $scope.childCharacter.rankings[3].level = $scope.randomBetween(durabilityRange[0], durabilityRange[1]).toString();
+        $scope.childCharacter.rankings[4].level = $scope.randomBetween(energyRange[0], energyRange[1]).toString();
+        $scope.childCharacter.rankings[5].level = $scope.randomBetween(fightingRange[0], fightingRange[1]).toString();
 
         $scope.childCharacter.powers = $scope.randomPowers();
 
@@ -264,6 +271,12 @@ heroApp.controller('mainController', function ($http, $cookies, $scope, $resourc
             });
         }
     };
+    $scope.edit = function(){
+        $scope.childCharacter.parents[0].parent = $scope.character1;
+        $scope.childCharacter.parents[1].parent = $scope.character2;
+        editChildCharacter.character = $scope.childCharacter;
+        $location.path('/add');
+    };
 });
 
 heroApp.controller('deleteController', function ($http, $cookies, $scope, $resource, $location, $routeParams) {
@@ -299,7 +312,10 @@ heroApp.controller('deleteController', function ($http, $cookies, $scope, $resou
     });
 });
 
-heroApp.controller('addController', function ($http, $cookies, $scope, $resource, $location, $routeParams, characterModel) {
+heroApp.controller('addController', function ($http, $cookies, $scope, $resource, $location, $routeParams, characterModel,editChildCharacter) {
+    
+    
+    
     $scope.loggedIn = false;
     $scope.loading = false;
 
@@ -335,20 +351,28 @@ heroApp.controller('addController', function ($http, $cookies, $scope, $resource
             LoadCharacter = $resource('/api/edit/:id', { id: '@_id' }, { update: { method: 'PUT' } });
             LoadCharacter.get({ id: $routeParams.id }, function (character) {
                 $scope.character = character;
-                if ($scope.character.parents) {
+                
+            });
+        } else {
+            if ($scope.loggedIn === true) {
+                
+                if(editChildCharacter.character.name){
+                    $scope.character = editChildCharacter.character;
+                }else{
+                    $scope.character = JSON.parse(JSON.stringify(characterModel.character));
+                }
+                
+                
+            } else {
+                $location.path('/login');
+            }
+        }
+        if ($scope.character.parents) {
                     $scope.getCharacter($scope.character.parents[0].parent, 1);
                 }
                 if ($scope.character.parents) {
                     $scope.getCharacter($scope.character.parents[1].parent, 2);
                 }
-            });
-        } else {
-            if ($scope.loggedIn === true) {
-                $scope.character = JSON.parse(JSON.stringify(characterModel.character));
-            } else {
-                $location.path('/login');
-            }
-        }
     };
 
 
@@ -392,6 +416,13 @@ heroApp.controller('addController', function ($http, $cookies, $scope, $resource
                 if (response.data === true && response.status === 200) {
                     $scope.loading = false;
                     $location.path('/');
+                    
+                    
+                    editChildCharacter.character = JSON.parse(JSON.stringify(characterModel.character));
+                
+                    
+                    
+                    
                 } else {
                     $scope.loading = false;
                     $scope.errorMessage = response.data;
@@ -443,6 +474,24 @@ heroApp.controller('addController', function ($http, $cookies, $scope, $resource
 });
 
 angular.module('SmasherApp').service('characterModel', function () {
+    this.character = {
+        name: '',
+        affinity: '',
+        rankings: [{ id: 0, category: 'Intelligence', origin: 'birth', level: '2', passable: 'true' },
+        { id: 1, category: 'Strength', origin: 'birth', level: '2', passable: 'true' },
+        { id: 2, category: 'Speed', origin: 'birth', level: '2', passable: 'true' },
+        { id: 3, category: 'Durability', origin: 'birth', level: '2', passable: 'true' },
+        { id: 4, category: 'Energy Projection', origin: 'birth', level: '1', passable: 'true' },
+        { id: 5, category: 'Fighting Skills', origin: 'birth', level: '2', passable: 'true' }, ],
+        powers: [{ id: 0, powerName: '' }],
+        traits: [{ id: 0, trait: '' }],
+        biography: '',
+        images: [{ image: '' }],
+        parents: [{ parent: '' }, { parent: '' }]
+    };
+});
+
+angular.module('SmasherApp').service('editChildCharacter', function () {
     this.character = {
         name: '',
         affinity: '',
