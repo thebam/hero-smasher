@@ -10,9 +10,14 @@
     color: #818892;
     display: inline-block;
 }
-
-.details-image {
+.parentImageWrapper {
     width:100%;
+    background-color:#ccc;
+}
+.parentImageWrapper .parentImage {
+    height:150px;
+    margin:0 auto;
+    display:block;
 }
 
 #fh5co-board .item {
