@@ -15,16 +15,25 @@
     width:100%;
 }
 
+#fh5co-board .item {
+    margin-right:0 !important;
+    margin-left:0 !important;
+    border-radius:0 !important;
 
+
+
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    box-shadow: none !important;
+
+}
 
 #fh5co-board .item .fh5co-desc {
     float:none !important;
+    padding:0 !important;
 }
 
-#fh5co-board .col-md-4 {
-    padding-right:0 !important;
-    padding-left:0 !important;
-}
+
 
 
 #fh5co-header {
@@ -38,8 +47,88 @@
 
 .progress {
     background-color: #cccccc !important;
+    margin-top:0 !important;
+    margin-bottom:0 !important;
 }
 
 .combineSelected{
-    border:solid 1px red;
+    opacity:.5;
+}
+
+.character .characterImageWrapper .characterImage {
+            width:100%
+        }
+
+@media screen and (max-width:768px) {
+    body {
+        background-color:white !important;
+    }
+    
+}
+
+@media screen and (min-width:767px) {
+    body {
+        background-color:white !important;
+    }
+        
+    .character .characterImageWrapper {
+            height:350px;
+        }
+
+        .character .characterAffinity {
+            background-color:#fff;
+        position:absolute;
+        top:0px;
+        right:15px;
+        margin-top:0;
+        
+        }
+    .character .characterName{
+        background-color:#fff;
+        position:absolute;
+        bottom:0px;
+        margin-bottom:0;
+    }
+
+    .stats-hide{
+        display:none;
+    }
+
+    .fh5co-desc {
+        width:100%;
+        background-color:rgba(0,0,0,.75);
+        position:absolute;
+        top:0;
+        left:0;
+    }
+
+        .fh5co-desc .innerDesc {
+            padding-right:15px;
+            padding-left:15px;
+            overflow-y:scroll;
+             height:350px;
+        }
+
+        .fh5co-desc .innerDesc .heading {
+            color:#fff;
+        }
+
+    .details {
+        position:absolute;
+        top:0px;
+        right:40px;
+    }
+
+    .delete {
+        position:absolute;
+        top:0px;
+        right:20px;
+    }
+
+    .btn-combine {
+        margin-top:10px;
+        margin-bottom:0px !important;
+        padding:5px 10px !important;
+        font-size: 10px;
+    }
 }

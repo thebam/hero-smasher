@@ -1,24 +1,32 @@
-<div ng-class="{combineSelected : isSelected(character._id)===true}">
-<div class="animate-box bounceIn animated">
-    <img ng-src="{{character.images[0].image}}" alt="{{character.name}}" />
-</div>
-<div class="fh5co-desc">
-    <h2>{{character.name}}</h2>
-    <p>{{character.affinity}}</p>
-    <h4>ranking</h4>
-    <div ng-repeat="ranking in character.rankings">
-        {{ranking.category}}
-    <div class="progress">
-        <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="4" aria-valuemin="0" aria-valuemax="7" ng-attr-style="width: {{(ranking.level/7)*100}}%;">
-            {{ranking.level}}
+<div class="character" ng-mouseenter="showStats(character._id)" ng-class="{combineSelected : isSelected(character._id)===true}">
+    <div class="characterImageWrapper animate-box bounceIn animated">
+        <img class="characterImage" ng-src="{{character.images[0].image}}" alt="{{character.name}}" />
+    </div>
+    <h2 class="characterName">{{character.name}}</h2>
+    <h4 class="characterAffinity">{{character.affinity}}</h4>
+    <div class="fh5co-desc" ng-class="{'stats-hide' : character._id!=displayStats}">
+        <div class="innerDesc">
+            <span class="btn btn-danger btn-combine" ng-click="combine(character._id)"><i class="glyphicon glyphicon-transfer"></i> combine</span>
+            <h4 class="heading">ranking</h4>
+            <div ng-repeat="ranking in character.rankings">
+                {{ranking.category}}
+                <div class="progress">
+                    <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="4" aria-valuemin="0" aria-valuemax="7" ng-attr-style="width: {{(ranking.level/7)*100}}%;">
+                        {{ranking.level}}
+                    </div>
+                </div>
+            </div>
+
+            
+            <a title="details" class="details" href="/#/character/{{character._id}}"><i class="glyphicon glyphicon-cog"></i></a>  <a title="delete" class="delete" ng-show="loggedIn" class="btn btn-block btn-sm btn-primary" href="/#/delete/{{character._id}}"><i class="glyphicon glyphicon-trash"></i></a>
+
+
+            <h4 class="heading">powers</h4>
+            <ul>
+                <li ng-repeat="power in character.powers">{{power.powerName}}</li>
+            </ul>
+            <h4 class="heading">biography</h4>
+            <p>{{character.biography}}</p>
         </div>
     </div>
-    </div>
-<h4>powers</h4>
-<ul>
-    <li ng-repeat="power in character.powers">{{power.powerName}}</li>
-</ul>
-<span class="btn btn-block btn-sm btn-outline" ng-click="combine(character._id)">combine</span>
-<a class="btn btn-block btn-sm btn-outline" href="/#/character/{{character._id}}">details</a>  <a ng-show="loggedIn" class="btn btn-block btn-sm btn-primary" href="/#/delete/{{character._id}}">delete</a>
-</div>
 </div>

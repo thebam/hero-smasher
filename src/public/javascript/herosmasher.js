@@ -139,6 +139,12 @@ heroApp.controller('mainController', function ($http, $cookies, $scope, $resourc
     $scope.character2 = '';
     $scope.parent1 = '';
     $scope.parent2 = '';
+
+    $scope.showStats = function () {
+
+    };
+
+
     $scope.randomBetween = function (lowNumber, highNumber) {
         return (Math.floor(Math.random() * ((highNumber - lowNumber) + 1) + lowNumber));
     };
@@ -242,6 +248,26 @@ heroApp.controller('mainController', function ($http, $cookies, $scope, $resourc
             return true;
         }
     };
+    $scope.displayStats = "";
+
+    $scope.showStats = function (id) {
+        if ($scope.displayStats === id) {
+            $scope.displayStats = "";
+        } else {
+            $scope.displayStats = id;
+        }
+    };
+    $scope.statsShowed = function (id) {
+        if (id === $scope.displayStats) {
+            return true;
+        }
+    };
+
+    $scope.hideStats = function (id) {
+        return true;
+    };
+
+
     $scope.combine = function (id) {
         if (id === $scope.character1) {
             $scope.character1 = "";

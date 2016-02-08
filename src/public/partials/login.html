@@ -1,28 +1,29 @@
-<h1>{{pageHeader}}</h1>
-<form method="post" id="frmLogin" name="frmLogin" role="form" novalidate>
-    <div ng-hide="loggedIn">
-        <span style="color:red">{{errorMessage}}</span>
-        <div class="form-group">
-            <input type="email" ng-model="username" name="username" class="form-control" placeholder="Email Address" required />
-            <span style="color: red" ng-show="frmLogin.username.$dirty && frmLogin.username.$invalid">
-            <span ng-show="frmLogin.username.$error.required">A valid email is required</span>
-        </span>
-        </div>
-        <div class="form-group">
-            <input type="password" ng-model="password" name="password" class="form-control" placeholder="Password" required />
-            <span style="color:red" ng-show="frmLogin.password.$dirty && frmLogin.password.$invalid">
-                <span ng-show="frmLogin.password.$error.required">
-                    Password is required
+<div class="container">
+    <h1>{{pageHeader}}</h1>
+    <form method="post" id="frmLogin" name="frmLogin" role="form" novalidate>
+        <div ng-hide="loggedIn">
+            <span style="color: red">{{errorMessage}}</span>
+            <div class="form-group">
+                <input type="email" ng-model="username" name="username" class="form-control" placeholder="Email Address" required />
+                <span style="color: red" ng-show="frmLogin.username.$dirty && frmLogin.username.$invalid">
+                    <span ng-show="frmLogin.username.$error.required">A valid email is required</span>
                 </span>
-            </span>
+            </div>
+            <div class="form-group">
+                <input type="password" ng-model="password" name="password" class="form-control" placeholder="Password" required />
+                <span style="color: red" ng-show="frmLogin.password.$dirty && frmLogin.password.$invalid">
+                    <span ng-show="frmLogin.password.$error.required">Password is required
+                    </span>
+                </span>
+            </div>
+
+            <img src="images/loading.gif" ng-show="loading" />
+
+            <input class="btn btn-danger" type="button" ng-click="login()" value="Login" ng-hide="loading" /><a class="btn btn-default" href="/#/register">Register</a>
         </div>
-        
-        <img src="images/loading.gif" ng-show="loading" />
-        
-        <input class="btn btn-danger" type="button" ng-click="login()" value="Login" ng-hide="loading" /><a class="btn btn-default" href="/#/register">Register</a>
-    </div>
-    <div ng-show="loggedIn">
-        <p>Are you sure you want to log out?</p>
-        <input class="btn btn-danger" type="button" ng-click="logout()" value="Yes" /><a class="btn btn-default" href="/#/">No</a>
-    </div>
-</form>
+        <div ng-show="loggedIn">
+            <p>Are you sure you want to log out?</p>
+            <input class="btn btn-danger" type="button" ng-click="logout()" value="Yes" /><a class="btn btn-default" href="/#/">No</a>
+        </div>
+    </form>
+</div>

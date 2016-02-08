@@ -1,17 +1,19 @@
-<h1>Register</h1>
-<form method="post" id="frmRegister" name="frmRegister" role="form" novalidate>
-    <span style="color:red">{{errorMessage}}</span>
-    <div class="form-group">
-        <input type="email" ng-model="email" name="email" class="form-control" placeholder="Email Address" required />
-        <span style="color: red" ng-show="frmRegister.email.$dirty && frmRegister.email.$invalid">
-            <span ng-show="frmRegister.email.$error.required">A valid email is required.</span>
-        </span>
-    </div>
-    <div class="form-group">
-        <input type="password" ng-model="password" name="password" class="form-control" placeholder="Password" required />
-        <span style="color:red" ng-show="frmRegister.password.$dirty && frmRegister.password.$invalid">
-            <span ng-show="frmRegister.password.$error.required">Password is required.</span>
-        </span>
-    </div>
-    <input ng-disabled="frmRegister.password.$error.required || frmRegister.email.$error.required || frmRegister.email.$invalid || frmRegister.password.$invalid" class="btn btn-danger" type="button" ng-click="register()" value="Register" />
-</form>
+<div class="container">
+    <h1>Register</h1>
+    <form method="post" id="frmRegister" name="frmRegister" role="form" novalidate>
+        <span style="color: red">{{errorMessage}}</span>
+        <div class="form-group">
+            <input type="email" ng-model="email" name="email" class="form-control" placeholder="Email Address" required />
+            <span style="color: red" ng-show="frmRegister.email.$dirty && frmRegister.email.$invalid">
+                <span ng-show="frmRegister.email.$error.required">A valid email is required.</span>
+            </span>
+        </div>
+        <div class="form-group">
+            <input type="password" ng-model="password" name="password" class="form-control" placeholder="Password" required />
+            <span style="color: red" ng-show="frmRegister.password.$dirty && frmRegister.password.$invalid">
+                <span ng-show="frmRegister.password.$error.required">Password is required.</span>
+            </span>
+        </div>
+        <input ng-disabled="frmRegister.password.$error.required || frmRegister.email.$error.required || frmRegister.email.$invalid || frmRegister.password.$invalid" class="btn btn-danger" type="button" ng-click="register()" value="Register" />
+    </form>
+</div>
