@@ -76,13 +76,23 @@
     background-color:#f0ad4e;
 }
 
+.characterAffinity {
+     
+        padding:10px 15px;
+        color:#fff;
+         display:inline-block ;
+        }
+
+
+.character {
+cursor:pointer;
+}
+
 .character .characterAffinity {
      position:absolute;
         top:0px;
         right:0;
         margin-top:0;
-        padding:10px 15px;
-        color:#fff;
         }
 .controls {
         position:absolute;
@@ -91,26 +101,67 @@
         font-size:1.5em;
         background-color:#fff;
         border-left:solid 1px #555;
+        border-top:solid 1px #555;
+         border-bottom:solid 1px #555;
     }
 
 .controls a{
    padding: .25em .5em;
         display:inline-block !important;
         color:#555;
-        border-top:solid 1px #555;
+        
         border-right:solid 1px #555;
-        border-bottom:solid 1px #555;
+       
     }
 #search {
 border:solid 1px #ccc !important;
 }
+
+.edit {
+    cursor:pointer;
+    padding:5px;
+    border-radius:5px;
+    color:#fff;
+    margin-left:.5em;
+    margin-right:.5em;
+}
+
+.edit:hover {
+    background-color:#444;
+}
+
+.edit-default {
+    background-color:#ccc;
+}
+
+.edit-positive {
+    background-color:#5cb85c;
+}
+
+.edit-negative {
+    background-color:#d9534f;
+}
+
+.modal-footer .btn + .btn {
+    margin-bottom:20px !important;
+}
+
+.details-image {
+width:100%;
+}
+
+
 @media screen and (max-width:768px) {
     body {
         background-color:white !important;
     }
-    .character .characterAffinity {
-        display:inline-block ;
-        }
+
+    .character {
+    border:solid 1px #ccc;
+    padding:15px;
+}
+
+   
 }
 
 @media screen and (min-width:767px) {

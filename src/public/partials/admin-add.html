@@ -1,25 +1,27 @@
 <div class="container">
-    <h1>{{character.name || 'CREATE CHARACTER'}}</h1>
+    <h1 ng-hide="isEditing('name')">{{character.name || 'CREATE CHARACTER'}}<span ng-show="loggedIn" ng-click="edit('name',character.name)" class="edit edit-default glyphicon glyphicon-pencil"></span></h1>
     <form method="post" id="frmAddCharacter" name="frmAddCharacter" role="form" novalidate>
         <div class="form-group">
-            <input type="text" ng-model="character.name" ng-show="loggedIn" name="character_name" class="form-control" placeholder="Name" required />
+            <input type="text" ng-model="character.name" ng-show="isEditing('name')" name="character_name" class="form-control" placeholder="Name" required />
             <span style="color: red" ng-show="frmAddCharacter.character_name.$dirty && frmAddCharacter.character_name.$invalid">
                 <span ng-show="frmAddCharacter.character_name.$error.required">Name is required.</span>
             </span>
-        </div>
-        <div class="col-md-6" ng-repeat="image in character.images">
-            <div class="row">
-                <div class="form-group col-md-10">
-                    <img ng-src="{{image.image}}" class="details-image" />
-                    <input ng-show="loggedIn" type="text" ng-model="image.image" class="form-control" placeholder="Image File" />
-                </div>
-            </div>
+            <span ng-show="isEditing('name')" ng-click="saveEditing()" class="edit edit-positive glyphicon glyphicon-ok"></span>
+            <span ng-show="isEditing('name')" ng-click="cancelEditing('name')" class="edit edit-negative glyphicon glyphicon-remove"></span>
         </div>
         <div class="row">
+            <div class="col-md-6" ng-repeat="image in character.images">
+                <img ng-src="{{image.image}}" class="details-image" />
+                <span  ng-hide="isEditing('image') || loggedIn === false" ng-click="edit('image',image)" class="edit edit-default glyphicon glyphicon-pencil"></span>
+                <input ng-show="isEditing('image')" type="text" ng-model="image.image" class="form-control" placeholder="Image File" />
+                <span ng-show="isEditing('image')" ng-click="saveEditing()" class="edit edit-positive glyphicon glyphicon-ok"></span>
+                <span ng-show="isEditing('image')" ng-click="cancelEditing('image')" class="edit edit-negative glyphicon glyphicon-remove"></span>
+            </div>
+
             <div class="col-md-6">
-                <h3>affinity:</h3>
-                <span ng-hide="loggedIn">{{character.affinity}}</span>
-                <div ng-show="loggedIn" class="form-group">
+                <h3 class="heading">affinity:</h3>
+                <span ng-hide="isEditing('affinity')">{{character.affinity}}  <span ng-show="loggedIn" ng-click="edit('affinity',character.affinity)" class="edit edit-default glyphicon glyphicon-pencil"></span></span>
+                <div ng-show="isEditing('affinity')" class="form-group">
                     <select ng-model="character.affinity" class="form-control">
                         <option value="">Hero or Villian?</option>
                         <option value="hero">Hero</option>
@@ -27,25 +29,28 @@
                         <option value="both">Anti-Hero</option>
                     </select>
                 </div>
+                <span ng-show="isEditing('affinity')" ng-click="saveEditing()" class="edit edit-positive glyphicon glyphicon-ok"></span>
+                <span ng-show="isEditing('affinity')" ng-click="cancelEditing('affinity')" class="edit edit-negative glyphicon glyphicon-remove"></span>
 
-                <h3>ranking:</h3>
+                <h3 class="heading">ranking:</h3>
 
 
 
-                <div ng-hide="loggedIn">
+                <div ng-hide="isEditing('ranking')">
                     <div ng-repeat="ranking in character.rankings">
                         {{ranking.category}}
-                <div class="progress">
-                    <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="4" aria-valuemin="0" aria-valuemax="7" style='width: {{(ranking.level/7)*100}}%;'>
-                        {{ranking.level}}
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="4" aria-valuemin="0" aria-valuemax="7" style='width: {{(ranking.level/7)*100}}%;'>
+                                {{ranking.level}}
+                            </div>
+                        </div>
                     </div>
+                    <span ng-show="loggedIn" ng-click="edit('ranking',character.rankings)" class="edit edit-default glyphicon glyphicon-pencil"></span>
                 </div>
-                    </div>
-                </div>
 
 
 
-                <div class="row" ng-show="loggedIn">
+                <div class="row" ng-show="isEditing('ranking')">
                     <div ng-repeat="ranking in character.rankings">
                         <div id="{{ranking.id}}" style="display: inline">
                             <div class="col-md-3">
@@ -80,22 +85,24 @@
                                     <option value="false">No</option>
                                 </select>
                             </div>
-
                         </div>
                     </div>
                 </div>
+                <span ng-show="isEditing('ranking')" ng-click="saveEditing()" class="edit edit-positive glyphicon glyphicon-ok"></span>
+                <span ng-show="isEditing('ranking')" ng-click="cancelEditing('ranking')" class="edit edit-negative glyphicon glyphicon-remove"></span>
 
 
             </div>
         </div>
 
-        <h3>powers:</h3>
-        <div class="row" ng-hide="loggedIn">
+        <h3 class="heading">powers:</h3>
+        <div class="row" ng-hide="isEditing('power')">
             <ul>
                 <li ng-repeat="power in character.powers">{{power.powerName}}</li>
             </ul>
+            <span ng-show="loggedIn" ng-click="edit('power',character.powers)" class="edit edit-default glyphicon glyphicon-pencil"></span>
         </div>
-        <div class="row" ng-show="loggedIn">
+        <div class="row" ng-show="isEditing('power')">
             <div ng-repeat="power in character.powers">
                 <div id="{{power.id}}" style="display: inline">
                     <div class="form-group col-md-10">
@@ -111,15 +118,21 @@
                 </div>
             </div>
             <div class="btn-add col-md-12" ng-click="newPower($event)" id="btnAddPower">ADD POWER</div>
+
+            <span ng-show="isEditing('power')" ng-click="saveEditing()" class="edit edit-positive glyphicon glyphicon-ok"></span>
+                <span ng-show="isEditing('power')" ng-click="cancelEditing('power')" class="edit edit-negative glyphicon glyphicon-remove"></span>
+
+
         </div>
 
-        <h3>traits:</h3>
-        <div class="row" ng-hide="loggedIn">
+        <h3 class="heading">traits:</h3>
+        <div class="row" ng-hide="isEditing('trait')">
             <ul>
                 <li ng-repeat="trait in character.traits">{{trait.trait}}</li>
             </ul>
+            <span ng-show="loggedIn" ng-click="edit('trait',character.traits)" class="edit edit-default glyphicon glyphicon-pencil"></span>
         </div>
-        <div class="row" ng-show="loggedIn">
+        <div class="row" ng-show="isEditing('trait')">
             <div ng-repeat="trait in character.traits">
 
                 <div class="form-group col-md-10">
@@ -134,25 +147,45 @@
 
             </div>
             <div class="btn-add col-md-12" ng-click="newTrait($event)">ADD TRAIT</div>
+
+            <span ng-show="isEditing('trait')" ng-click="saveEditing()" class="edit edit-positive glyphicon glyphicon-ok"></span>
+                <span ng-show="isEditing('trait')" ng-click="cancelEditing('trait')" class="edit edit-negative glyphicon glyphicon-remove"></span>
         </div>
 
 
 
-        <h3>biography:</h3>
-        <div ng-hide="loggedIn">{{character.biography}}</div>
-        <div class="row" ng-show="loggedIn">
+        <h3 class="heading">biography:</h3>
+        <p ng-hide="isEditing('bio')">{{character.biography}}<span ng-show="loggedIn" ng-click="edit('bio',character.biography)" class="edit edit-default glyphicon glyphicon-pencil"></span></p>
+        <div class="row" ng-show="isEditing('bio')">
             <div class="form-group col-md-12">
                 <textarea ng-model="character.biography" ng-show="loggedIn" class="form-control"></textarea>
             </div>
+            <span ng-show="isEditing('bio')" ng-click="saveEditing()" class="edit edit-positive glyphicon glyphicon-ok"></span>
+                <span ng-show="isEditing('bio')" ng-click="cancelEditing('bio')" class="edit edit-negative glyphicon glyphicon-remove"></span>
         </div>
-        <h3>parents:</h3>
+        <h3 class="heading">parents:</h3>
 
         <div class="row">
             <div class="col-md-5">
                 <img class="details-image" ng-src="{{parent1.images[0].image}}" />
                 <h3>{{parent1.name}}</h3>
+                <h4 class="heading">ranking:</h4>
+                <div ng-repeat="ranking in parent1.rankings">
+                        {{ranking.category}}
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="4" aria-valuemin="0" aria-valuemax="7" style='width: {{(ranking.level/7)*100}}%;'>
+                                {{ranking.level}}
+                            </div>
+                        </div>
+                    </div>
+                <h4 class="heading">powers:</h4>
+                <div class="row">
+                    <ul>
+                        <li ng-repeat="power in parent1.powers">{{power.powerName}}</li>
+                    </ul>
+                </div>
+
                 <input type="hidden" ng-model="parent1._id" />
-                <a class="btn btn-block btn-sm btn-outline" href="/#/character/{{parent1._id}}">details</a>
                 <a ng-show="loggedIn" class="btn btn-danger" ng-click="changeParent(1)">change</a>
             </div>
             <div class="col-md-2" style="text-align: center; font-size: 5em; line-height: 2em;">
@@ -161,8 +194,23 @@
             <div class="col-md-5">
                 <img class="details-image" ng-src="{{parent2.images[0].image}}" />
                 <h3>{{parent2.name}}</h3>
+                <h4 class="heading">ranking:</h4>
+                <div ng-repeat="ranking in parent2.rankings">
+                        {{ranking.category}}
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="4" aria-valuemin="0" aria-valuemax="7" style='width: {{(ranking.level/7)*100}}%;'>
+                                {{ranking.level}}
+                            </div>
+                        </div>
+                    </div>
+                <h4 class="heading">powers:</h4>
+                <div class="row">
+                    <ul>
+                        <li ng-repeat="power in parent2.powers">{{power.powerName}}</li>
+                    </ul>
+                </div>
                 <input type="hidden" ng-model="parent2._id" />
-                <a class="btn btn-block btn-sm btn-outline" href="/#/character/{{parent2._id}}">details</a>
+                
                 <a ng-show="loggedIn" class="btn btn-danger" ng-click="changeParent(2)">change</a>
             </div>
             <div class="col-md-12" ng-show="showParentChange">

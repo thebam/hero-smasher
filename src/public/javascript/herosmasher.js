@@ -344,6 +344,56 @@ heroApp.controller('addController', function ($http, $cookies, $scope, $resource
     
     $scope.loggedIn = false;
     $scope.loading = false;
+    $scope.editing = "";
+    $scope.editSavedValue = "";
+    $scope.edit = function (fieldName, val) {
+        $scope.editSavedValue = JSON.stringify(val);
+        $scope.editing = fieldName;
+    };
+
+    $scope.isEditing = function (fieldName) {
+        if ($scope.editing === fieldName) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
+    $scope.saveEditing = function () {
+        $scope.editing = "";
+    };
+
+    $scope.cancelEditing = function (fieldName) {
+        $scope.editing = "";
+        switch (fieldName) {
+            case "name":
+                $scope.character.name = JSON.parse($scope.editSavedValue)
+                break;
+            case "affinity":
+                $scope.character.affinity = JSON.parse($scope.editSavedValue)
+                break;
+            case "image":
+                $scope.character.images = [JSON.parse($scope.editSavedValue)]
+                break;
+            case "ranking":
+                $scope.character.rankings = JSON.parse($scope.editSavedValue)
+                break;
+            case "power":
+                $scope.character.powers = JSON.parse($scope.editSavedValue)
+                break;
+            case "trait":
+                $scope.character.traits = JSON.parse($scope.editSavedValue)
+                break;
+            case "bio":
+                $scope.character.biography = JSON.parse($scope.editSavedValue)
+                break;
+            case "parent":
+                $scope.character.parents = [JSON.parse($scope.editSavedValue)]
+                break;
+        }
+        $scope.editSavedValue = '';
+    };
+    
 
     $scope.getCharacter = function (id, parentNumber) {
         if (id) {
@@ -377,7 +427,12 @@ heroApp.controller('addController', function ($http, $cookies, $scope, $resource
             LoadCharacter = $resource('/api/edit/:id', { id: '@_id' }, { update: { method: 'PUT' } });
             LoadCharacter.get({ id: $routeParams.id }, function (character) {
                 $scope.character = character;
-                
+                if ($scope.character.parents) {
+                    $scope.getCharacter($scope.character.parents[0].parent, 1);
+                }
+                if ($scope.character.parents) {
+                    $scope.getCharacter($scope.character.parents[1].parent, 2);
+                }
             });
         } else {
             if ($scope.loggedIn === true) {
@@ -388,17 +443,17 @@ heroApp.controller('addController', function ($http, $cookies, $scope, $resource
                     $scope.character = JSON.parse(JSON.stringify(characterModel.character));
                 }
                 
-                
-            } else {
-                $location.path('/login');
-            }
-        }
-        if ($scope.character.parents) {
+                if ($scope.character.parents) {
                     $scope.getCharacter($scope.character.parents[0].parent, 1);
                 }
                 if ($scope.character.parents) {
                     $scope.getCharacter($scope.character.parents[1].parent, 2);
                 }
+                
+            } else {
+                $location.path('/login');
+            }
+        }        
     };
 
 
