@@ -1,23 +1,23 @@
 <div class="container">
-<h1>COMBINE CHARACTERS</h1>
+    <h1>COMBINE CHARACTERS</h1>
     <p>Select any two characters to create a new super hero or villian. The new characters ranking, powers, and traits will be an unpredictable combination of the two parent character. </p>
-    <div class="col-md-12" style="text-align:center;">
-        <img src="images/loading.gif" ng-show="loading"  />
+    <div class="col-md-12" style="text-align: center;">
+        <img src="images/loading.gif" ng-show="loading" />
     </div>
-    <div class="input-group">
-  <span class="input-group-addon" id="sizing-addon2"><i class="glyphicon glyphicon-search"></i></span>
-  <input type="text" ng-model="searchString" class="form-control" placeholder="Find Character" aria-describedby="sizing-addon2">
-</div>
+    <div class="input-group input-group-sm">
+        <span class="input-group-addon" id="sizing-addon"><i class="glyphicon glyphicon-search"></i></span>
+        <input type="text" ng-model="searchString" class="form-control" id="search" placeholder="Find Character" aria-describedby="sizing-addon" />
+    </div>
 </div>
 <div id="fh5co-board">
 
-    
 
-      
-            <div class="item col-sm-6 col-md-4 col-lg-3" ng-repeat="character in characters | orderBy : 'name' | filter:searchString">
-                <div ng-include="'partials/home-character-block.html'"></div>
-            </div>
-     
+
+
+    <div class="item col-sm-6 col-md-4 col-lg-3" ng-repeat="character in characters | orderBy : 'name' | filter:searchString">
+        <div ng-include="'partials/home-character-block.html'"></div>
+    </div>
+
 </div>
 <!-- Modal -->
 <div class="modal fade" id="myModal" role="dialog">
@@ -30,38 +30,38 @@
                 <h3 class="modal-title">New Combination</h3>
             </div>
             <div class="modal-body">
-                
-                    <div class="col-md-5">
-                        <h3>{{parent1.name}}</h3>
-                        <div class="parentImageWrapper">
+
+                <div class="col-md-5">
+                    <h3>{{parent1.name}}</h3>
+                    <div class="parentImageWrapper">
                         <img class="parentImage" ng-src="{{parent1.images[0].image}}" />
-                        </div>
                     </div>
-                    <div class="col-md-2" style="text-align: center; font-size: 5em; line-height: 2em;">
-                        +
-                    </div>
-                    <div class="col-md-5">
-                        <h3>{{parent2.name}}</h3>
-                        <div class="parentImageWrapper">
+                </div>
+                <div class="col-md-2" style="text-align: center; font-size: 5em; line-height: 2em;">
+                    +
+                </div>
+                <div class="col-md-5">
+                    <h3>{{parent2.name}}</h3>
+                    <div class="parentImageWrapper">
                         <img class="parentImage" ng-src="{{parent2.images[0].image}}" />
-                            </div>
                     </div>
+                </div>
                 <div class="clearfix"></div>
                 <hr />
 
                 <h2>{{childCharacter.name}}</h2>
                 <p>{{childCharacter.affinity}}</p>
                 <h4>ranking</h4>
-                
+
 
                 <div ng-repeat="ranking in childCharacter.rankings">
-        {{ranking.category}}
+                    {{ranking.category}}
     <div class="progress">
         <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="4" aria-valuemin="0" aria-valuemax="7" ng-attr-style="width: {{(ranking.level/7)*100}}%;">
             {{ranking.level}}
         </div>
     </div>
-    </div>
+                </div>
 
 
 
@@ -72,7 +72,8 @@
                 </ul>
             </div>
             <div class="modal-footer">
-               <button type="button" class="btn btn-danger" ng-click="edit()" ng-show="loggedIn" data-dismiss="modal">Edit</button> <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" ng-click="edit()" ng-show="loggedIn" data-dismiss="modal">Edit</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
 

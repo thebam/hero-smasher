@@ -1,12 +1,18 @@
-<div class="character" ng-mouseenter="showStats(character._id)" ng-class="{combineSelected : isSelected(character._id)===true}">
+<div class="character" ng-click="showStats(character._id)" ng-class="{combineSelected : isSelected(character._id)===true,'stats-hide' : character._id!=displayStats}">
     <div class="characterImageWrapper animate-box bounceIn animated">
         <img class="characterImage" ng-src="{{character.images[0].image}}" alt="{{character.name}}" />
+        <h2 class="characterName">{{character.name}}</h2>
+        <h4 class="characterAffinity" ng-class="character.affinity">{{character.affinity}}</h4>
+        <div class="controls">
+            <a title="edit" class="details" href="/#/character/{{character._id}}"><i class="glyphicon glyphicon-cog"></i></a><a title="delete" class="delete" ng-show="loggedIn" class="btn btn-block btn-sm btn-primary" href="/#/delete/{{character._id}}"><i class="glyphicon glyphicon-trash"></i></a>
+        </div>
+
     </div>
-    <h2 class="characterName">{{character.name}}</h2>
-    <h4 class="characterAffinity">{{character.affinity}}</h4>
-    <div class="fh5co-desc" ng-class="{'stats-hide' : character._id!=displayStats}">
+
+
+    <div class="fh5co-desc">
         <div class="innerDesc">
-            <span class="btn btn-danger btn-combine" ng-click="combine(character._id)"><i class="glyphicon glyphicon-transfer"></i> combine</span>
+            <span class="btn btn-danger btn-combine" ng-click="combine(character._id)"><i class="glyphicon glyphicon-transfer"></i>combine</span>
             <h4 class="heading">ranking</h4>
             <div ng-repeat="ranking in character.rankings">
                 {{ranking.category}}
@@ -17,8 +23,8 @@
                 </div>
             </div>
 
-            
-            <a title="details" class="details" href="/#/character/{{character._id}}"><i class="glyphicon glyphicon-question-sign"></i></a>  <a title="delete" class="delete" ng-show="loggedIn" class="btn btn-block btn-sm btn-primary" href="/#/delete/{{character._id}}"><i class="glyphicon glyphicon-trash"></i></a>
+
+
 
 
             <h4 class="heading">powers</h4>
