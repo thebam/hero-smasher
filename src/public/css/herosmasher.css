@@ -60,6 +60,10 @@
     opacity:.5;
 }
 
+.character .characterImageWrapper{
+            background-color: #555;
+        }
+
 .character .characterImageWrapper .characterImage {
             width:100%
         }
@@ -124,6 +128,15 @@ border:solid 1px #ccc !important;
     color:#fff;
     margin-left:.5em;
     margin-right:.5em;
+    font-size:.75em;
+}
+
+.editFlushLeft {
+    margin-left:0;
+}
+
+.editFlushRight {
+    margin-right:0;
 }
 
 .edit:hover {
@@ -231,6 +244,13 @@ width:100%;
             color:#fff;
         }
 
+.sectionTitle{
+    
+}
+
+.sectionTitleFlushTop{
+    margin-top: 0px;
+}
     
 
     .btn-combine {

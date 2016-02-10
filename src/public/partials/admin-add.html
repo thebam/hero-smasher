@@ -1,26 +1,27 @@
 <div class="container">
-    <h1 ng-hide="isEditing('name')">{{character.name || 'CREATE CHARACTER'}}<span ng-show="loggedIn" ng-click="edit('name',character.name)" class="edit edit-default glyphicon glyphicon-pencil"></span></h1>
+    <h1 ng-hide="isEditing('name')"><span ng-show="loggedIn" ng-click="edit('name',character.name)" class="edit editFlushLeft edit-default glyphicon glyphicon-pencil"></span>{{character.name || 'Add Character Name'}}</h1>
     <form method="post" id="frmAddCharacter" name="frmAddCharacter" role="form" novalidate>
         <div class="form-group">
             <input type="text" ng-model="character.name" ng-show="isEditing('name')" name="character_name" class="form-control" placeholder="Name" required />
             <span style="color: red" ng-show="frmAddCharacter.character_name.$dirty && frmAddCharacter.character_name.$invalid">
                 <span ng-show="frmAddCharacter.character_name.$error.required">Name is required.</span>
             </span>
-            <span ng-show="isEditing('name')" ng-click="saveEditing()" class="edit edit-positive glyphicon glyphicon-ok"></span>
-            <span ng-show="isEditing('name')" ng-click="cancelEditing('name')" class="edit edit-negative glyphicon glyphicon-remove"></span>
+            <span ng-show="isEditing('name','edit')" ng-click="saveEditing()" class="edit edit-positive glyphicon glyphicon-ok"></span>
+            <span ng-show="isEditing('name','edit')" ng-click="cancelEditing('name')" class="edit edit-negative glyphicon glyphicon-remove"></span>
         </div>
         <div class="row">
             <div class="col-md-6" ng-repeat="image in character.images">
-                <img ng-src="{{image.image}}" class="details-image" />
-                <span  ng-hide="isEditing('image') || loggedIn === false" ng-click="edit('image',image)" class="edit edit-default glyphicon glyphicon-pencil"></span>
+                <span ng-hide="isEditing('image') || loggedIn === false" ng-click="edit('image',image)" class="edit editFlushLeft edit-default glyphicon glyphicon-pencil"></span>
                 <input ng-show="isEditing('image')" type="text" ng-model="image.image" class="form-control" placeholder="Image File" />
-                <span ng-show="isEditing('image')" ng-click="saveEditing()" class="edit edit-positive glyphicon glyphicon-ok"></span>
-                <span ng-show="isEditing('image')" ng-click="cancelEditing('image')" class="edit edit-negative glyphicon glyphicon-remove"></span>
+                <span ng-show="isEditing('image','edit')" ng-click="saveEditing()" class="edit edit-positive glyphicon glyphicon-ok"></span>
+                <span ng-show="isEditing('image','edit')" ng-click="cancelEditing('image')" class="edit edit-negative glyphicon glyphicon-remove"></span>
+                <img ng-src="{{image.image}}" class="details-image" />
+                
             </div>
 
             <div class="col-md-6">
-                <h3 class="heading">affinity:</h3>
-                <span ng-hide="isEditing('affinity')">{{character.affinity}}  <span ng-show="loggedIn" ng-click="edit('affinity',character.affinity)" class="edit edit-default glyphicon glyphicon-pencil"></span></span>
+                
+                <h4 ng-hide="isEditing('affinity')" class="characterAffinity" ng-class="character.affinity"><span ng-show="loggedIn" ng-click="edit('affinity',character.affinity)" class="edit editFlushLeft edit-default glyphicon glyphicon-pencil"></span>{{character.affinity}}</h4>
                 <div ng-show="isEditing('affinity')" class="form-group">
                     <select ng-model="character.affinity" class="form-control">
                         <option value="">Hero or Villian?</option>
@@ -29,13 +30,10 @@
                         <option value="both">Anti-Hero</option>
                     </select>
                 </div>
-                <span ng-show="isEditing('affinity')" ng-click="saveEditing()" class="edit edit-positive glyphicon glyphicon-ok"></span>
-                <span ng-show="isEditing('affinity')" ng-click="cancelEditing('affinity')" class="edit edit-negative glyphicon glyphicon-remove"></span>
+                <span ng-show="isEditing('affinity','edit')" ng-click="saveEditing()" class="edit edit-positive glyphicon glyphicon-ok"></span>
+                <span ng-show="isEditing('affinity','edit')" ng-click="cancelEditing('affinity')" class="edit edit-negative glyphicon glyphicon-remove"></span>
 
-                <h3 class="heading">ranking:</h3>
-
-
-
+                <h3 class="sectionTitle"><span ng-hide="isEditing('ranking') || loggedIn === false" ng-click="edit('ranking',character.rankings)" class="edit editFlushLeft edit-default glyphicon glyphicon-pencil"></span>ranking</h3>
                 <div ng-hide="isEditing('ranking')">
                     <div ng-repeat="ranking in character.rankings">
                         {{ranking.category}}
@@ -45,7 +43,7 @@
                             </div>
                         </div>
                     </div>
-                    <span ng-show="loggedIn" ng-click="edit('ranking',character.rankings)" class="edit edit-default glyphicon glyphicon-pencil"></span>
+                    
                 </div>
 
 
@@ -88,19 +86,19 @@
                         </div>
                     </div>
                 </div>
-                <span ng-show="isEditing('ranking')" ng-click="saveEditing()" class="edit edit-positive glyphicon glyphicon-ok"></span>
-                <span ng-show="isEditing('ranking')" ng-click="cancelEditing('ranking')" class="edit edit-negative glyphicon glyphicon-remove"></span>
+                <span ng-show="isEditing('ranking','edit')" ng-click="saveEditing()" class="edit edit-positive glyphicon glyphicon-ok"></span>
+                <span ng-show="isEditing('ranking','edit')" ng-click="cancelEditing('ranking')" class="edit edit-negative glyphicon glyphicon-remove"></span>
 
 
             </div>
         </div>
 
-        <h3 class="heading">powers:</h3>
+<h3 class="sectionTitle"><span ng-hide="isEditing('power') || loggedIn === false" ng-click="edit('power',character.powers)" class="edit editFlushLeft edit-default glyphicon glyphicon-pencil"></span>powers<span ng-show="isEditing('power','edit')" ng-click="saveEditing()" class="edit edit-positive glyphicon glyphicon-ok"></span>
+            <span ng-show="isEditing('power','edit')" ng-click="cancelEditing('power')" class="edit edit-negative glyphicon glyphicon-remove"></span></h3>
         <div class="row" ng-hide="isEditing('power')">
             <ul>
                 <li ng-repeat="power in character.powers">{{power.powerName}}</li>
             </ul>
-            <span ng-show="loggedIn" ng-click="edit('power',character.powers)" class="edit edit-default glyphicon glyphicon-pencil"></span>
         </div>
         <div class="row" ng-show="isEditing('power')">
             <div ng-repeat="power in character.powers">
@@ -117,24 +115,26 @@
                     </div>
                 </div>
             </div>
-            <div class="btn-add col-md-12" ng-click="newPower($event)" id="btnAddPower">ADD POWER</div>
-
-            <span ng-show="isEditing('power')" ng-click="saveEditing()" class="edit edit-positive glyphicon glyphicon-ok"></span>
-                <span ng-show="isEditing('power')" ng-click="cancelEditing('power')" class="edit edit-negative glyphicon glyphicon-remove"></span>
+            <div class="col-md-12">
+                <div class="btn btn-success" ng-click="newPower($event)" id="btnAddPower">ADD POWER</div>
+                <hr />
+                </div>
+            
 
 
         </div>
 
-        <h3 class="heading">traits:</h3>
+
+        <h3 class="sectionTitle"><span ng-hide="isEditing('trait') || loggedIn === false" ng-click="edit('trait',character.traits)" class="edit editFlushLeft edit-default glyphicon glyphicon-pencil"></span>traits<span ng-show="isEditing('trait','edit')" ng-click="saveEditing()" class="edit edit-positive glyphicon glyphicon-ok"></span>
+                <span ng-show="isEditing('trait','edit')" ng-click="cancelEditing('trait')" class="edit edit-negative glyphicon glyphicon-remove"></span></h3>
+        
         <div class="row" ng-hide="isEditing('trait')">
             <ul>
                 <li ng-repeat="trait in character.traits">{{trait.trait}}</li>
             </ul>
-            <span ng-show="loggedIn" ng-click="edit('trait',character.traits)" class="edit edit-default glyphicon glyphicon-pencil"></span>
         </div>
         <div class="row" ng-show="isEditing('trait')">
             <div ng-repeat="trait in character.traits">
-
                 <div class="form-group col-md-10">
                     <input ng-model="trait.trait" name="trait_trait" class="form-control" placeholder="Personal Trait" required />
                     <span style="color: red" ng-show="frmAddCharacter.trait_trait.$dirty && frmAddCharacter.trait_trait.$invalid">
@@ -144,32 +144,40 @@
                 <div class="form-group col-md-2">
                     <a class="btn btn-danger" ng-click="character.traits.splice($index, 1)">remove</a>
                 </div>
-
             </div>
-            <div class="btn-add col-md-12" ng-click="newTrait($event)">ADD TRAIT</div>
-
-            <span ng-show="isEditing('trait')" ng-click="saveEditing()" class="edit edit-positive glyphicon glyphicon-ok"></span>
-                <span ng-show="isEditing('trait')" ng-click="cancelEditing('trait')" class="edit edit-negative glyphicon glyphicon-remove"></span>
+            <div class="col-md-12">
+                <div class="btn btn-success" ng-click="newTrait($event)">ADD TRAIT</div>
+                <hr />
+            </div>
+            
         </div>
 
 
-
-        <h3 class="heading">biography:</h3>
-        <p ng-hide="isEditing('bio')">{{character.biography}}<span ng-show="loggedIn" ng-click="edit('bio',character.biography)" class="edit edit-default glyphicon glyphicon-pencil"></span></p>
+        <h3 class="sectionTitle"><span ng-hide="isEditing('bio') || loggedIn === false" ng-click="edit('bio',character.biography)" class="edit editFlushLeft edit-default glyphicon glyphicon-pencil"></span>biography</h3>
+        <p ng-hide="isEditing('bio')">{{character.biography}}</p>
         <div class="row" ng-show="isEditing('bio')">
             <div class="form-group col-md-12">
                 <textarea ng-model="character.biography" ng-show="loggedIn" class="form-control"></textarea>
+                <span ng-show="isEditing('bio','edit')" ng-click="saveEditing()" class="edit edit-positive glyphicon glyphicon-ok"></span>
+                <span ng-show="isEditing('bio','edit')" ng-click="cancelEditing('bio')" class="edit edit-negative glyphicon glyphicon-remove"></span>
             </div>
-            <span ng-show="isEditing('bio')" ng-click="saveEditing()" class="edit edit-positive glyphicon glyphicon-ok"></span>
-                <span ng-show="isEditing('bio')" ng-click="cancelEditing('bio')" class="edit edit-negative glyphicon glyphicon-remove"></span>
+            
         </div>
-        <h3 class="heading">parents:</h3>
+        <h3 class="sectionTitle">parents</h3>
 
         <div class="row">
             <div class="col-md-5">
+                <span  ng-hide="isEditing('parent1') || loggedIn === false || isEditing('parent2')" ng-click="edit('parent1',character.parents)" class="edit editFlushLeft edit-default glyphicon glyphicon-pencil"></span>
+                <div ng-show="isEditing('parent1')">
+                    <select ng-change="updateParent(1)" ng-model="parentSelection" class="form-control">
+                        <option ng-repeat="potentialParent in characters | orderBy:'name'" value="{{potentialParent._id}}">{{potentialParent.name}}</option>
+                    </select>
+                </div>
+                <span ng-show="isEditing('parent1','edit')" ng-click="saveEditing()" class="edit edit-positive glyphicon glyphicon-ok"></span>
+                <span ng-show="isEditing('parent1','edit')" ng-click="cancelEditing('parent')" class="edit edit-negative glyphicon glyphicon-remove"></span>
                 <img class="details-image" ng-src="{{parent1.images[0].image}}" />
                 <h3>{{parent1.name}}</h3>
-                <h4 class="heading">ranking:</h4>
+                <h4 class="sectionTitle">ranking</h4>
                 <div ng-repeat="ranking in parent1.rankings">
                         {{ranking.category}}
                         <div class="progress">
@@ -178,7 +186,7 @@
                             </div>
                         </div>
                     </div>
-                <h4 class="heading">powers:</h4>
+                <h4 class="sectionTitle">powers</h4>
                 <div class="row">
                     <ul>
                         <li ng-repeat="power in parent1.powers">{{power.powerName}}</li>
@@ -186,15 +194,25 @@
                 </div>
 
                 <input type="hidden" ng-model="parent1._id" />
-                <a ng-show="loggedIn" class="btn btn-danger" ng-click="changeParent(1)">change</a>
             </div>
+                
+                
+            
             <div class="col-md-2" style="text-align: center; font-size: 5em; line-height: 2em;">
                 +
             </div>
             <div class="col-md-5">
+                <span  ng-hide="isEditing('parent2') || loggedIn === false || isEditing('parent1')" ng-click="edit('parent2',character.parents)" class="edit editFlushLeft edit-default glyphicon glyphicon-pencil"></span>
+                <div ng-show="isEditing('parent2')">
+                    <select ng-change="updateParent(2)" ng-model="parentSelection2" class="form-control">
+                        <option ng-repeat="potentialParent in characters | orderBy:'name'" value="{{potentialParent._id}}">{{potentialParent.name}}</option>
+                    </select>
+                </div>
+                <span ng-show="isEditing('parent2','edit')" ng-click="saveEditing()" class="edit edit-positive glyphicon glyphicon-ok"></span>
+                <span ng-show="isEditing('parent2','edit')" ng-click="cancelEditing('parent')" class="edit edit-negative glyphicon glyphicon-remove"></span>
                 <img class="details-image" ng-src="{{parent2.images[0].image}}" />
                 <h3>{{parent2.name}}</h3>
-                <h4 class="heading">ranking:</h4>
+                <h4 class="sectionTitle">ranking</h4>
                 <div ng-repeat="ranking in parent2.rankings">
                         {{ranking.category}}
                         <div class="progress">
@@ -203,20 +221,13 @@
                             </div>
                         </div>
                     </div>
-                <h4 class="heading">powers:</h4>
+                <h4 class="sectionTitle">powers</h4>
                 <div class="row">
                     <ul>
                         <li ng-repeat="power in parent2.powers">{{power.powerName}}</li>
                     </ul>
                 </div>
                 <input type="hidden" ng-model="parent2._id" />
-                
-                <a ng-show="loggedIn" class="btn btn-danger" ng-click="changeParent(2)">change</a>
-            </div>
-            <div class="col-md-12" ng-show="showParentChange">
-                <select ng-change="updateParent()" ng-model="parentSelection" class="form-control">
-                    <option ng-repeat="potentialParent in characters | orderBy:'name'" value="{{potentialParent._id}}">{{potentialParent.name}}</option>
-                </select>
             </div>
         </div>
         <hr />

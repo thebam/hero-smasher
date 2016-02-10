@@ -1,12 +1,12 @@
 var heroApp = angular.module('SmasherApp', ['ngResource', 'ngRoute', 'ngCookies']);
-heroApp.config(function ($routeProvider,$httpProvider) {
+heroApp.config(function ($routeProvider, $httpProvider) {
     $httpProvider.defaults.cache = false;
     if (!$httpProvider.defaults.headers.get) {
-      $httpProvider.defaults.headers.get = {};
+        $httpProvider.defaults.headers.get = {};
     }
     // disable IE ajax request caching
     $httpProvider.defaults.headers.get['If-Modified-Since'] = '0';
-    
+
     $routeProvider
         .when('/', {
             templateUrl: 'partials/home.html',
@@ -95,7 +95,7 @@ heroApp.controller('loginController', function ($cookies, $scope, $rootScope, $l
     };
 });
 
-heroApp.controller('mainController', function ($http, $cookies, $scope, $resource, $rootScope,$location, characterModel,editChildCharacter) {
+heroApp.controller('mainController', function ($http, $cookies, $scope, $resource, $rootScope, $location, characterModel, editChildCharacter) {
     $scope.loggedIn = false;
     $scope.loading = true;
 
@@ -170,7 +170,7 @@ heroApp.controller('mainController', function ($http, $cookies, $scope, $resourc
                     } else {
                         powerRange[1] = Number(value.level);
                     }
-                }else{
+                } else {
                     powerRange[1] = 1;
                 }
             }
@@ -181,7 +181,7 @@ heroApp.controller('mainController', function ($http, $cookies, $scope, $resourc
 
     $scope.randomPowers = function () {
         var allPowers = [];
-        var powers = {powers:[]};
+        var powers = { powers: [] };
         angular.forEach($scope.parent1.powers, function (value, key) {
             if (value.powerName !== "No power") {
                 allPowers.push(value.powerName);
@@ -224,11 +224,11 @@ heroApp.controller('mainController', function ($http, $cookies, $scope, $resourc
             energyRange = $scope.rankingRange('Energy Projection');
             fightingRange = $scope.rankingRange('Fighting Skills');
         }
-  
+
         $scope.childCharacter = characterModel.character;
         $scope.childCharacter.name = 'Unamed Character';
         $scope.childCharacter.affinity = 'hero';
-        
+
         $scope.childCharacter.rankings[0].level = $scope.randomBetween(intelligenceRange[0], intelligenceRange[1]).toString();
         $scope.childCharacter.rankings[1].level = $scope.randomBetween(strengthRange[0], strengthRange[1]).toString();
         $scope.childCharacter.rankings[2].level = $scope.randomBetween(speedRange[0], speedRange[1]).toString();
@@ -297,7 +297,7 @@ heroApp.controller('mainController', function ($http, $cookies, $scope, $resourc
             });
         }
     };
-    $scope.edit = function(){
+    $scope.edit = function () {
         $scope.childCharacter.parents[0].parent = $scope.character1;
         $scope.childCharacter.parents[1].parent = $scope.character2;
         editChildCharacter.character = $scope.childCharacter;
@@ -338,10 +338,10 @@ heroApp.controller('deleteController', function ($http, $cookies, $scope, $resou
     });
 });
 
-heroApp.controller('addController', function ($http, $cookies, $scope, $resource, $location, $routeParams, characterModel,editChildCharacter) {
-    
-    
-    
+heroApp.controller('addController', function ($http, $cookies, $scope, $resource, $location, $routeParams, characterModel, editChildCharacter) {
+
+
+
     $scope.loggedIn = false;
     $scope.loading = false;
     $scope.editing = "";
@@ -349,13 +349,27 @@ heroApp.controller('addController', function ($http, $cookies, $scope, $resource
     $scope.edit = function (fieldName, val) {
         $scope.editSavedValue = JSON.stringify(val);
         $scope.editing = fieldName;
+        if (fieldName === 'parent1') {
+            $scope.changeParent(1);
+        }
+        if (fieldName === 'parent2') {
+            $scope.changeParent(2);
+        }
     };
 
-    $scope.isEditing = function (fieldName) {
-        if ($scope.editing === fieldName) {
-            return true;
+    $scope.isEditing = function (fieldName, mode) {
+        if ($routeParams.id) {
+            if ($scope.editing === fieldName) {
+                return true;
+            } else {
+                return false;
+            }
         } else {
-            return false;
+            if (mode === 'edit') {
+                return false;
+            } else {
+                return true;
+            }
         }
     };
 
@@ -388,12 +402,23 @@ heroApp.controller('addController', function ($http, $cookies, $scope, $resource
                 $scope.character.biography = JSON.parse($scope.editSavedValue)
                 break;
             case "parent":
-                $scope.character.parents = [JSON.parse($scope.editSavedValue)]
+                $scope.character.parents = JSON.parse($scope.editSavedValue);
+
+
+                if ($scope.character.parents) {
+                    $scope.getCharacter($scope.character.parents[0].parent, 1);
+                }
+                if ($scope.character.parents) {
+                    $scope.getCharacter($scope.character.parents[1].parent, 2);
+                }
+
+
+
                 break;
         }
         $scope.editSavedValue = '';
     };
-    
+
 
     $scope.getCharacter = function (id, parentNumber) {
         if (id) {
@@ -419,7 +444,7 @@ heroApp.controller('addController', function ($http, $cookies, $scope, $resource
     $scope.character = {};
     $scope.parent1 = {};
     $scope.parent2 = {};
-    $scope.showParentChange = false;
+
 
     var LoadCharacter;
     var displayForm = function () {
@@ -436,24 +461,24 @@ heroApp.controller('addController', function ($http, $cookies, $scope, $resource
             });
         } else {
             if ($scope.loggedIn === true) {
-                
-                if(editChildCharacter.character.name){
+
+                if (editChildCharacter.character.name) {
                     $scope.character = editChildCharacter.character;
-                }else{
+                } else {
                     $scope.character = JSON.parse(JSON.stringify(characterModel.character));
                 }
-                
+
                 if ($scope.character.parents) {
                     $scope.getCharacter($scope.character.parents[0].parent, 1);
                 }
                 if ($scope.character.parents) {
                     $scope.getCharacter($scope.character.parents[1].parent, 2);
                 }
-                
+
             } else {
                 $location.path('/login');
             }
-        }        
+        }
     };
 
 
@@ -497,13 +522,13 @@ heroApp.controller('addController', function ($http, $cookies, $scope, $resource
                 if (response.data === true && response.status === 200) {
                     $scope.loading = false;
                     $location.path('/');
-                    
-                    
+
+
                     editChildCharacter.character = JSON.parse(JSON.stringify(characterModel.character));
-                
-                    
-                    
-                    
+
+
+
+
                 } else {
                     $scope.loading = false;
                     $scope.errorMessage = response.data;
@@ -534,22 +559,21 @@ heroApp.controller('addController', function ($http, $cookies, $scope, $resource
 
     $scope.parentChangeNumber = 1;
     $scope.changeParent = function (parentNumber) {
-        $scope.showParentChange = true;
         if (parentNumber === 1) {
             $scope.parentChangeNumber = 1;
+            $scope.parentSelection = $scope.character.parents[0].parent;
         } else {
             $scope.parentChangeNumber = 2;
+            $scope.parentSelection2 = $scope.character.parents[1].parent;
         }
     };
 
-    $scope.updateParent = function () {
-        if ($scope.parentChangeNumber === 1) {
+    $scope.updateParent = function (parentNumber) {
+        if (parentNumber === 1) {
             $scope.getCharacter($scope.parentSelection, 1);
         } else {
-            $scope.getCharacter($scope.parentSelection, 2);
+            $scope.getCharacter($scope.parentSelection2, 2);
         }
-        $scope.showParentChange = false;
-        $scope.parentSelection = '';
     };
 
 });
