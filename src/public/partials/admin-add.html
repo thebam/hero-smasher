@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" ng-hide="notfound">
     <h1 ng-hide="isEditing('name')"><span ng-show="loggedIn" ng-click="edit('name',character.name)" class="edit editFlushLeft edit-default glyphicon glyphicon-pencil"></span>{{character.name || 'Add Character Name'}}</h1>
     <form method="post" id="frmAddCharacter" name="frmAddCharacter" role="form" novalidate>
         <div class="form-group">
@@ -16,18 +16,18 @@
                 <span ng-show="isEditing('image','edit')" ng-click="saveEditing()" class="edit edit-positive glyphicon glyphicon-ok"></span>
                 <span ng-show="isEditing('image','edit')" ng-click="cancelEditing('image')" class="edit edit-negative glyphicon glyphicon-remove"></span>
                 <img ng-src="{{image.image}}" class="details-image" />
-                
+
             </div>
 
             <div class="col-md-6">
-                
+
                 <h4 ng-hide="isEditing('affinity')" class="characterAffinity" ng-class="character.affinity"><span ng-show="loggedIn" ng-click="edit('affinity',character.affinity)" class="edit editFlushLeft edit-default glyphicon glyphicon-pencil"></span>{{character.affinity}}</h4>
                 <div ng-show="isEditing('affinity')" class="form-group">
                     <select ng-model="character.affinity" class="form-control">
                         <option value="">Hero or Villian?</option>
                         <option value="hero">Hero</option>
                         <option value="villian">Villian</option>
-                        <option value="both">Anti-Hero</option>
+                        <option value="anti-hero">Anti-Hero</option>
                     </select>
                 </div>
                 <span ng-show="isEditing('affinity','edit')" ng-click="saveEditing()" class="edit edit-positive glyphicon glyphicon-ok"></span>
@@ -43,7 +43,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                 </div>
 
 
@@ -93,7 +93,7 @@
             </div>
         </div>
 
-<h3 class="sectionTitle"><span ng-hide="isEditing('power') || loggedIn === false" ng-click="edit('power',character.powers)" class="edit editFlushLeft edit-default glyphicon glyphicon-pencil"></span>powers<span ng-show="isEditing('power','edit')" ng-click="saveEditing()" class="edit edit-positive glyphicon glyphicon-ok"></span>
+        <h3 class="sectionTitle"><span ng-hide="isEditing('power') || loggedIn === false" ng-click="edit('power',character.powers)" class="edit editFlushLeft edit-default glyphicon glyphicon-pencil"></span>powers<span ng-show="isEditing('power','edit')" ng-click="saveEditing()" class="edit edit-positive glyphicon glyphicon-ok"></span>
             <span ng-show="isEditing('power','edit')" ng-click="cancelEditing('power')" class="edit edit-negative glyphicon glyphicon-remove"></span></h3>
         <div class="row" ng-hide="isEditing('power')">
             <ul>
@@ -118,16 +118,16 @@
             <div class="col-md-12">
                 <div class="btn btn-success" ng-click="newPower($event)" id="btnAddPower">ADD POWER</div>
                 <hr />
-                </div>
-            
+            </div>
+
 
 
         </div>
 
 
         <h3 class="sectionTitle"><span ng-hide="isEditing('trait') || loggedIn === false" ng-click="edit('trait',character.traits)" class="edit editFlushLeft edit-default glyphicon glyphicon-pencil"></span>traits<span ng-show="isEditing('trait','edit')" ng-click="saveEditing()" class="edit edit-positive glyphicon glyphicon-ok"></span>
-                <span ng-show="isEditing('trait','edit')" ng-click="cancelEditing('trait')" class="edit edit-negative glyphicon glyphicon-remove"></span></h3>
-        
+            <span ng-show="isEditing('trait','edit')" ng-click="cancelEditing('trait')" class="edit edit-negative glyphicon glyphicon-remove"></span></h3>
+
         <div class="row" ng-hide="isEditing('trait')">
             <ul>
                 <li ng-repeat="trait in character.traits">{{trait.trait}}</li>
@@ -149,7 +149,7 @@
                 <div class="btn btn-success" ng-click="newTrait($event)">ADD TRAIT</div>
                 <hr />
             </div>
-            
+
         </div>
 
 
@@ -161,13 +161,13 @@
                 <span ng-show="isEditing('bio','edit')" ng-click="saveEditing()" class="edit edit-positive glyphicon glyphicon-ok"></span>
                 <span ng-show="isEditing('bio','edit')" ng-click="cancelEditing('bio')" class="edit edit-negative glyphicon glyphicon-remove"></span>
             </div>
-            
+
         </div>
         <h3 class="sectionTitle">parents</h3>
 
         <div class="row">
             <div class="col-md-5">
-                <span  ng-hide="isEditing('parent1') || loggedIn === false || isEditing('parent2')" ng-click="edit('parent1',character.parents)" class="edit editFlushLeft edit-default glyphicon glyphicon-pencil"></span>
+                <span ng-hide="isEditing('parent1') || loggedIn === false || isEditing('parent2')" ng-click="edit('parent1',character.parents)" class="edit editFlushLeft edit-default glyphicon glyphicon-pencil"></span>
                 <div ng-show="isEditing('parent1')">
                     <select ng-change="updateParent(1)" ng-model="parentSelection" class="form-control">
                         <option ng-repeat="potentialParent in characters | orderBy:'name'" value="{{potentialParent._id}}">{{potentialParent.name}}</option>
@@ -179,13 +179,13 @@
                 <h3>{{parent1.name}}</h3>
                 <h4 class="sectionTitle">ranking</h4>
                 <div ng-repeat="ranking in parent1.rankings">
-                        {{ranking.category}}
+                    {{ranking.category}}
                         <div class="progress">
                             <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="4" aria-valuemin="0" aria-valuemax="7" style='width: {{(ranking.level/7)*100}}%;'>
                                 {{ranking.level}}
                             </div>
                         </div>
-                    </div>
+                </div>
                 <h4 class="sectionTitle">powers</h4>
                 <div class="row">
                     <ul>
@@ -195,14 +195,14 @@
 
                 <input type="hidden" ng-model="parent1._id" />
             </div>
-                
-                
-            
+
+
+
             <div class="col-md-2" style="text-align: center; font-size: 5em; line-height: 2em;">
                 +
             </div>
             <div class="col-md-5">
-                <span  ng-hide="isEditing('parent2') || loggedIn === false || isEditing('parent1')" ng-click="edit('parent2',character.parents)" class="edit editFlushLeft edit-default glyphicon glyphicon-pencil"></span>
+                <span ng-hide="isEditing('parent2') || loggedIn === false || isEditing('parent1')" ng-click="edit('parent2',character.parents)" class="edit editFlushLeft edit-default glyphicon glyphicon-pencil"></span>
                 <div ng-show="isEditing('parent2')">
                     <select ng-change="updateParent(2)" ng-model="parentSelection2" class="form-control">
                         <option ng-repeat="potentialParent in characters | orderBy:'name'" value="{{potentialParent._id}}">{{potentialParent.name}}</option>
@@ -214,13 +214,13 @@
                 <h3>{{parent2.name}}</h3>
                 <h4 class="sectionTitle">ranking</h4>
                 <div ng-repeat="ranking in parent2.rankings">
-                        {{ranking.category}}
+                    {{ranking.category}}
                         <div class="progress">
                             <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="4" aria-valuemin="0" aria-valuemax="7" style='width: {{(ranking.level/7)*100}}%;'>
                                 {{ranking.level}}
                             </div>
                         </div>
-                    </div>
+                </div>
                 <h4 class="sectionTitle">powers</h4>
                 <div class="row">
                     <ul>
@@ -238,4 +238,9 @@
         </span>
         <a class="btn btn-default" ng-show="loggedIn" href="/#/">Cancel</a>
     </form>
+</div>
+<div class="container" ng-show="notfound">
+    <h1>Not Found</h1>
+    <p>The character you are looking for was not found.</p>
+    <a class="btn btn-danger" href="/#/">Continue</a>
 </div>

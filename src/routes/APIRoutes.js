@@ -27,6 +27,7 @@ var router = function (coll, db) {
                 var parents = req.body.parents;
                 var character = {
                     name: name,
+                    uName: name.toLowerCase(),
                     affinity: affinity,
                     rankings: rankings,
                     powers: powers,
@@ -36,7 +37,7 @@ var router = function (coll, db) {
                     parents: parents
                 };
                 if (coll) {
-                    coll.findOne({ name: character.name }, function (err, results) {
+                    coll.findOne({ uName: character.name.toLowerCase() }, function (err, results) {
                         if (err === null) {
                             if (results === null) {
                                 coll.insert(character, function (err, results) {
@@ -54,11 +55,36 @@ var router = function (coll, db) {
         });
     APIRouter.route('/edit/:id')
         .get(function (req, res) {
-            var id = new ObjectId(req.params.id);
+            var id = req.params.id;
             if (id) {
                 if (coll) {
-                    coll.findOne({ _id: id }, function (err, results) {
-                        res.json(results);
+                    coll.findOne({ uName: id.toLowerCase() }, function (err, results) {
+                        if (err === null) {
+                            if (results !== null) {
+                                res.json(results);
+                            } else {
+                                if (id.length === 24) {
+                                    id = new ObjectId(req.params.id);
+                                    if (id) {
+                                        if (coll) {
+                                            coll.findOne({ _id: id }, function (err, results) {
+                                                if (err === null) {
+                                                    if (results !== null) {
+                                                        res.json(results);
+                                                    } else {
+                                                        res.send('');
+                                                    }
+                                                } else {
+                                                    res.send('');
+                                                }
+                                            });
+                                        }
+                                    }
+                                } else {
+                                    res.send('');
+                                }
+                            }
+                        }
                     });
                 }
             }
@@ -78,6 +104,7 @@ var router = function (coll, db) {
                 if (coll) {
                     coll.update({ _id: id }, {
                         name: name,
+                        uName: name.toLowerCase(),
                         affinity: affinity,
                         rankings: rankings,
                         powers: powers,
@@ -166,12 +193,9 @@ var router = function (coll, db) {
 
     APIRouter.route('/checkAuth')
         .get(function (req, res) {
-            console.log('s');
             if (req.isAuthenticated()) {
-                console.log('check auth true');
                 res.send(true);
             } else {
-                console.log('check auth false');
                 res.send(false);
             }
         });

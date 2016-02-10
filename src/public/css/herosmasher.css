@@ -1,266 +1,261 @@
-.btn-add{
+.btn-add {
     cursor: pointer;
 }
-.btn-add:before{
-    content:"\e081";
-    font-family: 'Glyphicons Halflings';
-    font-weight: 300;
-    font-size: 1em;
-    line-height: 1em;
-    color: #818892;
-    display: inline-block;
-}
+
+    .btn-add:before {
+        content: "\e081";
+        font-family: 'Glyphicons Halflings';
+        font-weight: 300;
+        font-size: 1em;
+        line-height: 1em;
+        color: #818892;
+        display: inline-block;
+    }
+
 .parentImageWrapper {
-    width:100%;
-    background-color:#ccc;
+    width: 100%;
+    background-color: #ccc;
 }
-.parentImageWrapper .parentImage {
-    height:150px;
-    margin:0 auto;
-    display:block;
-}
+
+    .parentImageWrapper .parentImage {
+        height: 150px;
+        margin: 0 auto;
+        display: block;
+    }
 
 #fh5co-board .item {
-    margin-right:0 !important;
-    margin-left:0 !important;
-    border-radius:0 !important;
-
-
-
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+    border-radius: 0 !important;
     -webkit-box-shadow: none !important;
     -moz-box-shadow: none !important;
     box-shadow: none !important;
-
 }
 
-#fh5co-board .item .fh5co-desc {
-    float:none !important;
-    padding:0 !important;
-}
+    #fh5co-board .item .fh5co-desc {
+        float: none !important;
+        padding: 0 !important;
+    }
 
 
 
 
 #fh5co-header {
-    padding-top:0 !important;
+    padding-top: 0 !important;
 }
 
 
-.fh5co-menu-btn,.fh5co-offcanvass-close {
-    cursor:pointer;
+.fh5co-menu-btn, .fh5co-offcanvass-close {
+    cursor: pointer;
 }
 
 .progress {
     background-color: #cccccc !important;
-    margin-top:0 !important;
-    margin-bottom:0 !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
 }
 
-.combineSelected{
-    opacity:.5;
+.combineSelected {
+    opacity: .5;
 }
 
-.character .characterImageWrapper{
-            background-color: #555;
-        }
+.character .characterImageWrapper {
+    background-color: #555;
+}
 
-.character .characterImageWrapper .characterImage {
-            width:100%
-        }
+    .character .characterImageWrapper .characterImage {
+        width: 100%;
+    }
 
 .hero {
-    background-color:#5cb85c;
+    background-color: #5cb85c;
 }
 
 .villian {
-    background-color:#d9534f;
+    background-color: #d9534f;
 }
 
-.both {
-    background-color:#f0ad4e;
+.anti-hero {
+    background-color: #f0ad4e;
 }
 
 .characterAffinity {
-     
-        padding:10px 15px;
-        color:#fff;
-         display:inline-block ;
-        }
+    padding: 10px 15px;
+    color: #fff;
+    display: inline-block;
+}
 
 
 .character {
-cursor:pointer;
+    cursor: pointer;
 }
 
-.character .characterAffinity {
-     position:absolute;
-        top:0px;
-        right:0;
-        margin-top:0;
-        }
-.controls {
-        position:absolute;
-        top:0px;
-        left:0px;
-        font-size:1.5em;
-        background-color:#fff;
-        border-left:solid 1px #555;
-        border-top:solid 1px #555;
-         border-bottom:solid 1px #555;
+    .character .characterAffinity {
+        position: absolute;
+        top: 0px;
+        right: 0;
+        margin-top: 0;
     }
 
-.controls a{
-   padding: .25em .5em;
-        display:inline-block !important;
-        color:#555;
-        
-        border-right:solid 1px #555;
-       
+.controls {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    font-size: 1.5em;
+    background-color: #fff;
+    border-left: solid 1px #555;
+    border-top: solid 1px #555;
+    border-bottom: solid 1px #555;
+}
+
+    .controls a {
+        padding: .25em .5em;
+        display: inline-block !important;
+        color: #555;
+        border-right: solid 1px #555;
     }
+
 #search {
-border:solid 1px #ccc !important;
+    border: solid 1px #ccc !important;
 }
 
 .edit {
-    cursor:pointer;
-    padding:5px;
-    border-radius:5px;
-    color:#fff;
-    margin-left:.5em;
-    margin-right:.5em;
-    font-size:.75em;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 5px;
+    color: #fff;
+    margin-left: .5em;
+    margin-right: .5em;
+    font-size: .75em;
 }
 
 .editFlushLeft {
-    margin-left:0;
+    margin-left: 0;
 }
 
 .editFlushRight {
-    margin-right:0;
+    margin-right: 0;
 }
 
 .edit:hover {
-    background-color:#444;
+    background-color: #444;
 }
 
 .edit-default {
-    background-color:#ccc;
+    background-color: #ccc;
 }
 
 .edit-positive {
-    background-color:#5cb85c;
+    background-color: #5cb85c;
 }
 
 .edit-negative {
-    background-color:#d9534f;
+    background-color: #d9534f;
 }
 
 .modal-footer .btn + .btn {
-    margin-bottom:20px !important;
+    margin-bottom: 20px !important;
 }
 
 .details-image {
-width:100%;
+    width: 100%;
 }
 
 
 @media screen and (max-width:768px) {
     body {
-        background-color:white !important;
+        background-color: white !important;
     }
 
     .character {
-    border:solid 1px #ccc;
-    padding:15px;
-}
-
-   
+        border: solid 1px #ccc;
+        padding: 15px;
+    }
 }
 
 @media screen and (min-width:767px) {
     body {
-        background-color:white !important;
+        background-color: white !important;
     }
+
     .character {
-    z-index:100;
+        z-index: 100;
     }
-    .character .characterImageWrapper {
-            height:100%;
+
+        .character .characterImageWrapper {
+            height: 100%;
         }
 
     .stats-hide .characterImageWrapper {
-            height:350px;
-        }
-
-
-        .character .characterAffinity {
-            
-       
-        border-bottom:solid 1px #fff;
-        border-left:solid 1px #fff;
-        }
-
-
-    .character .characterName{
-        background-color:#555;
-        position:absolute;
-        bottom:-1px;
-        margin-bottom:0;
-        color:#fff;
-        padding:10px 15px;
-        border-top:solid 1px #fff;
-        border-right:solid 1px #fff;
+        height: 350px;
     }
 
-    .stats-hide .characterName{
-        background-color:#fff;
-        color:#000;
+
+    .character .characterAffinity {
+        border-bottom: solid 1px #fff;
+        border-left: solid 1px #fff;
     }
 
-    .stats-hide .fh5co-desc{
-        display:none;
+
+    .character .characterName {
+        background-color: #555;
+        position: absolute;
+        bottom: -1px;
+        margin-bottom: 0;
+        color: #fff;
+        padding: 10px 15px;
+        border-top: solid 1px #fff;
+        border-right: solid 1px #fff;
+    }
+
+    .stats-hide .characterName {
+        background-color: #fff;
+        color: #000;
+    }
+
+    .stats-hide .fh5co-desc {
+        display: none;
     }
 
     .fh5co-desc {
-        width:100%;
-        background-color:#555;
-        border-top:solid 1px #fff;
+        width: 100%;
+        background-color: #555;
+        border-top: solid 1px #fff;
     }
 
-    
-    
+
+
         .fh5co-desc .innerDesc {
-            padding-right:15px;
-            padding-bottom:15px;
-            padding-left:15px;
+            padding-right: 15px;
+            padding-bottom: 15px;
+            padding-left: 15px;
         }
 
-        .stats-hide{
-            z-index:1;
-        }
+    .stats-hide {
+        z-index: 1;
+    }
 
 
-        .fh5co-desc .innerDesc .heading {
-            color:#fff;
-        }
+    .fh5co-desc .innerDesc .heading {
+        color: #fff;
+    }
 
-.sectionTitle{
-    
-}
+    .sectionTitle {
+    }
 
-.sectionTitleFlushTop{
-    margin-top: 0px;
-}
-    
+    .sectionTitleFlushTop {
+        margin-top: 0px;
+    }
+
 
     .btn-combine {
-        margin-top:10px;
-        margin-bottom:0px !important;
-        padding:5px 10px !important;
+        margin-top: 10px;
+        margin-bottom: 0px !important;
+        padding: 5px 10px !important;
         font-size: 10px;
     }
 
     .controls {
-        font-size:1em;
+        font-size: 1em;
     }
 }

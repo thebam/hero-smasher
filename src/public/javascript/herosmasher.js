@@ -179,26 +179,47 @@ heroApp.controller('mainController', function ($http, $cookies, $scope, $resourc
     };
 
 
+    Array.prototype.shuffle = function () {
+        var input = this;
+
+        for (var i = input.length - 1; i >= 0; i--) {
+
+            var randomIndex = Math.floor(Math.random() * (i + 1));
+            var itemAtIndex = input[randomIndex];
+
+            input[randomIndex] = input[i];
+            input[i] = itemAtIndex;
+        }
+        return input;
+    }
+
     $scope.randomPowers = function () {
         var allPowers = [];
         var powers = { powers: [] };
         angular.forEach($scope.parent1.powers, function (value, key) {
-            if (value.powerName !== "No power") {
+            if (value.powerName !== 'No power') {
                 allPowers.push(value.powerName);
             }
         });
         angular.forEach($scope.parent2.powers, function (value, key) {
-            if (value.powerName !== "No power") {
+            if (value.powerName !== 'No power') {
                 allPowers.push(value.powerName);
             }
         });
+
+        allPowers.shuffle();
+        var childNumberPowers = $scope.randomBetween(1, allPowers.length);
+
+        allPowers.splice(childNumberPowers, allPowers.length - childNumberPowers);
+
+
         var uniqueNames = [];
         $.each(allPowers, function (i, el) {
-            if ($.inArray(el, uniqueNames) === -1) uniqueNames.push(el);
+            if ($.inArray(el, uniqueNames) === -1) { uniqueNames.push(el); }
         });
 
 
-        for (x = 0; x < uniqueNames.length; x++) {
+        for (var x = 0; x < uniqueNames.length; x++) {
             powers.powers[x] = { id: x, powerName: uniqueNames[x] };
         }
         return powers.powers;
@@ -227,7 +248,20 @@ heroApp.controller('mainController', function ($http, $cookies, $scope, $resourc
 
         $scope.childCharacter = characterModel.character;
         $scope.childCharacter.name = 'Unamed Character';
-        $scope.childCharacter.affinity = 'hero';
+
+        var tempAffinity = $scope.randomBetween(1, 3);
+        switch (tempAffinity) {
+            case 1:
+                $scope.childCharacter.affinity = 'hero';
+                break;
+            case 2:
+                $scope.childCharacter.affinity = 'villian';
+                break;
+            case 3:
+                $scope.childCharacter.affinity = 'both';
+                break;
+        };
+
 
         $scope.childCharacter.rankings[0].level = $scope.randomBetween(intelligenceRange[0], intelligenceRange[1]).toString();
         $scope.childCharacter.rankings[1].level = $scope.randomBetween(strengthRange[0], strengthRange[1]).toString();
@@ -238,7 +272,10 @@ heroApp.controller('mainController', function ($http, $cookies, $scope, $resourc
 
         $scope.childCharacter.powers = $scope.randomPowers();
 
+
+
         $('#myModal').modal('show');
+
 
     };
 
@@ -248,11 +285,11 @@ heroApp.controller('mainController', function ($http, $cookies, $scope, $resourc
             return true;
         }
     };
-    $scope.displayStats = "";
+    $scope.displayStats = '';
 
     $scope.showStats = function (id) {
         if ($scope.displayStats === id) {
-            $scope.displayStats = "";
+            $scope.displayStats = '';
         } else {
             $scope.displayStats = id;
         }
@@ -270,11 +307,11 @@ heroApp.controller('mainController', function ($http, $cookies, $scope, $resourc
 
     $scope.combine = function (id) {
         if (id === $scope.character1) {
-            $scope.character1 = "";
+            $scope.character1 = '';
             return;
         }
         if (id === $scope.character2) {
-            $scope.character2 = "";
+            $scope.character2 = '';
             return;
         }
 
@@ -344,8 +381,8 @@ heroApp.controller('addController', function ($http, $cookies, $scope, $resource
 
     $scope.loggedIn = false;
     $scope.loading = false;
-    $scope.editing = "";
-    $scope.editSavedValue = "";
+    $scope.editing = '';
+    $scope.editSavedValue = '';
     $scope.edit = function (fieldName, val) {
         $scope.editSavedValue = JSON.stringify(val);
         $scope.editing = fieldName;
@@ -374,46 +411,41 @@ heroApp.controller('addController', function ($http, $cookies, $scope, $resource
     };
 
     $scope.saveEditing = function () {
-        $scope.editing = "";
+        $scope.editing = '';
     };
 
     $scope.cancelEditing = function (fieldName) {
-        $scope.editing = "";
+        $scope.editing = '';
         switch (fieldName) {
-            case "name":
-                $scope.character.name = JSON.parse($scope.editSavedValue)
+            case 'name':
+                $scope.character.name = JSON.parse($scope.editSavedValue);
                 break;
-            case "affinity":
-                $scope.character.affinity = JSON.parse($scope.editSavedValue)
+            case 'affinity':
+                $scope.character.affinity = JSON.parse($scope.editSavedValue);
                 break;
-            case "image":
-                $scope.character.images = [JSON.parse($scope.editSavedValue)]
+            case 'image':
+                $scope.character.images = [JSON.parse($scope.editSavedValue)];
                 break;
-            case "ranking":
-                $scope.character.rankings = JSON.parse($scope.editSavedValue)
+            case 'ranking':
+                $scope.character.rankings = JSON.parse($scope.editSavedValue);
                 break;
-            case "power":
-                $scope.character.powers = JSON.parse($scope.editSavedValue)
+            case 'power':
+                $scope.character.powers = JSON.parse($scope.editSavedValue);
                 break;
-            case "trait":
-                $scope.character.traits = JSON.parse($scope.editSavedValue)
+            case 'trait':
+                $scope.character.traits = JSON.parse($scope.editSavedValue);
                 break;
-            case "bio":
-                $scope.character.biography = JSON.parse($scope.editSavedValue)
+            case 'bio':
+                $scope.character.biography = JSON.parse($scope.editSavedValue);
                 break;
-            case "parent":
+            case 'parent':
                 $scope.character.parents = JSON.parse($scope.editSavedValue);
-
-
                 if ($scope.character.parents) {
                     $scope.getCharacter($scope.character.parents[0].parent, 1);
                 }
                 if ($scope.character.parents) {
                     $scope.getCharacter($scope.character.parents[1].parent, 2);
                 }
-
-
-
                 break;
         }
         $scope.editSavedValue = '';
@@ -444,19 +476,23 @@ heroApp.controller('addController', function ($http, $cookies, $scope, $resource
     $scope.character = {};
     $scope.parent1 = {};
     $scope.parent2 = {};
-
+    $scope.notfound = false;
 
     var LoadCharacter;
     var displayForm = function () {
         if ($routeParams.id) {
             LoadCharacter = $resource('/api/edit/:id', { id: '@_id' }, { update: { method: 'PUT' } });
             LoadCharacter.get({ id: $routeParams.id }, function (character) {
-                $scope.character = character;
-                if ($scope.character.parents) {
-                    $scope.getCharacter($scope.character.parents[0].parent, 1);
-                }
-                if ($scope.character.parents) {
-                    $scope.getCharacter($scope.character.parents[1].parent, 2);
+                if (character._id) {
+                    $scope.character = character;
+                    if ($scope.character.parents) {
+                        $scope.getCharacter($scope.character.parents[0].parent, 1);
+                    }
+                    if ($scope.character.parents) {
+                        $scope.getCharacter($scope.character.parents[1].parent, 2);
+                    }
+                } else {
+                    $scope.notfound = true;
                 }
             });
         } else {
