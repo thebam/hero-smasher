@@ -1,16 +1,3 @@
-.btn-add {
-    cursor: pointer;
-}
-
-    .btn-add:before {
-        content: "\e081";
-        font-family: 'Glyphicons Halflings';
-        font-weight: 300;
-        font-size: 1em;
-        line-height: 1em;
-        color: #818892;
-        display: inline-block;
-    }
 
 .parentImageWrapper {
     width: 100%;
@@ -30,6 +17,7 @@
     -webkit-box-shadow: none !important;
     -moz-box-shadow: none !important;
     box-shadow: none !important;
+    position:relative;
 }
 
     #fh5co-board .item .fh5co-desc {
@@ -56,7 +44,18 @@
 }
 
 .combineSelected {
-    opacity: .5;
+    opacity:.5;
+}
+
+.combineSelected:after {
+    content: "\e067";
+    font-family: 'Glyphicons Halflings';
+    font-size: 5em;
+    line-height: 1em;
+    color: #5cb85c;
+    position:absolute;
+    left: 30%;
+    top: 100px;
 }
 
 .character .characterImageWrapper {
@@ -92,18 +91,18 @@
 
     .character .characterAffinity {
         position: absolute;
-        top: 0px;
-        right: 0;
+        top: 0;
+        left: 0;
         margin-top: 0;
     }
 
 .controls {
     position: absolute;
-    top: 0px;
-    left: 0px;
+    top: 0;
+    right: 0;
     font-size: 1.5em;
     background-color: #fff;
-    border-left: solid 1px #555;
+    border-right: solid 1px #555;
     border-top: solid 1px #555;
     border-bottom: solid 1px #555;
 }
@@ -112,7 +111,7 @@
         padding: .25em .5em;
         display: inline-block !important;
         color: #555;
-        border-right: solid 1px #555;
+        border-left: solid 1px #555;
     }
 
 #search {
@@ -169,13 +168,32 @@
 
     .character {
         border: solid 1px #ccc;
-        padding: 15px;
+        padding: 15px;       
+    }
+    .character .characterImageWrapper {
+            margin-bottom:10px;
+        }
+    .character .characterName {
+        background-color: #fff;
+        color: #000;
+        padding: 10px 15px 10px 0;
+        margin-bottom:-1px;
+        display:inline-block;
+    }
+
+    .combineSelected:after {
+        left: 40%;
     }
 }
 
 @media screen and (min-width:767px) {
     body {
         background-color: white !important;
+    }
+
+    .combineSelected:after {
+        left: 36%;
+        font-size: 10em;
     }
 
     .character {
@@ -193,7 +211,7 @@
 
     .character .characterAffinity {
         border-bottom: solid 1px #fff;
-        border-left: solid 1px #fff;
+        border-right: solid 1px #fff;
     }
 
 
