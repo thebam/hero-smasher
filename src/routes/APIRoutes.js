@@ -13,8 +13,8 @@ var router = function (coll, db) {
                     res.json(results);
                 });
             }
-        });
-    APIRouter.route('/')
+        })
+    
         .post(function (req, res) {
             if (req.user) {
                 var name = req.body.name;
@@ -88,8 +88,7 @@ var router = function (coll, db) {
                     });
                 }
             }
-        });
-    APIRouter.route('/edit/:id')
+        })
         .put(function (req, res) {
             if (req.user) {
                 var id = new ObjectId(req.params.id);
@@ -126,8 +125,7 @@ var router = function (coll, db) {
                     res.json(results);
                 });
             }
-        });
-    APIRouter.route('/delete/:id')
+        })
         .delete(function (req, res) {
             if (req.user) {
                 var id = new ObjectId(req.params.id);

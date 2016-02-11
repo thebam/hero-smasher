@@ -258,7 +258,7 @@ heroApp.controller('mainController', function ($http, $cookies, $scope, $resourc
                 $scope.childCharacter.affinity = 'villian';
                 break;
             case 3:
-                $scope.childCharacter.affinity = 'both';
+                $scope.childCharacter.affinity = 'anti-hero';
                 break;
         };
 
