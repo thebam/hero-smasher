@@ -7444,9 +7444,7 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 0;
 }
 
-#fh5co-main {
-  padding-top: 5em;
-}
+
 
 #fh5co-board .item {
   margin: 10px 10px 20px 10px;
@@ -7625,44 +7623,6 @@ pre {
   font-size: 15px;
 }
 
-#fh5co-footer {
-  padding: 10em 0;
-}
-@media screen and (max-width: 768px) {
-  #fh5co-footer {
-    padding: 5em 0;
-  }
-}
-#fh5co-footer .fh5co-footer-widget {
-  padding-right: 30px !important;
-  float: left;
-  width: 100%;
-}
-#fh5co-footer .fh5co-footer-widget.top-level {
-  margin-top: 30px !important;
-}
-#fh5co-footer .fh5co-footer-widget .fh5co-footer-lead {
-  font-size: 14px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  margin-bottom: 20px;
-}
-#fh5co-footer .fh5co-footer-logo {
-  font-family: "Montserrat", arial, sans-serif;
-  font-size: 30px;
-  color: #ccc;
-  margin-bottom: 30px;
-}
-#fh5co-footer ul {
-  padding: 0;
-  margin: 0;
-}
-#fh5co-footer ul li {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 14px 0;
-  line-height: 16px;
-}
 
 .fh5co-list-check {
   position: relative;
