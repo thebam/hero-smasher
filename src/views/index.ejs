@@ -31,10 +31,7 @@
 
 
 
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular-resource.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular-route.min.js"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular-cookies.min.js"></script>
+	       
 
   <!-- 
 	//////////////////////////////////////////////////////
@@ -53,30 +50,45 @@
 	<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 	<link rel="shortcut icon" href="favicon.ico">
 
-	<!-- Google Webfonts -->
-	<link href='http://fonts.googleapis.com/css?family=Roboto:400,300,100,500' rel='stylesheet' type='text/css'>
-	<link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
-	
-	
-	<!-- inject:css--> 
-	<link rel="stylesheet" href="/css/animate.css"> 
-	<link rel="stylesheet" href="/css/herosmasher.css"> 
-	<link rel="stylesheet" href="/css/icomoon.css"> 
-	<link rel="stylesheet" href="/css/style.css"> 
-	<!-- endinject -->
-	
-	
-	<!-- FOR IE9 below -->
-	<!--[if lt IE 9]>
-	<script src="javascript/respond.min.js"></script>
-	<![endif]-->
 
 	</head>
 	<body>
-		
-	<div id="fh5co-offcanvass">
+		<style>
+        header{
+        clear:both;
+       
+        }
+        header .headerContent{
+            margin:0 auto;
+            text-align:center;
+            
+            
+            text-align: center;
+    font-weight: bold;
+    display: block;
+    width:100%;
+    font-family: "Montserrat", arial, sans-serif;
+    
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 20px;
+
+    
+    
+            
+            
+        }
+        
+        header .headerContent a{
+        text-decoration:none;
+        color: #000;
+        }
+        
+        
+        </style>
+	<!--<div id="fh5co-offcanvass">
 		<span class="fh5co-offcanvass-close js-fh5co-offcanvass-close">Menu <i class="icon-cross"></i> </span>
-		<h1 class="fh5co-logo"><a class="navbar-brand" href="index.html">Hero Smasher</a></h1>
+		
 		<ul>
 			<li class="active"><a href="/#/">Home</a></li>
 			<li><a href="/#/add/">Add Character</a></li>
@@ -87,22 +99,39 @@
 			<a href="#"><i class="icon-twitter"></i></a>
 			<a href="#"><i class="icon-facebook"></i></a>
 		</p>
-	</div>
-	<header id="fh5co-header" role="banner">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-12">
-					<span class="fh5co-menu-btn js-fh5co-menu-btn">Menu <i class="icon-menu"></i></span>
-					<a class="navbar-brand" href="/#/">Hero Smasher</a>		
-				</div>
-			</div>
+	</div>-->
+	<header>
+		<div class="headerContent">
+		  <a href="/#/">HERO SMASHER</a>
 		</div>
 	</header>
 	<!-- END .header -->
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular-resource.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular-route.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular-cookies.min.js"></script>
+	<!-- Google Webfonts -->
+	<link href='http://fonts.googleapis.com/css?family=Roboto:400,300,100,500' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+	
+	
+	<!-- inject:css--> 
+	<link rel="stylesheet" href="/css/animate.css"> 
+	<link rel="stylesheet" href="/css/herosmasher.css"> 
+	<link rel="stylesheet" href="/css/icomoon.css"> 
+	<!--<link rel="stylesheet" href="/css/style.css">-->
+	<!-- endinject -->
+	
+	
+	<!-- FOR IE9 below -->
+	<!--[if lt IE 9]>
+	<script src="javascript/respond.min.js"></script>
+	<![endif]-->
 	<div id="fh5co-main">
     
 			<div ng-view>
-	
+	<img src="images/loading.gif" />
 			</div>
         
 </div>
