@@ -191,7 +191,7 @@ heroApp.controller('mainController', function ($http, $cookies, $scope, $resourc
             input[i] = itemAtIndex;
         }
         return input;
-    }
+    };
 
     $scope.randomPowers = function () {
         var allPowers = [];
@@ -260,7 +260,7 @@ heroApp.controller('mainController', function ($http, $cookies, $scope, $resourc
             case 3:
                 $scope.childCharacter.affinity = 'anti-hero';
                 break;
-        };
+        }
 
 
         $scope.childCharacter.rankings[0].level = $scope.randomBetween(intelligenceRange[0], intelligenceRange[1]).toString();
@@ -271,8 +271,6 @@ heroApp.controller('mainController', function ($http, $cookies, $scope, $resourc
         $scope.childCharacter.rankings[5].level = $scope.randomBetween(fightingRange[0], fightingRange[1]).toString();
 
         $scope.childCharacter.powers = $scope.randomPowers();
-
-
 
         $('#myModal').modal('show');
 
