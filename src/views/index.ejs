@@ -4,14 +4,13 @@
 <!--[if IE 8]>         <html lang="en" ng-app="SmasherApp" class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html lang="en" ng-app="SmasherApp" class="no-js"> <!--<![endif]-->
 	<head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Hero Smasher</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="Explore possible offspring of combining your favorite comic book superheroes and villains" />	
-	<meta name="keywords" content="comic, book, superhero, combine, villain"/>
-	<meta name="author" content="Hero Smasher"/>
-
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>Hero Smasher</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="Explore possible offspring of combining your favorite comic book superheroes and villains" />	
+		<meta name="keywords" content="comic, book, superhero, combine, villain"/>
+		<meta name="author" content="Hero Smasher"/>
 		<!-- Facebook -->
 		<!-- <meta property="fb:app_id" content=""> -->
 		<!-- Facebook, LinkedIn, Pinterest Open Graph data -->
@@ -29,99 +28,200 @@
 		<meta name="twitter:description" content="Explore possible offspring of combining your favorite comic book superheroes and villains">
 		<meta name="twitter:image" content=""> -->
 
+		<!-- 
+		//////////////////////////////////////////////////////
 
-
-	       
-
-  <!-- 
-	//////////////////////////////////////////////////////
-
-	FREE HTML5 TEMPLATE 
-	DESIGNED & DEVELOPED by FREEHTML5.CO
+		FREE HTML5 TEMPLATE 
+		DESIGNED & DEVELOPED by FREEHTML5.CO
 		
-	Website: 		http://freehtml5.co/
-	Email: 			info@freehtml5.co
-	Twitter: 		http://twitter.com/fh5co
-	Facebook: 		https://www.facebook.com/fh5co
+		Website: 		http://freehtml5.co/
+		Email: 			info@freehtml5.co
+		Twitter: 		http://twitter.com/fh5co
+		Facebook: 		https://www.facebook.com/fh5co
 
-	//////////////////////////////////////////////////////
-	 -->
+		//////////////////////////////////////////////////////
+		 -->
 
-	<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-	<link rel="shortcut icon" href="favicon.ico">
-
-
+		<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+		<link rel="shortcut icon" href="favicon.ico">
 	</head>
 	<body>
 		<style>
-        a {
-		    color: #EF5353;
-    text-decoration: none;
+			a {
+				color: #EF5353;
+				text-decoration: none;
+			}
+			header{
+				margin-bottom:11em;
+			}
+		        header .menu {
+					position:fixed;
+					width:12em;
+					height:12em;
+					left:50%;
+					top:-6em;
+					border-radius:6em;
+					background-color:#fff;
+					margin-left:-6em;
+					z-index:99;
+				}
+					header .menu p {
+						position:relative;
+						bottom:-6em;
+						text-align: center;
+						font-weight: bold;
+						margin: 0 auto;
+					}
+						header .menu p a{
+							text-transform: uppercase;
+							letter-spacing: 2px;
+							font-size: 20px;
+							font-family: "Montserrat", arial, sans-serif;
+							color:#444;
+							text-decoration:none;
+						}
+				header .menu:hover {
+					background-color:#444;
+				}
+				header .menu:hover a {
+					color:#fff;
+				}
+        header .navWrapper {
+            width: 52em;
+            height: 52em;
+            overflow: hidden;
+            border-radius: 50%;
+            margin-left: -26em;
+            position: fixed;
+            left: 50%;
+            top: -27em;
+            transform: scale(.4);
+			z-index:98;
+        }
+            header .navWrapper ul {
+                list-style-type: none;
+                position: relative;
+				margin:0;
+            }
+                header .navWrapper ul li {
+                    position: absolute;
+                    left: 50%;
+                    top: 50%;
+                    display: block;
+                    background-color: #EF5353;
+                    font-size: 3em;
+                    width: 10em;
+                    height: 10em;
+                    -ms-transform-origin: 100% 100%; /* IE 9 */
+                    -webkit-transform-origin: 100% 100%; /* Chrome, Safari, Opera */
+                    transform-origin: 100% 100%;
+                    overflow: hidden;
+                    margin-top: -1.3em;
+                    margin-left: -10em;
+                    cursor:pointer;
+                }
+                    header .navWrapper ul li:first-of-type {
+                        transform: rotate(315deg) skew(45deg);
+                    }
+                    header .navWrapper ul li:nth-of-type(2) {
+                        transform: rotate(270deg) skew(45deg);
+                    }
+                    header .navWrapper ul li:nth-of-type(3) {
+                        transform: rotate(225deg) skew(45deg);
+                    }
+                    header .navWrapper ul li:nth-of-type(4) {
+                        transform: rotate(180deg) skew(45deg);
+                    }
+                    header .navWrapper ul li a {
+                        background-color: #EF5353;
+                        display: block;
+                        font-size: 1.18em;
+                        height: 14.5em;
+                        width: 14.5em;
+                        position: absolute;
+                        right: -7.25em;
+                        border-radius: 50%;
+                        text-decoration: none;
+                        color: #fff;
+                        padding-top: 2.2em;
+						padding-right: .75em;
+                        text-align: center;
+                        -webkit-transform: skew(-45deg) rotate(-70deg) scale(1);
+                        -ms-transform: skew(-45deg) rotate(-70deg) scale(1);
+                        -moz-transform: skew(-45deg) rotate(-70deg) scale(1);
+                        transform: skew(-45deg) rotate(-70deg) scale(1);
+                        -webkit-backface-visibility: hidden;
+                        -webkit-transition: opacity 0.3s, color 0.3s;
+                        -moz-transition: opacity 0.3s, color 0.3s;
+                        transition: opacity 0.3s, color 0.3s;
+                    }
+                    header .navWrapper ul li:hover a {
+						background-color:#444;
+                    }
+						header .navWrapper ul li a i{
+							-webkit-transform: skew(0deg) scale(1);
+							-ms-transform: skew(0deg) scale(1);
+							-moz-transform: skew(0deg) scale(1);
+							transform: skew(0deg) scale(1);
+						}
+						header .navWrapper ul li:first-of-type a i {
+							transform:  rotate(-65deg);
+						}
+						header .navWrapper ul li:nth-of-type(2) a i  {
+							transform:  rotate(-110deg);
+						}
+						header .navWrapper ul li:nth-of-type(3) a i  {
+							transform:  rotate(-155deg);
+						}
+						header .navWrapper ul li:nth-of-type(4) a i  {
+							transform:  rotate(-110deg);
+						}
+		#fh5co-main {
+			padding-top: 15px;
 		}
-        header .headerContent{
-            margin:15px auto;
-            text-align:center;
-			font-weight: bold;
-			display: block;
-			width:100%;
-			font-family: "Montserrat", arial, sans-serif;
-			text-transform: uppercase;
-			letter-spacing: 2px;
-			font-size: 24px;
-        }
-        
-        header .headerContent a{
-			text-decoration:none;
-			color: #000;
-        }
-
-		.initLoading{
+		#fh5co-main .initLoading{
 			text-align:center;
 			font-family: "Montserrat", arial, sans-serif;
 			color: #818892;
 		}
-        #fh5co-main {
-  padding-top: 15px;
-}
 		.fh5co-social-icons > a {
-  padding: 4px 10px;
-  color: #EF5353;
-}
-.fh5co-social-icons > a:hover, .fh5co-social-icons > a:focus, .fh5co-social-icons > a:active {
-  text-decoration: none;
-  color: #444;
-}
-
-#fh5co-footer {
-  padding: 10em 0;
-  margin:15px auto;
+			padding: 4px 10px;
+			color: #EF5353;
+		}
+		.fh5co-social-icons > a:hover, .fh5co-social-icons > a:focus, .fh5co-social-icons > a:active {
+			text-decoration: none;
+			color: #444;
+		}
+		#fh5co-footer {
+			clear:both;
+			padding: 10em 0;
+			margin:15px auto;
             text-align:center;
-}
-@media screen and (max-width: 768px) {
-  #fh5co-footer {
-    padding: 5em 0;
-  }
-}
+		}
+	@media screen and (max-width: 768px) {
+		#fh5co-footer {
+			padding: 5em 0;
+		}
+	}
 
         
-        </style>
-		<!--<div id="fh5co-offcanvass">
-			<span class="fh5co-offcanvass-close js-fh5co-offcanvass-close">Menu <i class="icon-cross"></i> </span>
-		
-			<ul>
-				<li class="active"><a href="/#/">Home</a></li>
-				<li><a href="/#/add/">Add Character</a></li>
-				<li><a href="/#/login">Login/Logout</a></li>
-			</ul>
-			<h3 class="fh5co-lead">Connect with us</h3>
-			<p class="fh5co-social-icons">
-				<a href="#"><i class="icon-twitter"></i></a>
-				<a href="#"><i class="icon-facebook"></i></a>
-			</p>
-		</div>-->
+    </style>
+
+		    
+
 		<header>
-			<div class="headerContent">
-			  <a href="/#/">HERO SMASHER</a>
+			<div class="menu">
+				<p>
+					<a href="/#/">HERO SMASHER</a>
+				</p>
+			</div>
+			<div class="navWrapper">
+				<ul>
+					<li><a href="/#/login" title="login/logout"><i class="glyphicon glyphicon-log-in"></i></a></li>
+					<li><a href="/#/add/" title="add character"><i class="glyphicon glyphicon-plus-sign"></i></a></li>
+					<li><a title="about"><i class="glyphicon glyphicon-comment"></i></a></li>
+					<li><a title="contact"><i class="glyphicon glyphicon-share"></i></a></li>
+				</ul>
 			</div>
 		</header>
 		<!-- END .header -->

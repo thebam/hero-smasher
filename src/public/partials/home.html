@@ -11,12 +11,13 @@
 </div>
 <div id="fh5co-board">
     <div class="item col-sm-6 col-md-4 col-lg-3" ng-repeat="character in characters | orderBy : 'name' | filter:searchString">
-        <div class="character" ng-mouseenter="showStats(character._id)" ng-mouseleave="showStats(character._id)" ng-class="{combineSelected : isSelected(character._id)===true,'stats-hide' : character._id!=displayStats}">
+        <div class="character" ng-class="{combineSelected : isSelected(character._id)===true,'stats-hide' : character._id!=displayStats}">
             <div class="characterImageWrapper animate-box bounceIn animated">
                 <img class="characterImage" ng-click="combine(character._id)" ng-src="{{character.images[0].image}}" alt="{{character.name}}" />
                 <h2 class="characterName">{{character.name}}</h2>
                 <h4 class="characterAffinity" ng-class="character.affinity">{{character.affinity}}</h4>
                 <div class="controls">
+                    <a title="edit" class="details" ng-click="showStats(character._id)"><i class="glyphicon glyphicon-chevron-down"></i></a>
                     <a title="edit" class="details" href="/#/character/{{character.name}}"><i class="glyphicon glyphicon-cog"></i></a>
                     <a title="delete" class="delete" ng-show="loggedIn" class="btn btn-block btn-sm btn-primary" href="/#/delete/{{character._id}}"><i class="glyphicon glyphicon-trash"></i></a>
                 </div>
