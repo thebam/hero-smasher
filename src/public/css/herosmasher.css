@@ -1,4 +1,8 @@
 
+header .navWrapper ul li a i .menuDescription {
+    display:none;
+}
+
 .parentImageWrapper {
     width: 100%;
     background-color: #ccc;

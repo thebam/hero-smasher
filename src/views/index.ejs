@@ -52,7 +52,7 @@
 				text-decoration: none;
 			}
 			header{
-				margin-bottom:11em;
+				margin-bottom:9em;
 			}
 		        header .menu {
 					position:fixed;
@@ -165,10 +165,10 @@
 							transform: skew(0deg) scale(1);
 						}
 						header .navWrapper ul li:first-of-type a i {
-							transform:  rotate(-65deg);
+							transform: rotate(115deg);
 						}
 						header .navWrapper ul li:nth-of-type(2) a i  {
-							transform:  rotate(-110deg);
+							transform: rotate(160deg);
 						}
 						header .navWrapper ul li:nth-of-type(3) a i  {
 							transform:  rotate(-155deg);
@@ -198,17 +198,26 @@
 			margin:15px auto;
             text-align:center;
 		}
+
+		.glyphicon {}
+		.glyphicon-log-in{}
+		.glyphicon-plus-sign{}
+		.glyphicon-comment{}
+		.glyphicon-share{}
+
+		.glyphicon .menuDescription{display:block;}
 	@media screen and (max-width: 768px) {
+		header{
+			margin-bottom:11em;
+		}
 		#fh5co-footer {
 			padding: 5em 0;
 		}
+
 	}
 
         
     </style>
-
-		    
-
 		<header>
 			<div class="menu">
 				<p>
@@ -217,10 +226,10 @@
 			</div>
 			<div class="navWrapper">
 				<ul>
-					<li><a href="/#/login" title="login/logout"><i class="glyphicon glyphicon-log-in"></i></a></li>
-					<li><a href="/#/add/" title="add character"><i class="glyphicon glyphicon-plus-sign"></i></a></li>
-					<li><a title="about"><i class="glyphicon glyphicon-comment"></i></a></li>
-					<li><a title="contact"><i class="glyphicon glyphicon-share"></i></a></li>
+					<li><a href="/#/login" title="login/logout"><i class="glyphicon glyphicon-log-in"><span class="menuDescription">Login</span></i></a></li>
+					<li><a href="/#/add/" title="add character"><i class="glyphicon glyphicon-plus-sign"><span class="menuDescription">Add</span></i></a></li>
+					<li><a title="about"><i class="glyphicon glyphicon-comment"><span class="menuDescription">About</span></i></a></li>
+					<li><a title="contact"><i class="glyphicon glyphicon-share"><span class="menuDescription">Contact</span></i></a></li>
 				</ul>
 			</div>
 		</header>
