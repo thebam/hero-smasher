@@ -1,12 +1,9 @@
 <div class="container">
     <h1>COMBINE CHARACTERS</h1>
     <p>Select any two characters to create a new super hero or villian. The new characters ranking, powers, and traits will be an unpredictable combination of the two parent character. </p>
-    <div class="col-md-12" style="text-align: center;">
-        <img src="images/loading.gif" ng-show="loading" />
-    </div>
+    
     <div class="input-group input-group-sm">
-        <span class="input-group-addon" id="sizing-addon"><i class="glyphicon glyphicon-search"></i></span>
-        <input type="text" ng-model="searchString" class="form-control" id="search" placeholder="Find Character" aria-describedby="sizing-addon" />
+        <input type="text" ng-model="searchString" class="form-control" id="search" placeholder="Find Character" aria-describedby="sizing-addon" /><span class="input-group-addon" id="sizing-addon"><i class="glyphicon glyphicon-search"></i></span>
     </div>
 </div>
 <div id="fh5co-board">
@@ -44,7 +41,12 @@
             </div>
         </div>
     </div>
-
+    <div class="col-md-12" style="text-align: center;">
+        <img src="images/loading.gif" ng-show="loading" style="margin:15px;clear:both" />
+    
+        <button class="btn btn-block btn-default" ng-show="moreResults" ng-click="loadMoreCharacters()"><i class="glyphicon glyphicon-chevron-down"></i>&nbsp;LOAD MORE&nbsp;<i class="glyphicon glyphicon-chevron-down"></i></button>
+        <span ng-hide="moreResults" >all characters have been loaded</span>
+     </div>
 </div>
 <!-- Modal -->
 <div class="modal fade" id="myModal" role="dialog">

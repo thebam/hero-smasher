@@ -53,6 +53,42 @@ var router = function (coll, db) {
                 }
             }
         });
+    APIRouter.route('/select/:start/:take')
+        .get(function (req, res) {
+            var start = req.params.start;
+            var take = req.params.take;
+            if (!start) {
+                start = 0;
+            } else {
+                if (isNaN(start)) {
+                    start = 0;
+                }
+                start = Number(start);
+            }
+            if (!take) {
+                take = 8;
+            } else {
+                if (isNaN(take)) {
+                    take = 8;
+                }
+                take = Number(take);
+            }
+            if (coll) {
+                coll.find().sort({ 'name': 1 }).limit(take).skip(start).toArray(function (err, results) {
+                    if (err === null) {
+                        if (results !== null) {
+                            return res.json(results);
+                        } else {
+                            return res.send('No characters found.');
+                        }
+                    } else {
+                        return res.send('Character not found due to server issue.');
+                    }
+                });
+            }
+
+
+        });
     APIRouter.route('/edit/:id')
         .get(function (req, res) {
             var id = req.params.id;

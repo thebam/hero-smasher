@@ -32,6 +32,12 @@ heroApp.config(function ($routeProvider, $httpProvider) {
             templateUrl: 'partials/register.html',
             controller: 'registerController'
         })
+        .when('/about', {
+            templateUrl: 'partials/about.html'
+        })
+        .when('/contact', {
+            templateUrl: 'partials/contact.html'
+        })
         .otherwise({
             redirectTo: '/'
         });
@@ -127,10 +133,18 @@ heroApp.controller('mainController', function ($http, $scope, $resource, $rootSc
         // called asynchronously if an error occurs
         // or server returns response with an error status.
     });
-
-    var Characters = $resource('/api');
+    var loadCharacterStart = 0;
+    var loadCharacterLimit = 12;
+    $scope.moreResults = false;
+    var Characters = $resource('/api/select/' + loadCharacterStart + '/' + loadCharacterLimit);
     Characters.query(function (characters) {
         $scope.characters = characters;
+        loadCharacterStart += characters.length;
+        if (loadCharacterLimit === characters.length) {
+            $scope.moreResults = true;
+        } else {
+            $scope.moreResults = false;
+        }
         $scope.loading = false;
     });
 
@@ -139,10 +153,22 @@ heroApp.controller('mainController', function ($http, $scope, $resource, $rootSc
     $scope.parent1 = '';
     $scope.parent2 = '';
 
-    $scope.showStats = function () {
+    
 
+    $scope.loadMoreCharacters = function () {
+        $scope.loading = true;
+        var Characters = $resource('/api/select/' + loadCharacterStart + '/' + loadCharacterLimit);
+        Characters.query(function (characters) {
+            $scope.characters = $scope.characters.concat(characters);
+            loadCharacterStart += characters.length;
+            if (loadCharacterLimit === characters.length) {
+                $scope.moreResults = true;
+            } else {
+                $scope.moreResults = false;
+            }
+            $scope.loading = false;
+        });
     };
-
 
     $scope.randomBetween = function (lowNumber, highNumber) {
         return (Math.floor(Math.random() * ((highNumber - lowNumber) + 1) + lowNumber));
@@ -622,3 +648,4 @@ angular.module('SmasherApp').service('characterModel', function () {
         parents: [{ parent: '' }, { parent: '' }]
     };
 });
+
