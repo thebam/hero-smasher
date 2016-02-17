@@ -166,6 +166,7 @@ header .navWrapper ul li a i .menuDescription {
 
 
 @media screen and (max-width:768px) {
+    
     body {
         background-color: white !important;
     }
@@ -183,6 +184,9 @@ header .navWrapper ul li a i .menuDescription {
         padding: 10px 15px 10px 0;
         margin-bottom:-1px;
         display:inline-block;
+    }
+    .controls .details{
+        display: none !important;
     }
 
     .combineSelected:after {
