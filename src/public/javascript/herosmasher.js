@@ -1,4 +1,4 @@
-var heroApp = angular.module('SmasherApp', ['ngResource', 'ngRoute', 'ngCookies']);
+var heroApp = angular.module('SmasherApp', ['ngResource', 'ngRoute']);
 heroApp.config(function ($routeProvider, $httpProvider) {
     $httpProvider.defaults.cache = false;
     if (!$httpProvider.defaults.headers.get) {
@@ -37,12 +37,11 @@ heroApp.config(function ($routeProvider, $httpProvider) {
         });
 });
 
-heroApp.controller('registerController', function ($cookies, $scope, $location, $http) {
+heroApp.controller('registerController', function ($scope, $location, $http) {
     $scope.register = function () {
         $http.post('/api/signUp', { email: $scope.email, password: $scope.password })
           .success(function (data, status) {
               if (status === 200 && data === true) {
-                  $cookies.put('autho', 'true');
                   $location.path('/');
               } else {
                   $scope.errorMessage = data;
@@ -55,24 +54,39 @@ heroApp.controller('registerController', function ($cookies, $scope, $location, 
 });
 
 
-heroApp.controller('loginController', function ($cookies, $scope, $rootScope, $location, $http) {
+heroApp.controller('loginController', function ($scope, $rootScope, $location, $http) {
     $scope.pageHeader = 'LOGIN';
     $scope.loggedIn = false;
-    var autho = $cookies.get('autho');
-    if (autho === 'true') {
-        $scope.loggedIn = true;
-        $scope.pageHeader = 'LOGOUT';
-    } else {
-        $scope.loggedIn = false;
-    }
     $scope.loading = false;
+
+    $http({
+        method: 'GET',
+        url: '/api/checkAuth'
+    }).then(function successCallback(response) {
+
+        if (response.data === true) {
+            $scope.loggedIn = true;
+            $scope.pageHeader = 'LOGOUT';
+        } else {
+            $scope.loggedIn = false;
+        }
+
+    }, function errorCallback(response) {
+        // called asynchronously if an error occurs
+        // or server returns response with an error status.
+    });
+
+
+
+
+
     $scope.login = function () {
         $scope.loading = true;
         $http.post('/api/signIn', { username: $scope.username, password: $scope.password })
           .success(function (data, status) {
               $scope.loading = false;
               if (status === 200 && data === true) {
-                  $cookies.put('autho', 'true');
+                  $scope.pageHeader = 'LOGOUT';
                   $location.path('/');
               } else {
                   $scope.errorMessage = data;
@@ -84,7 +98,6 @@ heroApp.controller('loginController', function ($cookies, $scope, $rootScope, $l
           });
     };
     $scope.logout = function () {
-        $cookies.put('autho', 'false');
         $http.get('/api/signOut', {})
           .success(function (data, status) {
               if (status === 200 && data === true) {
@@ -95,21 +108,18 @@ heroApp.controller('loginController', function ($cookies, $scope, $rootScope, $l
     };
 });
 
-heroApp.controller('mainController', function ($http, $cookies, $scope, $resource, $rootScope, $location, characterModel, editChildCharacter) {
+heroApp.controller('mainController', function ($http, $scope, $resource, $rootScope, $location, characterModel) {
     $scope.loggedIn = false;
     $scope.loading = true;
-
+    characterModel.editChildCharacter = {};
     $http({
         method: 'GET',
         url: '/api/checkAuth'
     }).then(function successCallback(response) {
 
         if (response.data === true) {
-
-            $cookies.put('autho', 'true');
             $scope.loggedIn = true;
         } else {
-            $cookies.put('autho', 'false');
             $scope.loggedIn = false;
         }
 
@@ -121,17 +131,6 @@ heroApp.controller('mainController', function ($http, $cookies, $scope, $resourc
     var Characters = $resource('/api');
     Characters.query(function (characters) {
         $scope.characters = characters;
-        $scope.characterCnt = characters.length;
-
-
-        $scope.columnLimit1 = Math.floor($scope.characterCnt / 3);
-        if ($scope.characterCnt % 3) {
-            $scope.columnLimit1++;
-        }
-        $scope.columnLimit2 = Math.floor(($scope.characterCnt - $scope.columnLimit1) / 2);
-        if (($scope.characterCnt - $scope.columnLimit1) % 2) {
-            $scope.columnLimit2++;
-        }
         $scope.loading = false;
     });
 
@@ -150,7 +149,7 @@ heroApp.controller('mainController', function ($http, $cookies, $scope, $resourc
     };
 
     $scope.rankingRange = function (powerType) {
-        var powerRange = [1, 7];
+        var powerRange = [characterModel.rankingLowerLimit, characterModel.rankingUpperLimit];
         angular.forEach($scope.parent1.rankings, function (value, key) {
             if (value.category === powerType) {
                 if (value.passable === 'true') {
@@ -230,12 +229,12 @@ heroApp.controller('mainController', function ($http, $cookies, $scope, $resourc
 
     $scope.createCharacter = function () {
         var anomoly = Math.floor(Math.random() * 1000) + 1;
-        var intelligenceRange = [1, 7];
-        var strengthRange = [1, 7];
-        var speedRange = [1, 7];
-        var durabilityRange = [1, 7];
-        var energyRange = [1, 7];
-        var fightingRange = [1, 7];
+        var intelligenceRange = [characterModel.rankingLowerLimit, characterModel.rankingUpperLimit];
+        var strengthRange = [characterModel.rankingLowerLimit, characterModel.rankingUpperLimit];
+        var speedRange = [characterModel.rankingLowerLimit, characterModel.rankingUpperLimit];
+        var durabilityRange = [characterModel.rankingLowerLimit, characterModel.rankingUpperLimit];
+        var energyRange = [characterModel.rankingLowerLimit, characterModel.rankingUpperLimit];
+        var fightingRange = [characterModel.rankingLowerLimit, characterModel.rankingUpperLimit];
 
         if (anomoly !== 369) {
             intelligenceRange = $scope.rankingRange('Intelligence');
@@ -246,7 +245,9 @@ heroApp.controller('mainController', function ($http, $cookies, $scope, $resourc
             fightingRange = $scope.rankingRange('Fighting Skills');
         }
 
-        $scope.childCharacter = characterModel.character;
+        if (!$scope.childCharacter) {
+            $scope.childCharacter = JSON.parse(JSON.stringify(characterModel.character));
+        }
         $scope.childCharacter.name = 'Unamed Character';
 
         var tempAffinity = $scope.randomBetween(1, 3);
@@ -335,12 +336,12 @@ heroApp.controller('mainController', function ($http, $cookies, $scope, $resourc
     $scope.edit = function () {
         $scope.childCharacter.parents[0].parent = $scope.character1;
         $scope.childCharacter.parents[1].parent = $scope.character2;
-        editChildCharacter.character = $scope.childCharacter;
+        characterModel.editChildCharacter = $scope.childCharacter;
         $location.path('/add');
     };
 });
 
-heroApp.controller('deleteController', function ($http, $cookies, $scope, $resource, $location, $routeParams) {
+heroApp.controller('deleteController', function ($http, $scope, $resource, $location, $routeParams) {
     var displayContent = function () {
         var Characters = $resource('/api/delete/:id');
         Characters.get({ id: $routeParams.id }, function (character) {
@@ -359,11 +360,9 @@ heroApp.controller('deleteController', function ($http, $cookies, $scope, $resou
         url: '/api/checkAuth'
     }).then(function successCallback(response) {
         if (response.data === true) {
-            $cookies.put('autho', 'true');
             $scope.loggedIn = true;
             displayContent();
         } else {
-            $cookies.put('autho', 'false');
             $scope.loggedIn = false;
             $location.path('/');
         }
@@ -373,9 +372,7 @@ heroApp.controller('deleteController', function ($http, $cookies, $scope, $resou
     });
 });
 
-heroApp.controller('addController', function ($http, $cookies, $scope, $resource, $location, $routeParams, characterModel, editChildCharacter) {
-
-
+heroApp.controller('addController', function ($http, $scope, $resource, $location, $routeParams, characterModel) {
 
     $scope.loggedIn = false;
     $scope.loading = false;
@@ -475,7 +472,7 @@ heroApp.controller('addController', function ($http, $cookies, $scope, $resource
     $scope.parent1 = {};
     $scope.parent2 = {};
     $scope.notfound = false;
-
+    $scope.dynamicBG = '';
     var LoadCharacter;
     var displayForm = function () {
         if ($routeParams.id) {
@@ -483,6 +480,11 @@ heroApp.controller('addController', function ($http, $cookies, $scope, $resource
             LoadCharacter.get({ id: $routeParams.id }, function (character) {
                 if (character._id) {
                     $scope.character = character;
+                    if ($scope.character.images) {
+                        if ($scope.character.images[0]) {
+                            $scope.dynamicBG = $scope.character.images[0].image;
+                        }
+                    }
                     if ($scope.character.parents) {
                         $scope.getCharacter($scope.character.parents[0].parent, 1);
                     }
@@ -496,8 +498,8 @@ heroApp.controller('addController', function ($http, $cookies, $scope, $resource
         } else {
             if ($scope.loggedIn === true) {
 
-                if (editChildCharacter.character.name) {
-                    $scope.character = editChildCharacter.character;
+                if (characterModel.editChildCharacter.name) {
+                    $scope.character = characterModel.editChildCharacter;
                 } else {
                     $scope.character = JSON.parse(JSON.stringify(characterModel.character));
                 }
@@ -522,15 +524,12 @@ heroApp.controller('addController', function ($http, $cookies, $scope, $resource
         url: '/api/checkAuth'
     }).then(function successCallback(response) {
         if (response.data === true) {
-            $cookies.put('autho', 'true');
             $scope.loggedIn = true;
         } else {
-            $cookies.put('autho', 'false');
             $scope.loggedIn = false;
         }
         displayForm();
     }, function errorCallback(response) {
-        $cookies.put('autho', 'false');
         $scope.loggedIn = false;
         //SERVER ERROR
     });
@@ -555,14 +554,8 @@ heroApp.controller('addController', function ($http, $cookies, $scope, $resource
             }).then(function successCallback(response) {
                 if (response.data === true && response.status === 200) {
                     $scope.loading = false;
+                    characterModel.editChildCharacter = {};
                     $location.path('/');
-
-
-                    editChildCharacter.character = JSON.parse(JSON.stringify(characterModel.character));
-
-
-
-
                 } else {
                     $scope.loading = false;
                     $scope.errorMessage = response.data;
@@ -581,10 +574,7 @@ heroApp.controller('addController', function ($http, $cookies, $scope, $resource
         $scope.character.powers.push({ id: powerCounter, powerDesc: '' });
     };
 
-    $scope.newTrait = function ($event) {
-        traitCounter++;
-        $scope.character.traits.push({ id: traitCounter, trait: '' });
-    };
+    
 
     $scope.newImage = function ($event) {
         imageCounter++;
@@ -613,24 +603,9 @@ heroApp.controller('addController', function ($http, $cookies, $scope, $resource
 });
 
 angular.module('SmasherApp').service('characterModel', function () {
-    this.character = {
-        name: '',
-        affinity: '',
-        rankings: [{ id: 0, category: 'Intelligence', origin: 'birth', level: '2', passable: 'true' },
-        { id: 1, category: 'Strength', origin: 'birth', level: '2', passable: 'true' },
-        { id: 2, category: 'Speed', origin: 'birth', level: '2', passable: 'true' },
-        { id: 3, category: 'Durability', origin: 'birth', level: '2', passable: 'true' },
-        { id: 4, category: 'Energy Projection', origin: 'birth', level: '1', passable: 'true' },
-        { id: 5, category: 'Fighting Skills', origin: 'birth', level: '2', passable: 'true' }, ],
-        powers: [{ id: 0, powerName: '' }],
-        traits: [{ id: 0, trait: '' }],
-        biography: '',
-        images: [{ image: '' }],
-        parents: [{ parent: '' }, { parent: '' }]
-    };
-});
-
-angular.module('SmasherApp').service('editChildCharacter', function () {
+    this.editChildCharacter = {};
+    this.rankingLowerLimit = 1;
+    this.rankingUpperLimit = 7;
     this.character = {
         name: '',
         affinity: '',

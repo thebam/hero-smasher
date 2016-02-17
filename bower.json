@@ -17,9 +17,14 @@
     "font-awesome": "~4.5.0"
   },
   "overrides": {
+	"jquery": {
+      "main": [
+        "dist/jquery.min.js"
+      ]
+    },
     "bootstrap": {
       "main": [
-        "dist/js/bootstrap.js",
+        "dist/js/bootstrap.min.js",
         "dist/css/bootstrap.min.css",
         "less/bootstrap.less"
       ]
