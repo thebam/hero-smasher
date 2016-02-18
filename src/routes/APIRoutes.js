@@ -59,14 +59,16 @@ var router = function (coll, db) {
             var term = req.params.term;
             
             if(term){
-                term = term.toLowerCase();
-                
                 if(coll){
-                    coll.find({uName:term}).sort({'name':1}).toArray(function (err,results) {
+                    coll.find({ $or: [{ uName: {$regex: term, $options:'i'}}, {biography: { $regex: term, $options: 'i' }}]}).sort({'name':1}).toArray(function (err,results) {
                         if(err===null){
-                            if(results){
+                            if (results !== null) {
                                 res.json(results);
+                            } else {
+                                return res.send('No characters found.');
                             }
+                        } else {
+                            return res.send('Character not found due to server issue.');
                         }
                     });
                 }
@@ -247,6 +249,7 @@ var router = function (coll, db) {
     APIRouter.route('/checkAuth')
         .get(function (req, res) {
             if (req.isAuthenticated()) {
+                console.log(req.user);
                 res.send(true);
             } else {
                 res.send(false);

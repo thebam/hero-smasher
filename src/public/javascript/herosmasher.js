@@ -152,7 +152,7 @@ heroApp.controller('mainController', function ($http, $scope, $resource, $rootSc
     $scope.character2 = '';
     $scope.parent1 = '';
     $scope.parent2 = '';
-
+    $scope.message = '';
     
 
     $scope.loadMoreCharacters = function () {
@@ -164,10 +164,35 @@ heroApp.controller('mainController', function ($http, $scope, $resource, $rootSc
             if (loadCharacterLimit === characters.length) {
                 $scope.moreResults = true;
             } else {
+                $scope.message = 'all characters loaded.';
                 $scope.moreResults = false;
             }
             $scope.loading = false;
         });
+    };
+
+
+    $scope.search = function () {
+        if ($scope.searchString.length >= 2) {
+            $scope.loading = true;
+            var Characters = $resource('/api/search/' + $scope.searchString);
+            Characters.query(function (characters) {
+                if (characters.length > 0) {
+                    $scope.characters = characters;
+                    $scope.message = characters.length + ' character(s) found for \'' + $scope.searchString + '\'';
+                    $scope.moreResults = false;
+                } else {
+                    $scope.characters = '';
+                    $scope.message = 'no character found for \'' + $scope.searchString + '\'';
+                    $scope.moreResults = false;
+                }
+                $scope.loading = false;
+            });
+        } else {
+            $scope.characters = '';
+            $scope.message = 'search term must be 2 letters or more';
+            $scope.moreResults = false;
+        }
     };
 
     $scope.randomBetween = function (lowNumber, highNumber) {
