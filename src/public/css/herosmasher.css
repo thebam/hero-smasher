@@ -176,7 +176,15 @@ header .navWrapper ul li a i .menuDescription {
     body {
         background-color: white !important;
     }
+.characterPageBG {
+    background-image:none;
+    padding:0;
+}
 
+.characterPageBG > .container{
+    background-color:rgb(255,255,255);
+    
+}
     .character {
         border: solid 1px #ccc;
         padding: 15px;       

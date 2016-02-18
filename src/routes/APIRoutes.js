@@ -53,6 +53,25 @@ var router = function (coll, db) {
                 }
             }
         });
+        
+    APIRouter.route('/search/:term')
+        .get(function (req,res) {
+            var term = req.params.term;
+            
+            if(term){
+                term = term.toLowerCase();
+                
+                if(coll){
+                    coll.find({uName:term}).sort({'name':1}).toArray(function (err,results) {
+                        if(err===null){
+                            if(results){
+                                res.json(results);
+                            }
+                        }
+                    });
+                }
+            }
+        });
     APIRouter.route('/select/:start/:take')
         .get(function (req, res) {
             var start = req.params.start;
