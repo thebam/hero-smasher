@@ -35,9 +35,6 @@ heroApp.config(function ($routeProvider, $httpProvider) {
         .when('/about', {
             templateUrl: 'partials/about.html'
         })
-        .when('/contact', {
-            templateUrl: 'partials/contact.html'
-        })
         .otherwise({
             redirectTo: '/'
         });
@@ -155,11 +152,20 @@ heroApp.controller('mainController', function ($http, $scope, $resource, $rootSc
     $scope.message = '';
     
 
-    $scope.loadMoreCharacters = function () {
+    $scope.loadMoreCharacters = function (reset) {
         $scope.loading = true;
+        
+        if(reset){
+            loadCharacterStart =0;
+        }
+        
         var Characters = $resource('/api/select/' + loadCharacterStart + '/' + loadCharacterLimit);
         Characters.query(function (characters) {
-            $scope.characters = $scope.characters.concat(characters);
+            if(reset){
+                $scope.characters = characters;
+            }else{
+                $scope.characters = $scope.characters.concat(characters);
+            }
             loadCharacterStart += characters.length;
             if (loadCharacterLimit === characters.length) {
                 $scope.moreResults = true;
@@ -170,6 +176,7 @@ heroApp.controller('mainController', function ($http, $scope, $resource, $rootSc
             $scope.loading = false;
         });
     };
+    
 
     $scope.userGenerated = false;
     $scope.search = function () {

@@ -55,8 +55,8 @@
 <div class="container" style="margin-top:15px;clear:both">
         <img src="images/loading.gif" ng-show="loading" style="margin:15px;clear:both" />
     
-        <button class="btn btn-block btn-default" ng-show="moreResults" ng-click="loadMoreCharacters()"><i class="glyphicon glyphicon-chevron-down"></i>&nbsp;LOAD MORE&nbsp;<i class="glyphicon glyphicon-chevron-down"></i></button>
-        <div class="alert alert-info" role="alert" ng-hide="moreResults || message==''">{{message}}</div>
+        <button class="btn btn-block btn-default" ng-show="moreResults" ng-click="loadMoreCharacters(false)"><i class="glyphicon glyphicon-chevron-down"></i>&nbsp;LOAD MORE&nbsp;<i class="glyphicon glyphicon-chevron-down"></i></button>
+        <div class="alert alert-info" role="alert" ng-hide="moreResults || message==''">{{message}}&nbsp;&nbsp;<div ng-click="loadMoreCharacters(true)" class="alert-link label label-info" style="cursor:pointer;">View All Characters</div></div>
      </div>
 <!-- Modal -->
 <div class="modal fade" id="myModal" role="dialog">
