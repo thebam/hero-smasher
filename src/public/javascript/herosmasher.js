@@ -16,11 +16,11 @@ heroApp.config(function ($routeProvider, $httpProvider) {
             templateUrl: 'partials/admin-add.html',
             controller: 'addController'
         })
-        .when('/character/:id', {
+        .when('/character/:id/:userGenerated', {
             templateUrl: 'partials/admin-add.html',
             controller: 'addController'
         })
-        .when('/delete/:id', {
+        .when('/delete/:id/:userGenerated', {
             templateUrl: 'partials/admin-delete.html',
             controller: 'deleteController'
         })
@@ -171,11 +171,11 @@ heroApp.controller('mainController', function ($http, $scope, $resource, $rootSc
         });
     };
 
-
+    $scope.userGenerated = false;
     $scope.search = function () {
         if ($scope.searchString.length >= 2) {
             $scope.loading = true;
-            var Characters = $resource('/api/search/' + $scope.searchString);
+            var Characters = $resource('/api/search/' + $scope.searchString+'/'+$scope.userGenerated);
             Characters.query(function (characters) {
                 if (characters.length > 0) {
                     $scope.characters = characters;
@@ -299,7 +299,7 @@ heroApp.controller('mainController', function ($http, $scope, $resource, $rootSc
         if (!$scope.childCharacter) {
             $scope.childCharacter = JSON.parse(JSON.stringify(characterModel.character));
         }
-        $scope.childCharacter.name = 'Unamed Character';
+        $scope.childCharacter.name = 'Unnamed Character';
 
         var tempAffinity = $scope.randomBetween(1, 3);
         switch (tempAffinity) {
@@ -372,11 +372,11 @@ heroApp.controller('mainController', function ($http, $scope, $resource, $rootSc
         }
 
         if ($scope.character1.length > 0 && $scope.character2.length > 0) {
-            var Parent1 = $resource('/api/edit/:id', { id: '@_id' }, { get: { method: 'GET' } });
+            var Parent1 = $resource('/api/edit/:id/:userGenerated', { id: '@_id', userGenerated:false }, { get: { method: 'GET' } });
             Parent1.get({ id: $scope.character1 }, function (character) {
                 $scope.parent1 = character;
 
-                var Parent2 = $resource('/api/edit/:id', { id: '@_id' }, { get: { method: 'GET' } });
+                var Parent2 = $resource('/api/edit/:id/:userGenerated', { id: '@_id', userGenerated:false }, { get: { method: 'GET' } });
                 Parent2.get({ id: $scope.character2 }, function (character) {
                     $scope.parent2 = character;
                     $scope.createCharacter();
@@ -393,26 +393,21 @@ heroApp.controller('mainController', function ($http, $scope, $resource, $rootSc
 });
 
 heroApp.controller('deleteController', function ($http, $scope, $resource, $location, $routeParams) {
-    var displayContent = function () {
-        var Characters = $resource('/api/delete/:id');
-        Characters.get({ id: $routeParams.id }, function (character) {
+    
+    
+        var Characters = $resource('/api/delete/:id/:userGenerated');
+        Characters.get({ id: $routeParams.id, userGenerated: $routeParams.userGenerated }, function (character) {
             $scope.character = character;
-        });
-
-        $scope.delete = function () {
-            Characters.delete({ id: $routeParams.id }, function (character) {
-                $location.path('/');
-            });
-        };
-    };
-
+            
+            
+            if($routeParams.userGenerated){
     $http({
         method: 'GET',
-        url: '/api/checkAuth'
+        url: '/api/checkRights/'+character.name
     }).then(function successCallback(response) {
         if (response.data === true) {
             $scope.loggedIn = true;
-            displayContent();
+            
         } else {
             $scope.loggedIn = false;
             $location.path('/');
@@ -421,6 +416,34 @@ heroApp.controller('deleteController', function ($http, $scope, $resource, $loca
         // called asynchronously if an error occurs
         // or server returns response with an error status.
     });
+}else{
+    $http({
+        method: 'GET',
+        url: '/api/checkAuth'
+    }).then(function successCallback(response) {
+        if (response.data === true) {
+            $scope.loggedIn = true;
+            
+        } else {
+            $scope.loggedIn = false;
+            $location.path('/');
+        }
+    }, function errorCallback(response) {
+        // called asynchronously if an error occurs
+        // or server returns response with an error status.
+    });
+}
+            
+            
+            
+        });
+
+        $scope.delete = function () {
+            Characters.delete({ id: $routeParams.id, userGenerated: $routeParams.userGenerated }, function (character) {
+                $location.path('/');
+            });
+        };
+    
 });
 
 heroApp.controller('addController', function ($http, $scope, $resource, $location, $routeParams, characterModel) {
@@ -501,7 +524,7 @@ heroApp.controller('addController', function ($http, $scope, $resource, $locatio
     $scope.getCharacter = function (id, parentNumber) {
         if (id) {
             if (id.length > 0) {
-                var tempCharacter = $resource('/api/edit/:id', { id: '@_id' }, { get: { method: 'GET' } });
+                var tempCharacter = $resource('/api/edit/:id/:userGenerated', { id: '@_id', userGenerated:false }, { get: { method: 'GET' } });
                 tempCharacter.get({ id: id }, function (character) {
                     if (parentNumber === 1) {
                         $scope.parent1 = character;
@@ -524,11 +547,12 @@ heroApp.controller('addController', function ($http, $scope, $resource, $locatio
     $scope.parent2 = {};
     $scope.notfound = false;
     $scope.dynamicBG = '';
+    $scope.userGenerated = $routeParams.userGenerated;
     var LoadCharacter;
     var displayForm = function () {
         if ($routeParams.id) {
-            LoadCharacter = $resource('/api/edit/:id', { id: '@_id' }, { update: { method: 'PUT' } });
-            LoadCharacter.get({ id: $routeParams.id }, function (character) {
+            LoadCharacter = $resource('/api/edit/:id/:userGenerated', { id: '@_id', userGenerated: $routeParams.userGenerated }, { update: { method: 'PUT' } });
+            LoadCharacter.get({ id: $routeParams.id, userGenerated:$routeParams.userGenerated }, function (character) {
                 if (character._id) {
                     $scope.character = character;
                     if ($scope.character.images) {
@@ -569,7 +593,22 @@ heroApp.controller('addController', function ($http, $scope, $resource, $locatio
     };
 
 
-
+if ($routeParams.id) {
+    $http({
+        method: 'GET',
+        url: '/api/checkRights/'+$routeParams.id
+    }).then(function successCallback(response) {
+        if (response.data === true) {
+            $scope.loggedIn = true;
+        } else {
+            $scope.loggedIn = false;
+        }
+        displayForm();
+    }, function errorCallback(response) {
+        $scope.loggedIn = false;
+        //SERVER ERROR
+    });
+}else{
     $http({
         method: 'GET',
         url: '/api/checkAuth'
@@ -584,10 +623,9 @@ heroApp.controller('addController', function ($http, $scope, $resource, $locatio
         $scope.loggedIn = false;
         //SERVER ERROR
     });
-
+}
 
     var powerCounter = 0;
-    var traitCounter = 0;
     var imageCounter = 0;
 
     $scope.save = function () {

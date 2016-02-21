@@ -124,7 +124,7 @@ header .navWrapper ul li a i .menuDescription {
         margin-right:-4px;
     }
 
-#search {
+.search {
     border: solid 1px #ccc !important;
 }
 

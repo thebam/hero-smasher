@@ -34,43 +34,87 @@ var router = function (coll, db) {
                     traits: traits,
                     biography: biography,
                     images: images,
-                    parents: parents
+                    parents: parents,
+                    createdBy: req.user._id
                 };
-                if (coll) {
-                    coll.findOne({ uName: character.name.toLowerCase() }, function (err, results) {
-                        if (err === null) {
-                            if (results === null) {
-                                coll.insert(character, function (err, results) {
-                                    return res.send(true);
-                                });
+                
+                if(req.user.level === 'admin'){
+                    if (coll) {
+                        coll.findOne({ uName: character.name.toLowerCase() }, function (err, results) {
+                            if (err === null) {
+                                if (results === null) {
+                                    coll.insert(character, function (err, results) {
+                                        return res.send(true);
+                                    });
+                                } else {
+                                    return res.send('A character with that name already exists.');
+                                }
                             } else {
-                                return res.send('A character with that name already exists.');
+                                return res.send('Character not created due to server issue.');
                             }
-                        } else {
-                            return res.send('Character not created due to server issue.');
-                        }
-                    });
+                        });
+                    }
+                }else{
+                    var userColl = db.collection('userCharacters');
+                    userColl.findOne({ uName: character.name.toLowerCase() }, function (err, results) {
+                            if (err === null) {
+                                if (results === null) {
+                                    userColl.insert(character, function (err, results) {
+                                        return res.send(true);
+                                    });
+                                } else {
+                                    return res.send('A character with that name already exists.');
+                                }
+                            } else {
+                                return res.send('Character not created due to server issue.');
+                            }
+                        });
                 }
             }
         });
         
-    APIRouter.route('/search/:term')
+    APIRouter.route('/search/:term/:official')
         .get(function (req,res) {
             var term = req.params.term;
+            var isUserGenerated = req.params.official;
+            if(isUserGenerated){
+                if(isUserGenerated === 'true'){
+                    isUserGenerated = true;
+                }else{
+                    isUserGenerated = false;
+                }
+            }else{
+                isUserGenerated = false;
+            }
             
             if(term){
-                if(coll){
-                    coll.find({ $or: [{ uName: {$regex: term, $options:'i'}}, {biography: { $regex: term, $options: 'i' }}]}).sort({'name':1}).toArray(function (err,results) {
-                        if(err===null){
-                            if (results !== null) {
-                                res.json(results);
+                if(!isUserGenerated){
+                    if(coll){
+                        coll.find({ $or: [{ uName: {$regex: term, $options:'i'}}, {biography: { $regex: term, $options: 'i' }}]}).sort({'name':1}).toArray(function (err,results) {
+                            if(err===null){
+                                if (results !== null) {
+                                    res.json(results);
+                                } else {
+                                    return res.send('No characters found.');
+                                }
                             } else {
-                                return res.send('No characters found.');
+                                return res.send('Character not found due to server issue.');
                             }
-                        } else {
-                            return res.send('Character not found due to server issue.');
-                        }
-                    });
+                        });
+                    }
+                }else{
+                    var userColl = db.collection('userCharacters');
+                    userColl.find({ $or: [{ uName: {$regex: term, $options:'i'}}, {biography: { $regex: term, $options: 'i' }}]}).sort({'name':1}).toArray(function (err,results) {
+                            if(err===null){
+                                if (results !== null) {
+                                    res.json(results);
+                                } else {
+                                    return res.send('No characters found.');
+                                }
+                            } else {
+                                return res.send('Character not found due to server issue.');
+                            }
+                        });
                 }
             }
         });
@@ -110,10 +154,52 @@ var router = function (coll, db) {
 
 
         });
-    APIRouter.route('/edit/:id')
+    APIRouter.route('/edit/:id/:userGenerated')
         .get(function (req, res) {
             var id = req.params.id;
+            var userGenerated = req.params.userGenerated;
+            if(!userGenerated){
+                userGenerated = false;
+            }else{
+                if(userGenerated === "true"){
+                    userGenerated = true;
+                }else{
+                    userGenerated = false;
+                }
+            }
+           
             if (id) {
+                if(userGenerated===true){
+                    var userColl = db.collection('userCharacters');
+                    userColl.findOne({ uName: id.toLowerCase() }, function (err, results) {
+                        if (err === null) {
+                            if (results !== null) {
+                                res.json(results);
+                            } else {
+                                if (id.length === 24) {
+                                    id = new ObjectId(req.params.id);
+                                    if (id) {
+                                        if (userColl) {
+                                            userColl.findOne({ _id: id }, function (err, results) {
+                                                if (err === null) {
+                                                    if (results !== null) {
+                                                        res.json(results);
+                                                    } else {
+                                                        res.send('');
+                                                    }
+                                                } else {
+                                                    res.send('');
+                                                }
+                                            });
+                                        }
+                                    }
+                                } else {
+                                    res.send('');
+                                }
+                            }
+                        }
+                    });
+                }else{
                 if (coll) {
                     coll.findOne({ uName: id.toLowerCase() }, function (err, results) {
                         if (err === null) {
@@ -144,11 +230,13 @@ var router = function (coll, db) {
                         }
                     });
                 }
+                }
             }
         })
         .put(function (req, res) {
             if (req.user) {
                 var id = new ObjectId(req.params.id);
+                var userGenerated = req.params.userGenerated;
                 var name = req.body.name;
                 var biography = req.body.biography;
                 var powers = req.body.powers;
@@ -157,6 +245,33 @@ var router = function (coll, db) {
                 var images = req.body.images;
                 var affinity = req.body.affinity;
                 var parents = req.body.parents;
+                
+                if(userGenerated==='true'){
+                    var userColl = db.collection('userCharacters');
+                    
+                    userColl.findOne({ _id: id },function (err,results) {
+                        if(err===null){
+                            if(results){
+                                userColl.update({ _id: id }, {
+                                    name: name,
+                                    uName: name.toLowerCase(),
+                                    affinity: affinity,
+                                    rankings: rankings,
+                                    powers: powers,
+                                    traits: traits,
+                                    biography: biography,
+                                    images: images,
+                                    parents: parents,
+                                    createdBy: results.createdBy
+                                }, function (err, results) {
+                                    res.json(results);
+                                });
+                            }
+                        }
+                    });
+                    
+                    
+                }else{
                 if (coll) {
                     coll.update({ _id: id }, {
                         name: name,
@@ -171,25 +286,66 @@ var router = function (coll, db) {
                     }, function (err, results) {
                         res.json(results);
                     });
-                }
+                }}
             }
         });
-    APIRouter.route('/delete/:id')
+    APIRouter.route('/delete/:id/:userGenerated')
         .get(function (req, res) {
             var id = new ObjectId(req.params.id);
-            if (coll) {
+            var userGenerated = req.params.userGenerated;
+            if(!userGenerated){
+                userGenerated = false;
+            }else{
+                if(userGenerated === 'true'){
+                    userGenerated = true;
+                }else{
+                    userGenerated = false;
+                }
+            }
+if(userGenerated===true){
+            var userColl = db.collection('userCharacters');
+                userColl.findOne({ _id: id }, function (err, results) {
+                    res.json(results);
+                });
+            
+}else{
+    if (coll) {
                 coll.findOne({ _id: id }, function (err, results) {
                     res.json(results);
                 });
             }
+}
         })
         .delete(function (req, res) {
+            var id = new ObjectId(req.params.id);
+            var userGenerated = req.params.userGenerated;
+            if(!userGenerated){
+                userGenerated = false;
+            }else{
+                if(userGenerated === 'true'){
+                    userGenerated = true;
+                }else{
+                    userGenerated = false;
+                }
+            }
+  
             if (req.user) {
-                var id = new ObjectId(req.params.id);
+            
+                if(userGenerated === true){
+               
+                var userColl=db.collection('userCharacters');
+                    userColl.remove({ _id: id }, function (err, results) {
+                        res.json(results);
+                    });
+                }else{
+                   
+                    if (req.user.level==='admin') {
+                        
                 if (coll) {
                     coll.remove({ _id: id }, function (err, results) {
                         res.json(results);
                     });
+                }}
                 }
             }
         });
@@ -249,8 +405,38 @@ var router = function (coll, db) {
     APIRouter.route('/checkAuth')
         .get(function (req, res) {
             if (req.isAuthenticated()) {
-                console.log(req.user);
                 res.send(true);
+            } else {
+                res.send(false);
+            }
+        });
+    APIRouter.route('/checkRights/:name')
+        .get(function (req, res) {
+            if (req.isAuthenticated()) {
+                
+                if(req.user.level === 'admin'){
+                    res.send(true);
+                }else{
+                    var name = req.params.name;
+                    if (name) {
+                        var userColl = db.collection('userCharacters');
+                        if (userColl) {
+                            userColl.findOne({ uName: name.toLowerCase(), createdBy: req.user._id }, function (err, results) {
+                                if (err === null) {
+                                    if (results !== null) {
+                                        res.send(true);
+                                    } else {
+                                        res.send(false);
+                                    }
+                                } else {
+                                    res.send(false);
+                                }
+                            });
+                        }else{
+                            res.send(false);
+                        }
+                    }
+                }   
             } else {
                 res.send(false);
             }
