@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "node index.js",
+    "prepublish": "npm run snyk-protect",
+    "snyk-protect": "snyk-protect"
   },
   "author": "",
   "license": "ISC",
@@ -17,14 +19,15 @@
     "ejs": "^2.4.1",
     "express": "^4.13.4",
     "express-session": "^1.13.0",
-    "gulp": "^3.9.0",
+    "gulp": "^4.0.0",
     "gulp-nodemon": "^2.0.6",
     "mongodb": "^2.1.4",
     "passport": "^0.3.2",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "@snyk/protect": "latest"
   },
   "devDependencies": {
-    "gulp": "^3.9.0",
+    "gulp": "^4.0.0",
     "gulp-inject": "^3.0.0",
     "gulp-jscs": "^3.0.2",
     "gulp-jshint": "^2.0.0",
@@ -34,5 +37,6 @@
     "jshint": "^2.9.1",
     "jshint-stylish": "^2.1.0",
     "wiredep": "^3.0.0"
-  }
+  },
+  "snyk": true
 }
